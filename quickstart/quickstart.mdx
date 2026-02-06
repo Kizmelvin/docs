@@ -1,0 +1,48 @@
+---
+title: "Quickstart"
+description: "Learn how to authenticate and make your first request to the Mono API."
+---
+
+import { PageNav } from "/snippets/pageNavigations.jsx";
+
+<PageNav title="Connect" title2="Payment" link="/connect" link2="/payment" />
+<Steps>
+  <Step title="Get your Keys">
+    Sign up on the [Mono Dashboard](https://dashboard.withmono.com) and retrieve
+    your `test_sec_key`.
+  </Step>
+  <Step title="Choose your Language">Pick your preferred SDK or use Curl.</Step>
+  <Step title="Make the Call">
+    Let's use the **Account Lookup** as a test—it's the fastest way to verify a
+    connection.
+  </Step>
+</Steps>
+
+<CodeGroup>
+```bash Curl
+curl --request POST \
+     --url https://api.withmono.com/v3/lookup/account-number \
+     --header 'accept: application/json' \
+     --header 'content-type: application/json' \
+     --header 'mono-sec-key: string' \
+     --data '
+{
+  "nip_code": "string",
+  "account_number": "string"
+}'
+
+````
+
+```bash JavaScript
+const axios = require('axios');
+
+axios.post('https://api.withmono.com/v3/lookup/account-number', {
+nip_code: 'string',
+account_number: 'string'
+}, {
+headers: { 'mono-sec-key': 'YOUR_SECRET_KEY' }
+})
+.then(res => console.log(res.data));
+````
+
+</CodeGroup>

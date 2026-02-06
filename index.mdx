@@ -1,97 +1,168 @@
 ---
 title: "Introduction"
-description: "Welcome to the new home for your documentation"
+description: "Welcome to Mono Documentation."
 ---
 
-## Setting up
+import { MyInputCard } from "/snippets/input.jsx";
 
-Get your documentation site up and running in minutes.
+Mono is the open banking infrastructure for Africa. We provide a suite of APIs that allow you to securely connect to user bank accounts, verify identities, and initiate direct payments.
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
+Whether you are building a lending app, a personal finance manager, or a payment gateway, our documentation is designed to help you integrate and scale faster.
+
+<Card title="Get Started" icon="rocket" href="/quickstart" horizontal>
+  Get authenticated and make your first API request.
 </Card>
 
-## Make it yours
+## Our Products
 
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
+<Columns cols={3}>
   <Card
-    title="Edit locally"
-    icon="pen-to-square"
+    title="Connect"
+    img="https://docs.mono.co/_next/image?url=%2Fimages%2Flinks%2Fconnect.png&w=384&q=75"
     href="/development"
   >
-    Edit your docs locally and preview them in real time.
+    Access transactions, identity, and income data with users’ permission.
   </Card>
   <Card
-    title="Customize your site"
-    icon="palette"
+    title="Payments"
+    img="https://docs.mono.co/_next/image?url=%2Fimages%2Flinks%2Fdirectpay.png&w=384&q=75"
     href="/essentials/settings"
   >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+    Collect payments directly from users’ bank accounts, without cards
   </Card>
   <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
+    title="Identity Verification"
+    href="/essentials/navigation"
+    img="https://docs.mono.co/_next/image?url=%2Fimages%2Flinks%2Flookup.png&w=384&q=75"
   >
-    Auto-generate API documentation from OpenAPI specifications.
+    Verify and validate users and company-submitted data
   </Card>
 </Columns>
 
-## Create beautiful pages
+## Use Cases
 
-Everything you need to create world-class documentation.
-
-<Columns cols={2}>
+<Columns cols={3}>
   <Card
-    title="Write with MDX"
-    icon="pen-fancy"
+    icon="https://docs.mono.co/icons/usecase/lending.svg"
     href="/essentials/markdown"
+    title="Lending"
+    horizontal
   >
-    Use MDX to style your docs pages.
+    Retrieve verified statements to power your credit decisions.
   </Card>
   <Card
-    title="Code samples"
-    icon="code"
+    title="Banking"
+    icon="https://docs.mono.co/icons/usecase/banking.svg"
     href="/essentials/code"
+    horizontal
   >
-    Add sample code to demonstrate how to use your product.
+    Reduce fraudulent sign-ups and onboard your customers faster.
   </Card>
   <Card
-    title="Images"
-    icon="image"
+    title="Payments"
+    icon="https://docs.mono.co/icons/usecase/payments.svg"
     href="/essentials/images"
+    horizontal
   >
-    Display images and other media.
+    Collect secure customer bank transfer payments, within your app.
   </Card>
   <Card
-    title="Reusable snippets"
-    icon="recycle"
+    title="Wealth Management"
+    icon="https://docs.mono.co/icons/usecase/wealth-management.svg"
+    href="/essentials/reusable-snippets"
+    horizontal
+  >
+    Insights into users’ financial behaviour for personalized services.
+  </Card>
+  <Card
+    title="Accounting"
+    icon="https://docs.mono.co/icons/usecase/accounting.svg"
+    horizontal
     href="/essentials/reusable-snippets"
   >
-    Write once and reuse across your docs.
+    Pull users’ real-time transactions for invoicing and bookkeeping needs.
   </Card>
 </Columns>
 
-## Need inspiration?
+## Developer Tools
+
+<Columns cols={2}>
+  <Card title="SDK and Libraries" href="/">
+    Explore our suite of libraries and SDKs to seamlessly integrate our APIs.
+
+    <a href="/your-link" className="inline-block mt-4 px-4 py-2 bg-blue-700 text-white rounded">
+    Explore SDKs &rarr;
+
+  </a>
+  </Card>
+  <Card title="No-code Tools" href="/">
+    Collect financial data via Statement Pages, or payments via DirectPay Pages,
+    without writing code.
+
+    <a href="/your-link" className="inline-block mt-4 px-4 py-2 bg-blue-700 text-white rounded">
+    Explore no-code &rarr;
+
+  </a>
+
+  </Card>
+</Columns>
+
+## Quick Links
+
+<Columns cols={3}>
+  <Card
+    title="API Reference"
+    icon="https://docs.mono.co/icons/quicklink/api-reference.svg"
+    href="https://docs.mono.co/api"
+  >
+    Detailed resources for integrating our endpoints.
+  </Card>
+  <Card
+    title="API Status"
+    icon="https://docs.mono.co/icons/quicklink/api-status.svg"
+    href="https://status.mono.co/"
+  >
+    Access real time alerts on the status of our APIs from anywhere.
+  </Card>
+  <Card
+    title="Developer Community"
+    icon="https://docs.mono.co/icons/quicklink/developer-community.svg"
+    href="https://devwithmono.slack.com/join/shared_invite/zt-33p8mjo07-o717TJ8ocRW4A9FJ0uuA4w#/shared-invite/email"
+  >
+Join our developer community on Slack and collaborate with other developers.
+
+  </Card>
+  <Card
+    title="Coverage"
+    icon="https://docs.mono.co/icons/quicklink/coverage.svg"
+    href="https://docs.mono.co/docs/coverage"
+  >
+Mono APIs from 30+ financial institutions across different countries.
+
+</Card>
+  <Card
+    title="Changelog"
+    icon="https://docs.mono.co/icons/quicklink/change-log.svg"
+    href="https://docs.mono.co/docs/changelog"
+  >
+
+Keep track of updates to Mono APIs as they are made, never miss an update.
+
+</Card>
+  <Card
+    title="Help Center"
+    icon="https://docs.mono.co/icons/quicklink/help-center.svg"
+    href="https://support.mono.co/en"
+  >
+  
+Access to all the API reference pages direct from the Homepage.
+  </Card>
+</Columns>
 
 <Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
+  title="Get notified in real-time"
 >
-  Browse our showcase of exceptional documentation sites.
+ Subscribe and receive changelog notifications and API updates straight in to your inbox.
+
+ <MyInputCard />
 </Card>

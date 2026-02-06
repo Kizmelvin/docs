@@ -1,42 +1,99 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Melvatech docs",
+  "name": "Mono",
   "colors": {
-    "primary": "#16A34A",
+    "primary": "#0155BA",
     "light": "#07C983",
     "dark": "#15803D"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "https://docs.mono.co/_next/image?url=%2Fimages%2Fmono.png&w=256&q=75",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Build & Integrate",
         "groups": [
           {
             "group": "Getting started",
-            "pages": ["index", "quickstart", "development"]
-          },
-          {
-            "group": "Customization",
-            "pages": ["essentials/settings", "essentials/navigation"]
-          },
-          {
-            "group": "Writing content",
+
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "quickstart/quickstart",
+              "sdks/index",
+              "liberaries/index",
+              "postman-collection/index"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "Core API Implementation",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "essentials/mono/authentication",
+              "essentials/mono/connect-integration",
+              "essentials/mono/direct-pay-integration"
             ]
+          },
+          {
+            "group": "Utilities",
+            "pages": [
+              "utilities/webhooks",
+              "utilities/error-reference",
+              "utilities/api-explorer"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Solutions",
+        "groups": [
+          {
+            "group": "Use Cases",
+            "pages": [
+              "use-cases/lending",
+              "use-cases/identity-onboarding",
+              "use-cases/asset-management"
+            ]
+          },
+          {
+            "group": "Product Capabilities",
+            "pages": ["product-abilities/financial-data"]
+          },
+          {
+            "group": "Growth Resources",
+            "pages": ["growth-res/changelog", "growth-res/ux-best-practices"]
+          }
+        ]
+      },
+      {
+        "tab": "Trust & Safety",
+        "groups": [
+          {
+            "group": "Security Standards",
+            "pages": ["trust/data-encryption", "trust/regulatory-compliance"]
+          },
+          {
+            "group": "Identity & Trust",
+            "pages": ["trust/lookup-governance", "trust/user-consent"]
+          },
+          {
+            "group": "Reliability & Uptime",
+            "pages": ["trust/sla-status", "trust/data-privacy"]
+          }
+        ]
+      },
+      {
+        "tab": "Network & Resources",
+        "groups": [
+          {
+            "group": "Market Coverage",
+            "pages": ["resources/banks", "resources/mobile-network-providers"]
+          },
+
+          {
+            "group": "Brand & Assets",
+            "pages": ["resources/brand-assets", "resources/trust-content"]
+          },
+          {
+            "group": "Ecosystem & Partnerships",
+            "pages": ["resources/partner-api"]
           }
         ]
       },
@@ -58,37 +115,17 @@
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "https://docs.mono.co/_next/image?url=%2Fimages%2Fmono.png&w=256&q=75",
+    "dark": "https://docs.mono.co/_next/image?url=%2Fimages%2Fmono.png&w=256&q=75"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Get API Keys",
+      "href": "https://app.mono.co/apps"
     }
   },
   "contextual": {
