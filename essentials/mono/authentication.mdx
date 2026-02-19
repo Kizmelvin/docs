@@ -2,4 +2,49 @@
 title: "Authentication"
 ---
 
-### Mono authentication is required ...
+All server-side requests to Mono must be authenticated using your **Mono secret key** in the **`mono-sec-key`** header.
+
+<CodeGroup>
+```bash Curl
+curl --request GET \
+  --url https://api.withmono.com/v2/accounts \
+  --header 'accept: application/json' \
+  --header 'mono-sec-key: YOUR_SECRET_KEY'
+```
+```javascript JavaScript
+const response = await fetch('https://api.withmono.com/v2/accounts', {
+  headers: {
+    'accept': 'application/json',
+    'mono-sec-key': process.env.MONO_SEC_KEY,
+  },
+});
+const data = await response.json();
+```
+</CodeGroup>
+
+## Getting your keys
+
+<Steps>
+  <Step title="Sign up and complete KYC">
+    [Sign up](https://app.mono.co/signup) on the Mono Dashboard and complete the verification steps.
+  </Step>
+  <Step title="Create an app and choose the product">
+    [Create an app](/quickstart/create-an-app) in the Mono Dashboard and select the product (Connect, Payments, Prove, etc.) so the correct scopes are enabled.
+  </Step>
+  <Step title="Copy your Secret key">
+    Copy the **Secret key** (test and live are separate). Use the test key for sandbox and the live key for production.
+  </Step>
+</Steps>
+
+## Security
+
+- **Never expose the secret key** in frontend code or public repos. Use it only on your backend.
+- For Connect, the **public key** is used in the widget/SDK on the client; the **secret key** is only for server-to-server API calls.
+- Rotate keys from the Dashboard if they are compromised.
+
+## Environments
+
+- **Test / sandbox** – Use the test secret key.
+- **Live** – Use the live secret key after [go-live](/getting-started/go-live).
+
+For webhook verification, use the **webhook secret** (see [Webhooks](/utilities/webhooks)), not the API secret key.

@@ -10,3 +10,403 @@ Managing recurring payments can be difficult especially if you have to rely on c
 Mono Direct Debit solves this by allowing businesses to collect recurring payments directly from customers' bank accounts on schedule, without using cards. By automating collections and removing manual processing, businesses can reduce payment failures, maintain a steady cash flow, and ensure predictable revenue.
 
 This quick start guide provides clear steps on how to integrate the Mono Direct Debit API into your product, with detailed instructions and sample API requests to help you set up automated payments efficiently.
+
+### Why choose Mono Direct Debit over cards?
+
+Mono Direct Debit ensures more secure payments, as the payment mandate has to be authorised by customer and approved by their bank before the direct debit payment can be initiated by the business.
+With lower transaction fees and predictable payment schedules, Mono Direct Debit improves cash flow management and provides a more cost-effective alternative to card payments.
+You can read more about the benefits of Direct Debit over cards [here](https://mono.co/blog/cards-vs-direct-debit).
+
+## Prerequisites
+
+To get started, you'll need your Mono secret key and a webhook URL. To get these, follow the steps below:
+
+[Sign up](https://app.mono.co/signup) on the Mono Dashboard and complete KYC.
+[Create an App](/quickstart/create-an-app) and set the product to "Payments" to generate your Mono secret key. The Mono secret key is used to make API calls to most of Mono's endpoints, and should be passed in your headers as "mono-sec-key". You can check out this [guide](/quickstart/create-an-app) on how to create an app and obtain your secret key.
+Configure a webhook URL and add it to your dashboard. You can use [this site](https://webhook.site/) to quickly generate a webhook URL, and follow this [guide](/utilities/webhooks) to integrate it properly.
+
+## Step-by-step integration guide
+
+<Steps>
+  <Step title="Create a customer">
+    To set up recurring payments or subscriptions, the first step is to create a
+    Customer on Mono. This endpoint streamlines onboarding, ensures you are
+    KYC-compliant, and provides a crucial identifier for seamless integration
+    with Mono's endpoints.
+
+    <b> Sample request: </b>
+
+    <CodeGroup>
+    ```bash Curl
+    curl --request POST \
+     --url https://api.withmono.com/v2/customers \
+     --header 'accept: application/json' \
+     --header 'content-type: application/json' \
+     --header 'mono-sec-key: string' \
+     --data '
+
+{
+"identity": {
+"type": "bvn",
+"number": "12345678901"
+},
+"email": "samuel.olamide@neem.co",
+"type": "individual",
+"last_name": "Olamide",
+"first_name": "Samuel",
+"address": "19 goodstreet, Ikeja, Lagos",
+"phone": "09066662020"
+}
+'
+    ```
+    ```javascript JavaScript
+    const response = await fetch('https://api.withmono.com/v2/customers', {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'content-type': 'application/json',
+        'mono-sec-key': process.env.MONO_SEC_KEY,
+      },
+      body: JSON.stringify({
+        identity: { type: 'bvn', number: '12345678901' },
+        email: 'samuel.olamide@neem.co',
+        type: 'individual',
+        first_name: 'Samuel',
+        last_name: 'Olamide',
+        address: '19 goodstreet, Ikeja, Lagos',
+        phone: '09066662020',
+      }),
+    });
+    const data = await response.json();
+    ```
+</CodeGroup>
+<b>Response object:</b>
+
+ <CodeGroup>
+```bash Curl
+    {
+    "status": "successful",
+    "message": "Created customer successfully",
+    "data": {
+        "id": "67cac53b271cb661d8e92bc7",
+        "type": "individual",
+        "name": "Samuel Olamide",
+        "first_name": "Samuel",
+        "last_name": "Olamide",
+        "email": "samuel.olamide@neem.co",
+        "phone": "09066662020",
+        "address": "19 goodstreet, Ikeja, Lagos ",
+        "identification_no": "12345678901",
+        "identification_type": "bvn",
+        "bvn": "12345678901"
+    }
+}
+
+````
+
+</CodeGroup>
+Now that the customer object has been created, the Customer ID should be saved in your internal database as this will be used to make further actions.
+  </Step>
+  <Step title="Create a mandate"> 
+  This step involves creating a mandate, which allows the customer to authorise your business to to debit their bank account for scheduled payments. To do this, you’ll use the customer ID returned after you created a customer on Mono. .
+
+There are three different <code>MANDATE </code> methods: E-mandate, Signed mandate, and Global Standing Mandate (GSM). You can read more about them in [this guide](/payments/direct-debit-guide).
+
+There are also two <code>DEBIT TYPES </code>, to choose from:
+
+Fixed Debit:
+This allows you to collect the same payment amount from customers at set intervals.
+Variable Debit:
+This allows you to collect varying payment amounts from customers on a custom schedule.
+For this guide, we’ll show you how to create an e-mandate with the fixed debit type.
+
+<b>Sample request:</b>
+
+<CodeGroup>
+```bash Curl
+curl --request POST \
+     --url https://api.withmono.com/v2/payments/initiate \
+     --header 'accept: application/json' \
+     --header 'content-type: application/json' \
+     --header 'mono-sec-key: string' \
+     --data '
+{
+    "amount": 100000, // (required) This is the fixed amount to be debited from the user’s account throughout the mandate (i.e from start to end date). NGN 200 (20000 kobo)
+
+    "type": "recurring-debit", // (required) This expects a string value i.e recurring-debit
+
+    "method": "mandate", // (required) This field expects a string value i.e mandate.
+
+    "mandate_type": "emandate", // (required) This can either be signed or emandate or gsm.
+
+    "debit_type": "fixed", // (required) This field expects the type of debit i.e fixed
+
+    "frequency": "monthly", // (required) This expects the frequency of the debit daily , weekly , monthly and yearly. For custom -frequencies use days, weeks, months and provide an whole number value in the interval field
+
+    "retrial_frequency": 1, // (required) This expects the number of retries on a particular debit date [ Minimum is 1 & Maximum is 6 ].
+
+    "initial_debit_amount": 0, // This expects the initial amount to debit on the initial_debit_date
+
+    "initial_date_date" : "2025-03-30", // This expects the first day/date to debit the mandate account. Must be greater than start_date
+
+    "minimum_due": 50000, // (required) This expects an amount in a case of failed debits due to insufficient funds, the minimum_due is attempted i.e anything you can find, give debit
+
+    "grace_period": 2, // (required) This expects the number of days to continue debiting an account before setting the next debit date to next frequency date
+
+    "description": "Subscription payment for movie streaming", // (required) This field expects a description of the set mandate.
+
+    "reference": "subscription1234567890", // (required) This expects a unique reference ID for this particular reference.
+
+    "redirect_url": "https://mono.co", // (required) The webpage or URL the customer should get redirected to after completing the process.
+
+    "customer": {
+        "id": "67cac53b271cb661d8e92bc7"
+    }, // (required) This expects the customer id
+
+    "start_date": "2025-03-29", // (required) This expects the start date for this mandate to begin. e.g. 2024-12-15
+
+    "end_date": "2028-12-29", // (required) This expects the end date for this mandate to end. e.g. 2024-05-25
+
+    "meta": {}  // This object used to include additional payment information. e.g meta
+
+}'
+    ```
+    ```javascript JavaScript
+    const response = await fetch('https://api.withmono.com/v2/payments/initiate', {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'content-type': 'application/json',
+        'mono-sec-key': process.env.MONO_SEC_KEY,
+      },
+      body: JSON.stringify({
+        amount: 100000,
+        type: 'recurring-debit',
+        method: 'mandate',
+        mandate_type: 'emandate',
+        debit_type: 'fixed',
+        frequency: 'monthly',
+        retrial_frequency: 1,
+        initial_debit_amount: 0,
+        initial_debit_date: '2025-03-30',
+        minimum_due: 50000,
+        grace_period: 2,
+        description: 'Subscription payment for movie streaming',
+        reference: 'subscription1234567890',
+        redirect_url: 'https://mono.co',
+        customer: { id: '67cac53b271cb661d8e92bc7' },
+        start_date: '2025-03-29',
+        end_date: '2028-12-29',
+        meta: {},
+      }),
+    });
+    const data = await response.json();
+    ```
+</CodeGroup>
+<b>Response object:</b>
+<CodeGroup>
+```bash Curl
+{
+    "status": "successful",
+    "message": "Payment Initiated Successfully",
+    "timestamp": "2025-03-07T12:31:05.306Z",
+    "data": {
+        "mandate_id": "mmc_67cae709d35ec894a3465b14",
+        "type": "recurring-debit",
+        "method": "mandate",
+        "amount": 100000,
+        "mandate_type": "emandate",
+        "mono_url": "https://authorise.mono.co/RD1930963332",
+        "description": "Subscription payment for movie streaming",
+        "reference": "subscription1234567890",
+        "customer": "67cac53b271cb661d8e92bc7",
+        "redirect_url": "https://mono.co",
+        "created_at": "2025-03-07T12:31:05.306Z",
+        "updated_at": "2025-03-07T12:31:05.306Z",
+        "start_date": "2025-03-29",
+        "end_date": "2028-12-29"
+    }
+}
+
+
+````
+
+</CodeGroup>
+We have just created an emandate with a fixed debit. This means, once the user approves the mandate, NGN 1,000 will be debited from their account every month, starting from March 29, 2025.
+
+</Step>
+<Step title="Share the authorization link">
+Now that the mandate has been created, send the user the <block>MONO_URL</block> (in this case, <block> https://authorise.mono.co/rd1930963332) </block>. They can open this link in their browser to complete the authorization process.
+
+This step involves sending a payment (NGN 50 or NGN 100) to their bank to confirm ownership of the account.
+
+Once the user completes this process, you will be sent a <code>EVENTS.MANDATE.CREATED</code> webhook to your configured webhook URL.
+
+<b>Sample event mandate created webhook:</b>
+
+<CodeGroup>
+```bash Curl
+{
+    "event": "events.mandates.created",
+    "data": {
+        "id": "mmc_67cae709d35ec894a3465b14",
+        "status": "initiated",
+        "mandate_type": "emandate",
+        "debit_type": "fixed",
+        "ready_to_debit": false,
+        "nibss_code": "RC/0639/2454285714",
+        "approved": false,
+        "reference": "subscription1234567890",
+        "account_name": "Samuel Olamide",
+        "account_number": "1234567890",
+        "bank": "GTB TESTING",
+        "bank_code": "058",
+        "customer": "67cac53b271cb661d8e92bc7",
+        "description": "Subscription payment for movie streaming",
+        "live_mode": false,
+        "message": "The mandate has been successfully initiated and is awaiting customer approval. Once approved, you can begin debiting customers based on the agreed terms",
+        "start_date": "2025-03-29T00:00:00.000Z",
+        "end_date": "2028-12-29T22:59:59.999Z",
+        "date": "2025-03-07T12:31:05.274Z",
+        "initial_debit_date": "2025-03-29T00:00:00.000Z",
+        "amount": 100000,
+        "initial_debit_amount": 0,
+        "app": "673t6dd7d751f2189f026a23",
+        "business": "61db8f05ba1772018c5c6b1d"
+    }
+}
+
+````
+
+</CodeGroup>
+
+After approval, you will be sent a <code>EVENTS.MANDATE.APPROVED</code> webhook event to your set URL.
+
+<b>Sample event mandate approved webhook:</b>
+
+<CodeGroup>
+```bash Curl
+{
+    "event": "events.mandates.approved",
+    "data": {
+        "id": "mmc_67cae709d35ec894a3465b14",
+        "status": "approved",
+        "mandate_type": "emandate",
+        "debit_type": "fixed",
+        "ready_to_debit": false,
+        "nibss_code": "RC/0639/2454285714",
+        "approved": true,
+        "reference": "subscription1234567890",
+        "account_name": "Samuel Olamide",
+        "account_number": "1234567890",
+        "bank": "GTB TESTING",
+        "bank_code": "058",
+        "customer": "67cac53b271cb661d8e92bc7",
+        "description": "Subscription payment for movie streaming",
+        "live_mode": false,
+        "message": "Mandate approved",
+        "start_date": "2025-03-29T00:00:00.000Z",
+        "end_date": "2028-12-29T22:59:59.999Z",
+        "date": "2025-03-07T12:31:05.274Z",
+        "initial_debit_date": "2025-03-29T00:00:00.000Z",
+        "amount": 100000,
+        "initial_debit_amount": 0,
+        "app": "673t6dd7d751f2189f026a23",
+        "business": "61db8f05ba1772018c5c6b1d"
+    }
+}
+
+````
+
+</CodeGroup>
+Once the mandate is approved, you will get an additional webhook event: <code>EVENTS.MANDATE.CREATED</code>. This indicates that the user’s account is ready to be debited. Please note that it typically takes 24 hours for the webhook to be triggered after mandate approval.
+
+<b>Sample event mandate ready webhook:</b>
+<CodeGroup>
+```bash Curl
+{
+    "event": "events.mandates.ready",
+    "data": {
+      "id": "mmc_67cae709d35ec894a3465b14",
+      "status": "approved",
+      "mandate_type": "emandate",
+      "debit_type": "fixed",
+      "ready_to_debit": true,
+      "nibss_code": "RC/0639/2454285714",
+      "approved": true,
+      "reference": "subscription1234567890",
+      "account_name": "Samuel Olamide",
+      "account_number": "1234567890",
+      "bank": "GTB TESTING",
+      "bank_code": "058",
+      "customer": "67cac53b271cb661d8e92bc7",
+      "description": "Subscription payment for movie streaming",
+      "live_mode": false,
+      "message": "Mandate is now ready for debiting",
+      "start_date": "2025-03-29T00:00:00.000Z",
+      "end_date": "2028-12-29T22:59:59.999Z",
+      "date": "2025-03-07T12:31:05.274Z",
+      "initial_debit_date": "2025-03-29T00:00:00.000Z",
+      "amount": 100000,
+      "initial_debit_amount": 0,
+      "app": "678f6dd7d751f2189f026a23",
+      "business": "60cc8f95ba1772018c5c6b1d"
+    }
+}
+
+```
+
+</CodeGroup>
+</Step>
+
+
+</Steps>
+
+## Common issues & debugging tips
+
+Mandate approval delays:
+
+Make sure the NGN 50/100 micro-deposit verification is complete.
+
+Check the events.mandates.created webhook; if the approved field is false, the customer hasn’t completed verification.
+
+Confirm that your webhook URL is correctly set and review your server logs.
+
+Failed recurring debits:
+
+Ensure the customer has sufficient funds on the scheduled debit date.
+
+Check the events.mandates.debit.failed webhook for failure reasons.
+
+Implement retries based on retrial_frequency and confirm that the mandate's start/end dates are valid.
+
+Webhook issues:
+
+Verify the webhook URL and check server logs.
+
+Use ngrok for local debugging.
+
+Check Mono’s webhook logs for delivery status.
+
+**Authentication errors:**
+
+Ensure mono-sec-key header is correct.
+
+Confirm you're using the right secret key (live/test) and update if regenerated.
+
+## Next steps
+
+**API documentation:**
+To get a broader understanding of how the Mono Direct Debit API works, we recommend checking the Mono Direct Debit [integration guide](/payments/direct-debit-guide). This guide provides you with information on all available APIs, webhooks, and commonly asked questions.
+
+**Webhook security:**
+Ensure that you are validating the webhooks that you receive from Mono to prevent malicious actors from sending fake webhooks to your server. Here’s a [guide](/utilities/webhooks) to handle this.
+
+**Testing in sandbox:**
+To ensure a smooth production deployment, thoroughly test your integration in the Mono sandbox environment using test data and your test secret key to simulate various payment scenarios.
+
+**Support channels:**
+For real-time integration assistance, [join our Slack community](https://join.slack.com/t/devwithmono/shared_invite/zt-296d52n0h-JPVfKGnCDHWB5Mg7BsgfrA), or contact integrations@mono.co to request support for any technical issues you experience.
+
+
+```

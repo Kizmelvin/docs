@@ -1,0 +1,29 @@
+---
+title: "Reauthorisation Guide"
+description: "Reauthorise a previously linked account when access has expired or MFA is required."
+---
+
+## Prerequisites
+
+To get started, ensure you have:
+
+- Sign up on the [Mono Dashboard](https://app.mono.co/signup)
+- [Create an app](https://support.mono.co/en/articles/7054553-how-to-create-an-app) with the product specified as `connect` and obtain the associated secret key.
+- [Configure](/utilities/webhooks) a webhook URL and add it to your dashboard. (For testing, use [webhook.site](https://webhook.site/) to generate a temporary webhook URL)
+
+## Integration stages
+
+With the prerequisites above in place, complete the reauthorisation flow using the following steps:
+
+<Steps>
+  <Step title="Start a reauth session">
+    Reauthorise a previously linked account by creating a reauth session (using the account ID). When a user's account access has expired or needs re-authentication, initiate this session to begin the process.
+  </Step>
+  <Step title="Complete reauth login (if required)">
+    For some institutions, the user must log in again or complete MFA. Use this step after the reauth session has been started when the institution requires the user to re-enter credentials or complete MFA.
+  </Step>
+</Steps>
+
+## Reauth Session
+
+To create a reauth session, you need to pass the account ID. Once the session is successfully created, we’ll send the `mono.events.account_reauthorized` webhook, followed by the `mono.events.account_updated` webhook to notify you that new data is available.

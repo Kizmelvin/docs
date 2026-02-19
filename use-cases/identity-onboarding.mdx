@@ -3,4 +3,139 @@ title: "Identity Onboarding"
 description: "Using Lookup API (BVN/NIN) to build friction-less KYC flows."
 ---
 
-### Identity Onboarding ...
+Mono’s Identity and Lookup products help you build KYC flows that are both compliant and
+developer‑friendly. This page summarizes how to combine **Lookup** and **Prove** so that new
+customers can be verified with minimal friction.
+
+## When to use Lookup vs Prove
+
+- **Lookup APIs** (BVN, NIN, CAC, address, etc.) are ideal when:
+  - You already collect identity numbers and want to verify them against authoritative
+    sources.
+  - You need quick lookups for onboarding or periodic reviews.
+- **Prove** is ideal when:
+  - You want a full identity onboarding journey with document capture, face match, and
+    address verification.
+  - You need strong assurance and an auditable trail (e.g. for tiered KYC).
+
+You can start with simple Lookup flows and layer in Prove for higher‑risk customers.
+
+## Blueprint: Prove‑powered onboarding
+
+From the **Prove Integration Guide**, the flow has three main stages:
+
+<Steps>
+  <Step title="Initiate a Prove session">
+    Call the Prove initiate API from your backend to create a session and receive a `mono_url` or request ID for the user.
+  </Step>
+  <Step title="User completes verification">
+    The user completes verification via the Prove SDK (using the request ID) or by opening the `mono_url` in their browser.
+  </Step>
+  <Step title="Receive webhooks">
+    Handle webhooks for initiation, success, cancellation, expiry, and manual review to update your records and UI.
+  </Step>
+</Steps>
+
+### Initiate a Prove session (Step 1)
+
+<CodeGroup>
+```bash Curl
+curl --request POST \
+  --url https://api.withmono.com/v1/prove/initiate \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --header 'mono-sec-key: <YOUR_SECRET_KEY>' \
+  --data '{
+    "reference": "testreference123",
+    "redirect_url": "https://yourapp.com/onboarding/callback",
+    "kyc_level": "tier_1",
+    "bank_accounts": true,
+    "customer": {
+      "name": "Samuel Olamide",
+      "phone": "08012345678",
+      "email": "samuel.olamide@example.com",
+      "address": "20, Angel Place, Ikeja Lagos",
+      "identity": { "type": "BVN", "number": "12345678900" }
+    }
+  }'
+```
+```javascript JavaScript
+const response = await fetch('https://api.withmono.com/v1/prove/initiate', {
+  method: 'POST',
+  headers: {
+    'accept': 'application/json',
+    'content-type': 'application/json',
+    'mono-sec-key': process.env.MONO_SEC_KEY,
+  },
+  body: JSON.stringify({
+    reference: 'testreference123',
+    redirect_url: 'https://yourapp.com/onboarding/callback',
+    kyc_level: 'tier_1',
+    bank_accounts: true,
+    customer: {
+      name: 'Samuel Olamide',
+      phone: '08012345678',
+      email: 'samuel.olamide@example.com',
+      address: '20, Angel Place, Ikeja Lagos',
+      identity: { type: 'BVN', number: '12345678900' },
+    },
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>
+
+The response contains:
+
+- `mono_url` – a hosted URL where the customer completes verification.
+- `id` / `requestId` – used when integrating the Prove SDK directly.
+
+### User completes verification (Step 2)
+
+You can:
+
+- Embed the Prove widget using the **request ID** in your web or mobile SDK, or
+- Redirect the user to the **mono_url** (e.g. `https://prove.mono.co/reRVZW59A3Q123`).
+
+Within this flow, the user:
+
+- Enters phone and date of birth.
+- Provides BVN / NIN and government ID (depending on tier).
+- Completes face recognition and, optionally, address verification.
+- Grants one‑time or continuous data access.
+
+### React to webhooks (Step 3)
+
+Key webhooks from the legacy docs:
+
+- `mono.prove.data_verification_initiated` – session created.
+- `mono.prove.data_verification_successful` – identity verified; contains customer IDs.
+- `mono.prove.data_verification_cancelled` – user abandoned and provided a reason.
+- `mono.prove.data_verification_expired` – session expired after 24 hours.
+- `mono.prove.data_verification_awaiting_review` – escalated to manual face‑ID review.
+- `mono.prove.data_verification_rejected` – manual review failed.
+
+Your onboarding service should:
+
+- Create or update customer records when a **successful** event is received.
+- Escalate cancellations or rejections to your risk/compliance team.
+- Use the reference to correlate events with the original sign‑up attempt.
+
+## Testing for Failure
+
+When integrating identity onboarding, test at least:
+
+- **Mismatched identity data** – simulate wrong BVN or NIN and confirm your UI clearly
+  explains next steps (e.g. resubmit or manual review).
+- **Repeated face‑ID failures** – ensure `awaiting_review` webhooks are handled and your
+  team has a process to approve/reject.
+- **Expired sessions** – verify `data_verification_expired` handling and that customers can
+  safely restart onboarding.
+
+## Related docs
+
+- Legacy detailed guide: `content/docs.mono.co/docs/lookup/prove/integration-guide.md`
+- API reference: [Prove APIs](/api-reference/prove)
+- Governance & consent: <a href="/trust/lookup">Lookup governance</a> and
+  <a href="/trust/user-consent">User Consent</a>.
+

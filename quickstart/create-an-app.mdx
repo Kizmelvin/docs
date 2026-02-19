@@ -1,0 +1,76 @@
+---
+title: "Creating an App"
+description: "Create your first Mono application and get your API keys."
+---
+
+A Mono dashboard **App** is the foundation for using Mono APIs and products. You create an app to get **public and secret keys** (used in the Connect widget and server-side API calls) and to configure product scopes, webhooks, and branding.
+
+<img
+  src="/images/writing-hand.png"
+  alt="Setting up your app"
+  className="w-full max-w-xl mx-auto my-6 rounded-xl object-cover"
+/>
+
+## Before you begin
+
+- You are **not charged** for API calls in sandbox mode. See [Environments and sandbox](/getting-started/environments-and-sandbox) for test credentials.
+- There is **no fixed limit** on how many apps you can create.
+- To show **Personal** or **Business** banks on the Connect widget, set the Account Type when creating or editing the app.
+- To use **DirectPay** (one-time or recurring payments), add **Payments** to your app scope.
+- If you **delete** an app, all data tied to that app is permanently deleted.
+
+## Before you create your app
+
+Decide which Mono product this app will use (e.g. **Connect**, **Payments**, **Lookup**). When creating the app you will need to:
+
+- Set an **App name** and **Display name**.
+- Add a **branded business logo** (shown to users on the first screen of the Mono Connect widget when they link their bank).
+- Choose the **Mono product(s)** the app will serve (e.g. Connect, Lookup).
+- Select **scopes** the app should have (e.g. Transactions, Statements, Identity, Accounts, Payments).
+- For **Connect**, choose which bank account type to show: Personal, Business, or both.
+- Select an **Industry type** for your dashboard app.
+
+For step-by-step guidance on choosing product scopes, see [How to create an app](https://support.mono.co/en/articles/7054553-how-to-create-an-app) in the Help Center.
+
+## Creating your app
+
+<Steps>
+  <Step title="Log in to the Mono dashboard">
+    Go to [app.mono.co](https://app.mono.co/). If you do not have an account,
+    create one first.
+  </Step>
+  <Step title="Open Apps and create a new app">
+    Click **Apps** in the side menu, then click **Create an app** (top right).
+  </Step>
+  <Step title="Fill in the app details">
+    In the modal, enter the app name, display name, logo, product, scopes,
+    account type, and industry. Then click **Create app**.
+  </Step>
+  <Step title="Use your keys">
+    After creation, the app is in **sandbox** mode by default. Test **public**
+    and **secret** keys are generated automatically. Use the secret key in API
+    requests (e.g. as the `mono-sec-key` header) and the public key in the
+    Connect widget.
+  </Step>
+</Steps>
+### Watch how to create your first app
+<video
+  src="/images/create-an-app.mp4"
+  controls
+  className="w-full max-w-2xl mx-auto my-6 rounded-xl"
+  playsInline
+>
+  Your browser does not support the video tag.
+</video>
+
+## Managing your app
+
+After the app is created you can:
+
+- **Add or change your business logo.**
+- **Add a webhook URL** so Mono can send events (e.g. account connected, payment completed). See [Webhooks](/utilities/webhooks).
+- **Switch from sandbox to live** when you are ready for production. See [Go live](/getting-started/go-live).
+
+To update any app setting, open the app, click **Edit**, change the fields, then click **Update app**.
+
+Next, try the [Connect quickstart](/quickstart/connect) or [Payment quickstart](/quickstart/payment) using your new app and keys.

@@ -1,0 +1,42 @@
+---
+title: "Connect Data Endpoints"
+description: "Statements, identity, income, and data sync for linked accounts."
+---
+
+After a user links an account via [Connect](/quickstart/connect), you can call these endpoints to retrieve **statements**, **identity**, **income**, and manage **data sync**. All require the **account ID** you received when the account was connected.
+
+## Statements
+
+The **Statements** API returns a user's financial statement and transaction history for a linked account. Use it for lending, affordability checks, or transaction history in your app.
+
+**Endpoint:** [Bank Statement API](/api-reference/bank-data)  
+**Response:** Transaction list with type (credit/debit), amount, date, narration, currency. Optional metadata: count, requested length, available length.
+
+Use the account ID in the path and optional query params (e.g. period) as described in the API reference.
+
+## Identity
+
+The **Identity** API returns verified identity data for the account holder. Use it for KYC (Know Your Customer), auto-completing user details, and reducing fraud.
+
+**Endpoint:** [Identity API](/api-reference/bank-data)  
+**Response:** Fields such as full name, BVN, email, phone, gender, date of birth, address, state/LGA, marital status (when available from the institution).
+
+Personal information is returned only when the connected institution provides it and the user has consented. See [Lookup governance](/trust/lookup) and [User consent](/trust/user-consent).
+
+## Income
+
+The **Income** API returns income-related metrics (e.g. average monthly income, salary estimates, income sources) for a linked account. Use it for affordability and lending decisions.
+
+**Endpoint:** [Income API](/api-reference/bank-data)  
+**Response:** Structure as in the [API reference](/api-reference/bank-data). Used in the [Connect quickstart](/quickstart/connect) and [Lending](/use-cases/lending) use case.
+
+## Data sync and manual sync
+
+- **Data sync** – Mono can sync data from the bank in the background. When the user's connection requires re-authorisation, you receive events (e.g. reauthorisation_required) so you can prompt the user to [re-auth](/quickstart/authentication). See [Real-time data](/product-abilities/realtime-data) for on-demand refresh.
+- **Manual data sync** – For manual sync behaviour and when it is used, see [Connect integration](/essentials/mono/connect-integration) and [Real-time data](/product-abilities/realtime-data).
+
+## Unlink (disconnect account)
+
+When a user disconnects their account, Mono sends a **mono.events.account_disconnected** webhook. You should remove or mark the account as inactive in your system. To unlink programmatically, see [Unlink API](/api-reference/bank-data).
+
+For a full list of Connect features and endpoints, see [Connect overview](/product-abilities/connect-overview) and the [API reference](/api-reference/full-api-index).

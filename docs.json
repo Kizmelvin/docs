@@ -17,7 +17,20 @@
             "group": "Getting started",
 
             "pages": [
-              "quickstart/quickstart",
+              {
+                "group": "Quickstart",
+                "expanded": false,
+                "pages": [
+                  "quickstart/create-an-app",
+                  "quickstart/connect",
+                  "quickstart/payment"
+                ]
+              },
+              "getting-started/definitions",
+              "getting-started/environments-and-sandbox",
+              "getting-started/go-live",
+              "getting-started/faqs",
+              "getting-started/customers",
               "sdks/index",
               "liberaries/index",
               "postman-collection/index"
@@ -54,7 +67,59 @@
           },
           {
             "group": "Product Capabilities",
-            "pages": ["product-abilities/financial-data"]
+            "pages": [
+              "product-abilities/connect-overview",
+              "product-abilities/realtime-data",
+              "product-abilities/financial-data",
+              "product-abilities/credit-worthiness",
+              "product-abilities/income",
+              "product-abilities/connect-data-endpoints",
+              "product-abilities/connect-webhooks",
+              "product-abilities/partners-api"
+            ]
+          },
+          {
+            "group": "Payments",
+            "pages": [
+              "payments/direct-debit-guide",
+              "payments/mandate-biometrics",
+              "payments/debit-account",
+              "payments/global-standing-mandate",
+              "payments/direct-debit-webhooks",
+              "payments/directpay-webhooks",
+              "payments/payouts",
+              "payments/split-payments",
+              "payments/payment-status"
+            ]
+          },
+          {
+            "group": "Lookup & Identity",
+            "pages": [
+              "lookup/overview",
+              "lookup/lookup-apis",
+              "lookup/tin-lookup",
+              "lookup/bvn-igree",
+              "lookup/nin-lookup",
+              "lookup/prove-integration",
+              "lookup/account-number",
+              "lookup/address",
+              "lookup/intl-passport",
+              "lookup/drivers-license",
+              "lookup/credit-history",
+              "lookup/mashup",
+              "use-cases/identity-onboarding"
+            ]
+          },
+          {
+            "group": "More products",
+            "pages": [
+              "more-products/disburse",
+              "more-products/whatsapp-payment",
+              "more-products/telco-data",
+              "more-products/money-operations",
+              "more-products/cac-company-search",
+              "more-products/owo"
+            ]
           },
           {
             "group": "Growth Resources",
@@ -71,7 +136,7 @@
           },
           {
             "group": "Identity & Trust",
-            "pages": ["trust/lookup-governance", "trust/user-consent"]
+            "pages": ["trust/lookup", "trust/user-consent"]
           },
           {
             "group": "Reliability & Uptime",
@@ -84,7 +149,11 @@
         "groups": [
           {
             "group": "Market Coverage",
-            "pages": ["resources/banks", "resources/mobile-network-providers"]
+            "pages": [
+              "resources/banks",
+              "resources/mobile-network-providers",
+              "resources/coverage"
+            ]
           },
 
           {
@@ -102,7 +171,22 @@
         "groups": [
           {
             "group": "API documentation",
-            "pages": ["api-reference/introduction"]
+            "pages": [
+              "api-reference/introduction",
+              "api-reference/full-api-index",
+              "api-reference/bank-data",
+              "api-reference/customer",
+              "api-reference/direct-debit",
+              "api-reference/directpay",
+              "api-reference/disburse",
+              "api-reference/prove",
+              "api-reference/lookup",
+              "api-reference/money-operations",
+              "api-reference/whatsapp-payment",
+              "api-reference/telco-data",
+              "api-reference/cac",
+              "api-reference/miscellaneous"
+            ]
           },
           {
             "group": "Endpoint examples",
@@ -119,7 +203,16 @@
   },
   "logo": {
     "light": "https://docs.mono.co/_next/image?url=%2Fimages%2Fmono.png&w=256&q=75",
-    "dark": "https://docs.mono.co/_next/image?url=%2Fimages%2Fmono.png&w=256&q=75"
+    "dark": "/images/hero-dark.png"
+  },
+  "api": {
+    "mdx": {
+      "server": "https://api.withmono.com/",
+      "auth": {
+        "method": "key",
+        "name": "mono-sec-key"
+      }
+    }
   },
   "navbar": {
     "primary": {

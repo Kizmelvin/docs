@@ -1,0 +1,42 @@
+---
+title: "Definitions"
+description: "Glossary of key terms used across Mono APIs and products."
+---
+
+Quick reference for terms you'll see in the Mono docs and dashboard.
+
+## A
+
+**Account ID**  
+After a user successfully links their account, a code is returned that you exchange (with your app secret key) for a unique **account ID**. Use this ID to call Mono APIs (transactions, balance, income, etc.).
+
+**API**  
+An application programming interface (API) lets two or more programs talk to each other. Mono’s APIs let your server request financial data, initiate payments, or verify identity.
+
+**Apps**  
+Apps are created on the [Mono Dashboard](https://app.mono.co/apps). Each app has **public** and **secret** keys that you use to initialise the Connect widget and to authenticate API requests.
+
+## E
+
+**Enrolment**  
+The process of a user linking their financial account via Mono, using the Mono Connect widget. After enrolment you receive a code to exchange for an account ID.
+
+## P
+
+**Public Key**  
+Used to initialise the Mono Connect widget for enrolment. Find it on the Apps page of your [Mono Dashboard](https://app.mono.co/apps).
+
+## S
+
+**Secret Key**  
+Used to authenticate API calls. Set the `mono-sec-key` header to your app’s secret key. Retrieve it from the [Apps page](https://app.mono.co/apps) of your dashboard. Never expose the secret key in front-end code.
+
+## T
+
+**Token**  
+A short-lived code passed to you after successful enrolment. Exchange it for a permanent account ID via the [Exchange Token](/api-reference/bank-data) endpoint. The code typically expires after about 10 minutes.
+
+**Tokenization**  
+The process of protecting sensitive data by replacing it with an algorithmically generated value (a token). Mono uses tokens so you can reference linked accounts without handling raw bank credentials.
+
+For product-specific terms, see [Connect Overview](/product-abilities/connect-overview), [Payments](/quickstart/payment), and [Lookup & Identity](/lookup/overview).

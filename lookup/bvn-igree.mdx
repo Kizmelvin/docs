@@ -1,0 +1,16 @@
+---
+title: "BVN Lookup (iGree)"
+description: "Retrieve BVN details and linked bank accounts with customer consent."
+---
+
+BVN Lookup uses the NIBSS iGree consent platform so you can retrieve a customer's BVN details or bank accounts linked to their BVN, with their explicit consent.
+
+## Flow
+
+1. **Initiate** – Start the consent flow; user receives OTP.
+2. **Verify OTP** – User submits OTP (or use alternate phone if supported).
+3. **Fetch BVN details** – Retrieve identity and/or bank accounts depending on scope.
+
+**Scopes:** e.g. `identity` (includes nationality, address), `bank_accounts`. All requests are billable, including failed lookups; validate BVNs (11-digit numeric) before calling and avoid bulk verification.
+
+For integration steps and request/response details, see [Lookup APIs](/lookup/lookup-apis) and [API reference](/api-reference/lookup).

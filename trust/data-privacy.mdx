@@ -3,4 +3,23 @@ title: "Data Privacy Policy"
 description: "Transparent documentation of what data is stored and why."
 ---
 
-### Data Privacy Policy
+Mono processes financial and identity data on behalf of your application. This page summarises what data is involved and why so you can explain it to users and meet privacy obligations (e.g. NDPR, GDPR).
+
+## Data we process
+
+- **Account and transaction data:** When a user links an account via Connect, Mono receives and stores data provided by the bank (e.g. account type, balance, transactions, income). This is used to power the APIs you call and to support re-auth and dispute resolution.
+- **Identity data:** For Prove and Lookup, we process identity information (e.g. BVN, NIN) only for verification and compliance. See [Lookup Governance](/trust/lookup).
+- **Payment and mandate data:** For Direct Debit and one-time payments, we store customer and mandate details necessary to execute and reconcile payments.
+
+## Why we store it
+
+- **To provide the service:** Delivering statements, income, identity checks, and payments requires processing and temporary storage.
+- **Legal and operational:** Retention may be required for regulatory compliance, dispute resolution, and security. Mono does not retain data longer than necessary.
+
+## Your responsibilities
+
+- **Disclosure:** Tell users what data you collect and how you use it (including via Mono) in your own privacy notice.
+- **Consent:** Ensure users consent before you initiate Connect, Prove, or payment flows. See [User Consent](/trust/user-consent).
+- **Minimisation:** Request only the products and data you need.
+
+For **encryption and security**, see [Data Encryption](/trust/data-encryption). For **regulatory alignment**, see [Regulatory Compliance](/trust/regulatory-compliance).

@@ -1,6 +1,27 @@
 ---
-title:"Partner API Guide"
-description:"Documentation for platforms looking to build on top of Mono’s infrastructure."
+title: "Partner API Guide"
+description: "Documentation for platforms building on top of Mono infrastructure."
 ---
 
-### Welcome to Partner APIs
+The **Partners API** lets businesses integrate with Mono Connect with a fully custom experience without the standard Connect widget. You get programmatic control over account linking and can white-label the flow.
+
+## Benefits
+
+- **Full control over UX** – Custom UI/UX instead of the default Mono widget.
+- **Programmatic account linking** – Trigger linking via your backend (e.g. SMS, email, or server-side flows).
+- **Backend-only implementation** – No embedded widget required; generate links and handle callbacks server-side.
+- **Multi-tenant white-labelling** – Different brands or client accounts with a single integration.
+
+## What it covers
+
+1. **Initiate** account linking from your backend (e.g. `POST /v2/accounts/initiate`).
+2. **Send** the generated `mono_url` to the user (email, SMS, in-app).
+3. **Receive** webhooks when the account is connected and when data is ready.
+4. **Call** Financial Data APIs using the returned account ID.
+
+## Where to start
+
+- [Connect integration](/essentials/mono/connect-integration) – Initiate linking via API.
+- [Partners API](/product-abilities/partners-api) – Full integration steps.
+- [Authentication](/quickstart/authentication) – Handling re-auth when bank sessions expire.
+- [Environments and sandbox](/getting-started/environments-and-sandbox) – Testing the Partners API.

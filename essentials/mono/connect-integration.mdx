@@ -2,4 +2,167 @@
 title: "Connect Integration"
 ---
 
-### Connect integration bla bla bla ...
+Mono Connect is the experience your users go through to link a bank account and grant you
+permission to access their financial data. Under the hood it combines:
+
+- Client‑side SDKs (web, Android, iOS, Flutter) for an embedded widget.
+- A server‑side **Connect Link** flow where you generate a URL and send it to users.
+- Webhooks and Financial Data APIs for retrieving transactions, identity, income, and more.
+
+This page orients you around the core integration patterns. For a full end‑to‑end dev guide,
+see the <a href="/quickstart/connect">Connect Quickstart</a>.
+
+## Integration options
+
+### 1. SDK / widget integration
+
+Use Mono’s client SDKs to embed the Connect widget directly in your app.
+
+Key steps (from the legacy **SDK Integration Guide**):
+
+1. **Install the SDK** for your platform from the official SDK docs.
+2. **Configure the widget** with:
+   - Your **public key** from the Mono Dashboard.
+   - A **customer object** with `name`, `email`, and optional `identity` details.
+3. **Handle the callback** when an account is linked and exchange the temporary code for a
+   permanent **account ID** on your backend.
+
+Example customer configuration (from the legacy docs):
+
+```js
+const customer = {
+  id: "65c31fa54e0e963044f014bb", // when provided, name/email/identity become optional
+  name: "Samuel Olamide",
+  email: "samuel@neem.com",
+  identity: {
+    type: "bvn",
+    number: "2323233239",
+  },
+};
+```
+
+Once the widget completes, your frontend receives an authorization code which your backend
+must exchange for an account ID using the **Exchange Token** endpoint:
+
+<CodeGroup>
+```bash Curl
+curl --request POST \
+  --url https://api.withmono.com/v2/accounts/auth \
+  --header 'Content-Type: application/json' \
+  --header 'accept: application/json' \
+  --header 'mono-sec-key: <YOUR_SECRET_KEY>' \
+  --data '{"code": "string"}'
+```
+```javascript JavaScript
+const response = await fetch('https://api.withmono.com/v2/accounts/auth', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'accept': 'application/json',
+    'mono-sec-key': process.env.MONO_SEC_KEY,
+  },
+  body: JSON.stringify({ code: 'AUTH_CODE_FROM_WIDGET' }),
+});
+const data = await response.json();
+```
+</CodeGroup>
+
+The response contains a permanent `id` for the linked account that you should store in your
+database.
+
+### 2. Connect Link (API‑driven) integration
+
+If you prefer not to embed a widget or SDK, you can initiate account linking purely via API
+using the **Connect Link** flow.
+
+High‑level steps (from the **Connect Link Integration Guide**):
+
+1. **Initiate linking** by calling `POST /v2/accounts/initiate` with:
+   - `customer.name`, `customer.email`
+   - `scope: "auth"`
+   - Optional `meta.ref` to tie the session to your internal reference
+   - `redirect_url` where the user should land after linking
+2. **Send the generated `mono_url`** to your user via email, SMS, or in‑app link.
+3. **Receive the account ID** via the `mono.events.account_connected` webhook and store it.
+4. **Confirm `data_status`** via webhooks or the Accounts Details API before calling any
+   Financial Data endpoints.
+
+Example request:
+
+<CodeGroup>
+```bash Curl
+curl --request POST \
+  --url https://api.withmono.com/v2/accounts/initiate \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --header 'mono-sec-key: <YOUR_SECRET_KEY>' \
+  --data '{
+    "customer": {
+      "name": "Samuel Olamide",
+      "email": "samuel@neem.com"
+    },
+    "meta": { "ref": "99008877TEST" },
+    "scope": "auth",
+    "redirect_url": "https://yourapp.com/connect/callback"
+  }'
+```
+```javascript JavaScript
+const response = await fetch('https://api.withmono.com/v2/accounts/initiate', {
+  method: 'POST',
+  headers: {
+    'accept': 'application/json',
+    'content-type': 'application/json',
+    'mono-sec-key': process.env.MONO_SEC_KEY,
+  },
+  body: JSON.stringify({
+    customer: { name: 'Samuel Olamide', email: 'samuel@neem.com' },
+    meta: { ref: '99008877TEST' },
+    scope: 'auth',
+    redirect_url: 'https://yourapp.com/connect/callback',
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>
+
+Sample response with `mono_url`:
+
+```json
+{
+  "status": "successful",
+  "message": "Request was successfully completed",
+  "timestamp": "2024-03-18T11:51:41.624Z",
+  "data": {
+    "mono_url": "https://link.mono.co/ALGSTO222222WE",
+    "customer": "65f82acd00000003aa9028d",
+    "meta": { "ref": "99008877TEST" },
+    "scope": "auth",
+    "redirect_url": "https://yourapp.com/connect/callback"
+  }
+}
+```
+
+### Webhooks and data status
+
+After linking:
+
+- `mono.events.account_connected` tells you which account and customer were linked.
+- `mono.events.account_updated` exposes a `meta.data_status` field:
+  - `available`, `partial`, `unavailable`, or `failed`
+  - plus a `retrieved_data` array showing which datasets are ready (e.g. `["identity","balance","transactions"]`).
+
+Your integration should:
+
+- Store `account.id` and `customer` IDs.
+- Wait until `data_status` is `AVAILABLE` or a suitable `PARTIAL` state before calling
+  transactions, statements, income, etc.
+
+## Where to go next
+
+- Follow the <a href="/quickstart/connect">Connect Quickstart</a> for a full, step‑by‑step
+  walkthrough using `<Steps>` and sandbox examples.
+- Explore <a href="/product-abilities/financial-data">Financial Data</a> for the endpoints
+  you can call once an account is linked.
+- Review <a href="/trust/lookup">Lookup governance</a> and
+  <a href="/trust/data-privacy">Data Privacy</a> before going live.
+

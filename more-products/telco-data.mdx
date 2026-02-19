@@ -1,0 +1,23 @@
+---
+title: "Telco Data"
+description: "Access mobile network data for identity and balance checks."
+---
+
+**Telco Data** lets you access mobile network operator data (e.g. identity, balance, transactions) for users who consent. Use it for alternative data for lending, identity verification, or top-up flows.
+
+## Overview
+
+- **Login** – User authorises access to their mobile account (e.g. via OTP or credentials).
+- **Token exchange** – Exchange the authorisation for a token to call Telco endpoints.
+- **Endpoints** – Identity, balance, transactions, details, OTP verification, etc.
+
+## Integration
+
+1. **Initiate login** – Use the [Login](/api-reference/telco-data) API to start the user flow.
+2. **User authorises** – The user completes the operator’s consent flow (e.g. OTP).
+3. **Exchange token** – Call [Token exchange](/api-reference/telco-data) to get a token.
+4. **Call data endpoints** – Use the token to fetch [Identity](/api-reference/telco-data), [Balances](/api-reference/telco-data), [Transactions](/api-reference/telco-data), [Details](/api-reference/telco-data), or [OTP verification](/api-reference/telco-data).
+
+All requests require your **mono-sec-key** and (after login) the telco token. For full request/response and flows, see [Telco Data](/more-products/telco-data) and the [API reference](/api-reference/telco-data).
+
+For a short overview in the docs, see [Mobile network providers](/resources/mobile-network-providers).

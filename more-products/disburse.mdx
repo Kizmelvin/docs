@@ -1,0 +1,54 @@
+---
+title: "Disburse"
+description: "Bulk and scheduled disbursements from your account to recipients."
+---
+
+**Mono Disburse** lets you send money to many recipients from your own bank account: instant or scheduled, one-off or in bulk. Use it for payroll, loan disbursements, vendor settlements, or cashback.
+
+![Disburse](https://docs.mono.co/icons/product/filled/directpay.svg)
+
+## Why use Disburse
+
+- **Payroll** – Automate salary or contractor payments (monthly or weekly) in one or a few API calls.
+- **Loan disbursements** – Credit borrowers as soon as loans are approved; support bulk releases for micro-lenders.
+- **Vendor settlements** – Pay suppliers, gig workers, or marketplace sellers on a schedule.
+- **Cashback and rewards** – Distribute high-volume, low-value payments for loyalty or refunds.
+
+## Pricing (Nigeria)
+
+| Threshold | Fee |
+|-----------|-----|
+| Transfers of N50,000 and below | N35 |
+| Transfers above N50,000 | N50 |
+
+Pricing is per successful disbursement. Check the [Mono pricing page](https://mono.co/pricing) for updates.
+
+## How it works
+
+<Steps>
+  <Step title="Get access">
+    Disburse is available to approved businesses. Create a Disburse app from the [Apps](https://app.mono.co/apps) section after approval.
+  </Step>
+  <Step title="Create a source account">
+    Create a **business source account** linked to a mandate so Mono can debit your account for disbursements. Use the [Create source account](/api-reference/disburse) API, then complete the mandate via the returned activation URL.
+  </Step>
+  <Step title="Initiate disbursements">
+    Create **instant** disbursements (execute immediately) or **scheduled** disbursements (run at a later time). Support for single and batch disbursements.
+  </Step>
+  <Step title="Track status and webhooks">
+    Use webhooks and the API to track batch and distribution status (e.g. processing, successful, failed, completed with mix).
+  </Step>
+</Steps>
+
+**Note:** Disburse is currently available only on the **live** environment (no sandbox).
+
+## API overview
+
+- [Create source account](/api-reference/disburse)
+- [Create instant disbursement](/api-reference/disburse)
+- [Create scheduled disbursement](/api-reference/disburse)
+- [Fetch disbursements](/api-reference/disburse)
+- [Add distributions to batch](/api-reference/disburse)
+- [Webhook events](/more-products/disburse-webhooks)
+
+For the full integration guide and request/response details, see [Disburse](/more-products/disburse) and [Full API index](/api-reference/full-api-index).

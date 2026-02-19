@@ -1,4 +1,71 @@
 ---
 title: "Financial Data Enrichment"
-description: "Overview of Transaction Categorization and Statement Insights."
+description: "Transaction categorisation, metadata, and statement insights from connected accounts."
 ---
+
+Mono's data enrichment APIs give you deeper insights into your customers' financial accounts. They cover **transaction categorisation**, **transaction metadata**, and **statement insights**, so you can power budgeting, analytics, and decision-making without building the pipelines yourself.
+
+## Prerequisites
+
+Before using the Data Enrichment APIs:
+
+- [Create an app](/quickstart/create-an-app) with the product scope set to **Connect** and use the generated secret key.
+- [Configure a webhook URL](/utilities/webhooks) so you receive real-time updates (e.g. when categorisation or insights are ready).
+
+## Data enrichment features
+
+### 1. Transaction categorisation
+
+The **Transaction Categorisation** API automatically assigns categories (e.g. groceries, utilities, entertainment) to transactions from a connected bank account. You can:
+
+- **Initiate categorisation** for transactions that are currently unclassified (category is `null`) for a connected account.
+- **Upload your own batch** of transactions for categorisation.
+- **Fetch enrichment records** to get the list of categorised transactions for a job.
+
+When you initiate, Mono processes in the background and sends a `mono.events.transaction_categorisation` webhook when done. You can then call the [transactions endpoint](/api-reference/bank-data) to read updated categories.
+
+**Docs:** [Financial data](/product-abilities/financial-data) · **API:** [Bank Data API](/api-reference/bank-data)
+
+### 2. Transaction metadata
+
+The **Transaction Metadata** API enriches transactions with extra detail (e.g. merchant information, location, transaction type). Use it when you need a richer view of each transaction for analytics, compliance, or UX.
+
+**Docs:** [Financial data](/product-abilities/financial-data) · **API:** [Bank Data API](/api-reference/bank-data) (initiate and records)
+
+### 3. Statement insights
+
+The **Statement Insights** API analyses all transactions for a connected account and returns summaries: balance trends, spending patterns, and unusual activity. You trigger the job with a GET request; when processing is complete, Mono sends a `mono.events.statement_insights` webhook. You then call the insights endpoint to retrieve the report.
+
+**Docs:** [Financial data](/product-abilities/financial-data) · **API:** [Bank Data API](/api-reference/bank-data)
+
+## Key benefits
+
+- **Better financial insights** – Categorisation and metadata make it easier to understand spending and build features like budgets or reports.
+- **Informed decisions** – Use enriched data for lending, affordability checks, or personalised recommendations.
+- **Less custom logic** – Let Mono handle categorisation and insight generation so you can focus on your product.
+
+## Common validations
+
+- **Business not allowed** – If your business is blocked, disabled, or does not have Connect enabled, the API returns:
+
+```json
+{
+  "status": "failed",
+  "message": "Your Business is not authorized to access this endpoint, kindly contact support.",
+  "timestamp": "2024-07-10T11:44:23.606Z",
+  "data": null
+}
+```
+
+- **App not enabled for Connect** – If the app's product is not Connect, you get:
+
+```json
+{
+  "status": "failed",
+  "message": "Unauthorized key. Enable the app for Mono Connect or contact support.",
+  "timestamp": "2024-07-10T11:44:23.606Z",
+  "data": null
+}
+```
+
+For end-to-end flows (e.g. lending, PFM), see [Lending](/use-cases/lending) and [Asset management](/use-cases/asset-management). For connecting accounts, see [Connect Quickstart](/quickstart/connect).

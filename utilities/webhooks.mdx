@@ -1,5 +1,109 @@
 ---
 title: "Webhook Events"
+description: "Receive account, payment, and data events from Mono in real time."
 ---
 
-### Listening for account.linked, payment.failed, and data.refreshed.
+Mono uses webhooks to notify your application when events occur—for example when an account is linked, updated, or when a payment succeeds or fails. Each time an event you listen to occurs, Mono sends a POST request to your configured webhook URL with a JSON payload.
+
+## Overview
+
+- **Configure** your webhook URL in the [Mono Dashboard](https://app.mono.co/apps) (per app).
+- **Verify** requests using the `mono-webhook-secret` header.
+- **Respond** with a 2xx status as soon as you receive the request; process the payload asynchronously if needed.
+
+## Security
+
+All webhook requests include a **`mono-webhook-secret`** header. Verify it against the secret you set when creating the webhook. Reject requests that do not match (e.g. return 401).
+
+<CodeGroup>
+```javascript JavaScript
+const secret = process.env.MONO_WEBHOOK_SECRET;
+
+function verifyWebhook(req, res, next) {
+  if (req.headers['mono-webhook-secret'] !== secret) {
+    return res.status(401).json({ message: 'Unauthorized request.' });
+  }
+  next();
+}
+
+// Express example
+router.post('/webhook', verifyWebhook, (req, res) => {
+  const webhook = req.body;
+  switch (webhook.event) {
+    case 'mono.events.account_connected':
+      // handle new account link
+      break;
+    case 'mono.events.account_updated':
+      // handle data_status, balance, etc.
+      break;
+    case 'events.mandates.approved':
+      // handle mandate approved
+      break;
+  }
+  return res.sendStatus(200);
+});
+```
+```bash Curl
+# Webhooks are sent TO your URL by Mono. Use the snippet above to implement your endpoint.
+# Configure the URL in Dashboard: App → Add webhook
+```
+</CodeGroup>
+
+## Payload format
+
+All webhook events follow the same structure:
+
+| Field   | Description |
+|--------|-------------|
+| `event` | Event type (e.g. `mono.events.account_updated`, `events.mandates.created`). |
+| `data`  | Event payload (account, mandate, payment, or metadata). |
+
+Example payload:
+
+```json
+{
+  "event": "mono.events.account_updated",
+  "data": {
+    "meta": { "data_status": "AVAILABLE" },
+    "account": {
+      "_id": "5fbcde8f8699984153e65537",
+      "accountNumber": "0018709596",
+      "name": "Customer Name",
+      "type": "SAVINGS_ACCOUNT",
+      "currency": "NGN",
+      "balance": 3033984
+    }
+  }
+}
+```
+
+## Retries and failure
+
+If your endpoint does not return a 2xx status, Mono will retry the webhook. Implement idempotent handling so duplicate deliveries do not cause duplicate side effects.
+
+## Key event types
+
+- **Connect / Financial Data**: `mono.events.account_connected`, `mono.events.account_updated`, `mono.events.account_income`, `mono.events.account_credit_worthiness`, and unlink events.
+- **Payments / Mandates**: `events.mandates.created`, `events.mandates.approved`, `events.mandates.ready`, and debit success/failure events.
+- **Prove**: `mono.prove.data_verification_initiated`, `mono.prove.data_verification_successful`, and related lifecycle events.
+
+For full event lists and field definitions, see the product-specific docs:
+
+- [Financial Data webhooks](/product-abilities/connect-webhooks) (Connect)
+- [Payment webhooks](/payments/direct-debit-webhooks) (Direct Debit / DirectPay)
+
+## Webhook URL setup
+
+<Steps>
+  <Step title="Open your app in the Mono Dashboard">
+    Go to the [Mono Dashboard](https://app.mono.co/apps) and select the app you want to receive webhooks for.
+  </Step>
+  <Step title="Add your webhook endpoint">
+    Click **Add webhook** and enter the URL that will receive POST requests (e.g. `https://yourdomain.com/webhooks/mono`).
+  </Step>
+  <Step title="Store and verify the secret">
+    Store the webhook secret in your environment (e.g. `MONO_WEBHOOK_SECRET`) and verify the `mono-webhook-secret` header on every incoming request.
+  </Step>
+</Steps>
+
+For local testing, use a tunnel (e.g. [ngrok](https://ngrok.com/)) and point the webhook URL to your tunnel.

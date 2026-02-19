@@ -1,33 +1,60 @@
 ---
 title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+description: 'Mono API base URL, authentication, and quick reference.'
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+All Mono API requests use the same base URL and authentication. Use the **`mono-sec-key`** header with your secret key from the [Mono dashboard](https://app.mono.co/apps).
 
-## Welcome
+## Base URL
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
-
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+```
+https://api.withmono.com
+```
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+Send your secret key in the **`mono-sec-key`** header on every request. Do not use it in client-side or public code.
+
+## Quick example: Initiate account linking
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X POST 'https://api.withmono.com/v2/accounts/initiate' \
+    -H 'Content-Type: application/json' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY' \
+    -d '{"customer":{"name":"Customer Name","email":"customer@example.com"},"scope":"auth","redirect_url":"https://yourapp.com/callback"}'
+  ```
+  ```javascript Node
+  const response = await fetch('https://api.withmono.com/v2/accounts/initiate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'mono-sec-key': process.env.MONO_SEC_KEY
+    },
+    body: JSON.stringify({
+      customer: { name: 'Customer Name', email: 'customer@example.com' },
+      scope: 'auth',
+      redirect_url: 'https://yourapp.com/callback'
+    })
+  });
+  const data = await response.json();
+  ```
+</CodeGroup>
+
+**Response (200)**
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+{
+  "id": "account_xxx",
+  "code": "auth_code_xxx",
+  "link": "https://connect.withmono.com/..."
+}
 ```
+
+## Next steps
+
+- Browse endpoints by product in the sidebar.
+- Get your keys: [Mono dashboard](https://app.mono.co/apps).
+- For integration steps: [Authentication](/essentials/mono/authentication) and [Connect integration](/essentials/mono/connect-integration).

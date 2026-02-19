@@ -1,0 +1,74 @@
+---
+title: "Lookup APIs"
+description: "BVN, NIN, CAC, TIN, address, documents, and mashup verification."
+---
+
+Mono provides **Lookup** endpoints to verify identity and business data. Each API accepts the relevant identifier (e.g. BVN, NIN) and returns verification results and related details. Use your **secret key** in the `mono-sec-key` header for all requests.
+
+## Account number
+
+Validate and verify account numbers to reduce errors and wrong transfers.
+
+**API:** [Account number lookup](/api-reference/lookup) | [Docs](/lookup/account-number)
+
+## BVN (Bank Verification Number)
+
+Verify BVN and retrieve linked identity information. Use for KYC and fraud prevention.
+
+**API:** [BVN](/api-reference/lookup), [Initiate](/api-reference/lookup), [Verify OTP](/api-reference/lookup) | **Docs:** [BVN i-GREE](/lookup/bvn-igree)
+
+## NIN (National Identification Number)
+
+Verify NIN or vNIN and retrieve identity details. Use for identity verification and compliance.
+
+**API:** [NIN](/api-reference/lookup), [NIN job](/api-reference/lookup) | **Docs:** [NIN lookup](/lookup/nin-lookup)
+
+## CAC (Corporate Affairs Commission)
+
+Verify Nigerian company registration details (directors, shareholders, etc.).
+
+**API:** [CAC business](/api-reference/cac), [directors](/api-reference/cac), [shareholder](/api-reference/cac), and related endpoints | **Docs:** [CAC lookup](/more-products/cac-company-search). See also [CAC / Company search](/more-products/cac-company-search).
+
+## TIN (Tax Identification Number)
+
+Verify TIN and obtain tax-related information for individuals or entities.
+
+**API:** [TIN](/api-reference/lookup) | **Docs:** [TIN lookup](/lookup/tin-lookup)
+
+## House address
+
+Confirm address validity and house ownership.
+
+**API:** [Address](/api-reference/lookup) | **Docs:** [House address](/lookup/address)
+
+## International passport
+
+Validate and retrieve details from international passport documents.
+
+**API:** [Intl passport](/api-reference/lookup) | **Docs:** [Intl passport](/lookup/intl-passport)
+
+## Driver's license
+
+Verify driver's license information for onboarding or age verification.
+
+**API:** [Drivers license](/api-reference/lookup) | **Docs:** [Drivers license](/lookup/drivers-license)
+
+## Credit history
+
+Retrieve credit history from bureaus (e.g. CRC, First Central) using BVN, with customer consent.
+
+**API:** [Credit history](/api-reference/lookup) | **Docs:** [Credit history lookup](/lookup/credit-history)
+
+## 360 view
+
+Combined or aggregated view of identity/account data. See [API](/api-reference/lookup).
+
+## Mashup
+
+Verify NIN, BVN, and date of birth in **one** API call for KYC.
+
+**API:** [Mashup](/api-reference/lookup) | **Docs:** [Mashup](/lookup/mashup)
+
+---
+
+For full request/response parameters and error codes, use the API reference links above. For Prove (full identity journey with document and face capture), see [Identity onboarding](/use-cases/identity-onboarding). For data handling and consent, see [Lookup governance](/trust/lookup).

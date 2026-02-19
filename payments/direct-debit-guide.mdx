@@ -1,0 +1,57 @@
+---
+title: "Direct Debit Guide"
+description: "Mandate setup, variable and fixed mandates, debiting accounts, and GSM."
+---
+
+This page covers Direct Debit in depth: mandate setup (E-mandate and Signed mandate), variable vs fixed amounts, debiting an account, global standing mandate (GSM), and biometric verification. For the basic flow (create customer, create mandate, debit), see the [Payment quickstart](/quickstart/payment).
+
+## Mandate setup
+
+After you create a **customer**, you set up a **mandate** so you can debit their account. Two initiation options:
+
+- **[Create mandate](/api-reference/direct-debit)** – Customise the initial mandate setup for your users.
+- **[Initiate mandate link](/api-reference/direct-debit)** – Generate a link to a widget where the user completes the mandate.
+
+### E-mandate
+
+Uses a designated transfer (e.g. Fidelity, Paystack-Titan, Parallex) for approval. A **N50** fee applies (set by NIBSS). Some banks have a minimum of N100; for those (e.g. Unity, Union, Standard Chartered, Ecobank) the user may need to transfer N100. The N50 must come from the **same account** the mandate is for and within **1 hour**, or the mandate is cancelled.
+
+**Flow:** Mandate created (Awaiting Authorization) → User opens link (Initiated) → Transfer completed (Approved) or failed/downtime (Cancelled).
+
+![E-mandate flow](https://docs.mono.co/images/charts/emandate-chart.png)
+
+### Signed mandate (physical or digital)
+
+For **signed mandate**, the user provides a signature; the bank may contact the payer to confirm. **Physical:** form uploaded → sent to bank → Approved or Rejected. **Digital:** mandate created → user opens link → sent to bank → Approved or Rejected.
+
+![Digital signed mandate flow](https://docs.mono.co/images/charts/digital-signed-mandate-chart.png)
+
+When the mandate is approved, you receive a **ready-to-debit** webhook (typically within about 24 hours). Then you can [debit the account](/api-reference/direct-debit).
+
+## Variable vs fixed mandate
+
+- **Variable mandate** – You can debit **variable amounts** (within limits). Use for subscriptions or recurring payments where the amount changes.
+- **Fixed mandate** – You can debit only a **fixed amount** per charge. Use when the same amount is taken each time.
+
+Details and request parameters are in the [Create mandate](/api-reference/direct-debit) and [Initiate mandate authorisation](/api-reference/direct-debit) API docs.
+
+## Debit an account
+
+After the mandate is in a **ready-to-debit** state:
+
+1. Optionally **confirm balance** via [Balance inquiry](/api-reference/direct-debit).
+2. Call **[Debit account](/api-reference/direct-debit)** with the mandate reference and amount. You can send funds to a beneficiary (e.g. your NUBAN) or use Direct to Beneficiary where supported (contact Mono for access).
+
+Debit limits and sandbox behaviour are described in [Debit an account](/payments/debit-account).
+
+## Global Standing Mandate (GSM)
+
+GSM allows debiting in line with bank-specific standing instructions. For when and how to use GSM, see [Global Standing Mandate](/payments/global-standing-mandate).
+
+## Mandate biometric verification
+
+For flows that require biometric verification of the mandate, see [Mandate biometric verification](/payments/mandate-biometrics).
+
+## Webhooks
+
+Mono sends webhooks for mandate and debit events (e.g. mandate approved, ready-to-debit, payment successful). See [Direct Debit webhooks](/payments/direct-debit-webhooks) and [Webhooks](/utilities/webhooks).

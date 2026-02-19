@@ -1,6 +1,26 @@
 ---
 title: "Lookup Governance"
-description: "How we handle sensitive user data like BVN and NIN responsibly."
+description: "How Mono handles BVN, NIN, and other sensitive identity data responsibly."
 ---
 
-### Lookup governance
+Mono’s **Lookup** and **Prove** products use sensitive identity data (e.g. BVN, NIN, government ID). This page summarises how we handle that data so you can answer governance and audit questions.
+
+## Principles
+
+- **Explicit consent:** Users are informed and must consent before their identity is verified or shared. Consent is captured in the Connect, Prove, or payment flow before data is sent to Mono.
+- **Purpose limitation:** Identity data is used only to perform the verification or product you requested (e.g. account linking, KYC, mandate creation). It is not used for marketing or unrelated purposes.
+- **Minimal retention:** Data is retained only as long as necessary to provide the service, meet legal obligations, and support dispute resolution or audit.
+- **Security:** Data is encrypted in transit and at rest. Access is restricted and logged. See [Data Encryption](/trust/data-encryption).
+
+## BVN and NIN
+
+- **BVN (Bank Verification Number)** and **NIN (National Identification Number)** are used only for verification and compliance (e.g. account ownership, KYC). They are not exposed unnecessarily in APIs or logs.
+- **Storage and handling** follow applicable regulations (e.g. NDPR) and industry practice. For detailed commitments, use [Regulatory Compliance](/trust/regulatory-compliance) and [Data Privacy](/trust/data-privacy).
+
+## Your obligations
+
+- Only request and use identity data for the purpose you have disclosed to the user.
+- Do not store or log full BVN/NIN in plain text in your systems; use the identifiers returned by Mono (e.g. customer ID, account ID) for linking and reconciliation.
+- Honour user requests to revoke access or delete data in line with your and Mono’s policies.
+
+For **user-facing consent** and **data privacy**, see [User Consent](/trust/user-consent) and [Data Privacy](/trust/data-privacy).

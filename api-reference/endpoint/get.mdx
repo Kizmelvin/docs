@@ -1,4 +1,41 @@
 ---
-title: 'Get Plants'
-openapi: 'GET /plants'
+title: 'Account Details'
+api: 'GET /v1/accounts/{id}'
+description: 'Fetch account metadata and data status for a linked account.'
 ---
+
+Returns account details including balance, metadata, and sync status for the given account ID.
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X GET 'https://api.withmono.com/v1/accounts/account_id_here' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY'
+  ```
+  ```javascript Node
+  const response = await fetch(`https://api.withmono.com/v1/accounts/${accountId}`, {
+    method: 'GET',
+    headers: { 'mono-sec-key': process.env.MONO_SEC_KEY }
+  });
+  const data = await response.json();
+  ```
+</CodeGroup>
+
+**Response (200)**
+
+```json
+{
+  "account": {
+    "id": "account_xxxxxxxx",
+    "name": "Account Name",
+    "balance": 15000,
+    "currency": "NGN",
+    "type": "deposit",
+    "bvn": "222*****789",
+    "data_status": "available"
+  }
+}
+```
+
+For full parameters and errors see [Bank Data API](/api-reference/bank-data).

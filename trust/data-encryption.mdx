@@ -1,5 +1,47 @@
 ---
-title:"Data Encryption"
+title: "Data Encryption"
+description: "How Mono protects data at rest and in transit."
 ---
 
-### How Mono protects data at rest and in transit (AES-256, TLS).
+Mono treats financial and identity data as highly sensitive. This page explains how we encrypt
+data at rest and in transit, and how this maps to common regulatory and audit requirements.
+
+## Encryption in transit
+
+- **TLS everywhere**: All traffic to Mono’s APIs and dashboard is encrypted using
+  industry‑standard TLS (HTTPS).
+- **Modern cipher suites**: We regularly review and phase out weak ciphers in line with
+  industry best practices.
+- **Certificate management**: Certificates are managed centrally and rotated proactively.
+
+> For your own compliance documentation, you can state that all communication with Mono is
+> encrypted in transit over TLS.
+
+## Encryption at rest
+
+- **AES‑256**: Sensitive data (including tokens and financial metadata) is encrypted at rest
+  using AES‑256 or equivalent strong encryption.
+- **Key management**:
+  - Encryption keys are stored in hardened key‑management systems.
+  - Access to keys is restricted and audited.
+- **Backups**: Encrypted data remains encrypted in backups and log archives.
+
+## Tokenization & access controls
+
+- **Scoped access**: API keys and access tokens are scoped to specific environments and
+  applications.
+- **Principle of least privilege**: Internal systems and services only receive the minimum
+  data required to perform their function.
+- **Audit logging**: Access to sensitive data is logged, monitored, and reviewed.
+
+## How this maps to your compliance checklist
+
+When filling in vendor security or compliance questionnaires, you can typically answer:
+- Data "in transit" is encrypted using TLS.
+- Data "at rest" is encrypted using AES‑256 or equivalent modern cryptography.
+- Encryption keys are centrally managed with strict access controls and audit logging.
+
+For more details on regulatory alignment, see
+<a href="/trust/regulatory-compliance">Regulatory Compliance</a> and
+<a href="/trust/data-privacy">Data Privacy Policy</a>.
+

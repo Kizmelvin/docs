@@ -1,6 +1,19 @@
 ---
 title: "SLA & Status"
-description: "Link to real-time service monitoring and historical uptime."
+description: "Real-time service status and how to build resilient integrations."
 ---
 
-### SLA & Status
+Mono provides **real-time status** for its APIs and bank connections so you can monitor availability and design for failure.
+
+## Live status
+
+- **Status page:** [status.mono.co](https://status.mono.co) – Current status of Mono APIs, bank connections, and incidents. Use it for operational dashboards and user-facing messaging (e.g. "Bank linking is temporarily unavailable").
+- **Dashboard:** Your [Mono Dashboard](https://app.mono.co/apps) and support channels may also communicate planned maintenance or regional issues.
+
+## Building for reliability
+
+- **Webhooks and retries:** If the status page or webhooks indicate an outage, avoid repeatedly calling failing endpoints. Use exponential backoff and honour retry-after where provided.
+- **User experience:** When a bank or product is degraded, surface a clear message to users (e.g. "Try again in a few minutes" or "We're experiencing delays with [bank name]") rather than a generic error.
+- **Fallbacks:** Where your product depends on a specific bank or endpoint, consider fallback flows or graceful degradation when that dependency is unavailable.
+
+For **coverage** (which banks and institutions are supported), see [Supported Banks & Coverage](/resources/banks). For **encryption and compliance**, see [Data Encryption](/trust/data-encryption) and [Regulatory Compliance](/trust/regulatory-compliance).

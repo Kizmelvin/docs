@@ -2,4 +2,227 @@
 title: "DirectPay"
 ---
 
-### DirectPay bla bla bla ...
+Mono DirectPay lets you collect one‑time payments directly from customers’ bank accounts
+without cards. This page summarizes how to wire the integration together; the
+<a href="/quickstart/payment">Payment Quickstart</a> contains a full step‑by‑step guide and
+testing scenarios.
+
+## Overview
+
+From the legacy **One‑time Payment** docs:
+
+- Product: **One‑time DirectPay (Naira)**.
+- Flow:
+  1. Initiate a payment via the API.
+  2. The customer authorizes the debit in a secure widget.
+  3. You track payment status via webhooks or a verification API.
+
+Common use cases include:
+
+- E‑commerce checkout.
+- One‑off bill or invoice payments.
+- Service fees and top‑ups.
+
+## Initiating a one‑time payment
+
+To start a payment, call the DirectPay initiate endpoint with:
+
+- `amount` – amount to charge.
+- `type` – set to `"onetime-debit"`.
+- `method` – `"account"` (default), `"transfer"`, or `"whatsapp"`.
+- `description`, `reference`.
+- `redirect_url` – where the user should be sent after success/failure.
+- `customer` – the payer’s `name` and `email`.
+
+<CodeGroup>
+```bash Curl
+curl --request POST \
+  --url https://api.withmono.com/v2/payments/initiate \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json' \
+  --header 'mono-sec-key: <YOUR_SECRET_KEY>' \
+  --data '{
+    "amount": 20000,
+    "type": "onetime-debit",
+    "method": "account",
+    "description": "Ticket",
+    "reference": "ref03098",
+    "redirect_url": "https://yourapp.com/payments/callback",
+    "customer": {
+      "name": "Samuel Olamide",
+      "email": "samuel@neem.com"
+    }
+  }'
+```
+```javascript JavaScript
+const response = await fetch('https://api.withmono.com/v2/payments/initiate', {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'mono-sec-key': process.env.MONO_SEC_KEY,
+  },
+  body: JSON.stringify({
+    amount: 20000,
+    type: 'onetime-debit',
+    method: 'account',
+    description: 'Ticket',
+    reference: 'ref03098',
+    redirect_url: 'https://yourapp.com/payments/callback',
+    customer: { name: 'Samuel Olamide', email: 'samuel@neem.com' },
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>
+
+Sample response:
+
+```json
+{
+  "status": "successful",
+  "message": "Payment Initiated Successfully",
+  "timestamp": "2025-05-21T21:58:21.087Z",
+  "data": {
+    "id": "ODW2QV0WLIDG",
+    "mono_url": "https://checkout.mono.co/ODW2QV0WLIDG",
+    "type": "onetime-debit",
+    "method": "transfer",
+    "amount": 21000,
+    "description": "Ticket",
+    "reference": "ref03098",
+    "customer": "67aa0961271cb661d8cbae3b",
+    "institution": "5f2d08bf60b92e2888287704",
+    "auth_method": "internet_banking",
+    "redirect_url": "https://yourapp.com/payments/callback",
+    "created_at": "2025-05-21T21:58:21.078Z",
+    "updated_at": "2025-05-21T21:58:21.078Z",
+    "meta": {},
+    "liveMode": true
+  }
+}
+```
+
+The `mono_url` is the checkout link your customer uses to authorize the payment.
+
+## Handling redirects
+
+After the customer completes or cancels the payment, they will be redirected back to your
+`redirect_url` with query parameters:
+
+- Success: `?reference=<reference>&status=successful`
+- Failure: `?reference=<reference>&status=failed&reason=<reason>`
+
+Your callback handler should:
+
+- Verify the transaction using the **Verify** endpoint.
+- Update your internal order / invoice / subscription state.
+
+## Tracking payment status
+
+From the legacy docs you have two options:
+
+1. **Webhooks** – Mono sends `direct_debit.payment_successful` (and related) events to your
+   configured webhook URL with:
+   - Account ID (if linked to Connect),
+   - Amount, status, reference, and timestamps.
+2. **Verify API** – call the verification endpoint with the original `reference`:
+
+<CodeGroup>
+```bash Curl
+curl --request GET \
+  --url "https://api.withmono.com/v1/direct-debit/payments/verify?reference=ref03098" \
+  --header 'Accept: application/json' \
+  --header 'mono-sec-key: <YOUR_SECRET_KEY>'
+```
+```javascript JavaScript
+const reference = 'ref03098';
+const response = await fetch(
+  `https://api.withmono.com/v1/direct-debit/payments/verify?reference=${reference}`,
+  {
+    headers: {
+      'Accept': 'application/json',
+      'mono-sec-key': process.env.MONO_SEC_KEY,
+    },
+  }
+);
+const data = await response.json();
+```
+</CodeGroup>
+
+If the payment is not yet complete, you may receive an error like:
+
+```json
+{
+  "status": "failed",
+  "message": "Invalid reference, payment not found",
+  "timestamp": "2024-05-03T10:15:14.570Z",
+  "data": null
+}
+```
+
+## Returning customers via Account ID
+
+To remove friction for repeat payers, you can pass an existing **Account ID** (from Mono
+Connect) when initiating a payment. In that case:
+
+- The user skips bank selection and login.
+- They only need to authorize the payment (PIN / token / OTP).
+
+Example:
+
+<CodeGroup>
+```bash Curl
+curl --request POST \
+  --url https://api.withmono.com/v2/payments/initiate \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json' \
+  --header 'mono-sec-key: <YOUR_SECRET_KEY>' \
+  --data '{
+    "amount": 20000,
+    "type": "onetime-debit",
+    "description": "testing",
+    "reference": "ref0000100000001",
+    "account": "678f7bc977eb9afb06fff11f",
+    "redirect_url": "https://yourapp.com/payments/callback",
+    "customer": {
+      "name": "Samuel Olamide",
+      "email": "samuel@neem.com"
+    }
+  }'
+```
+```javascript JavaScript
+const response = await fetch('https://api.withmono.com/v2/payments/initiate', {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'mono-sec-key': process.env.MONO_SEC_KEY,
+  },
+  body: JSON.stringify({
+    amount: 20000,
+    type: 'onetime-debit',
+    description: 'testing',
+    reference: 'ref0000100000001',
+    account: '678f7bc977eb9afb06fff11f',
+    redirect_url: 'https://yourapp.com/payments/callback',
+    customer: { name: 'Samuel Olamide', email: 'samuel@neem.com' },
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>
+
+## Testing for Failure
+
+Your DirectPay integration should be tested against:
+
+- **Expired or incomplete sessions** – verify that verification returns a 404 and your UI
+  clearly prompts the customer to retry.
+- **Declined or failed debits** – confirm you handle failed webhooks and do not fulfill
+  orders or services.
+- **Webhook delays** – build idempotent handlers and fall back to the Verify API if needed.
+
+For a full walkthrough with `<Steps>` and detailed failure scenarios, see the
+<a href="/quickstart/payment">Payment Quickstart</a>.
+

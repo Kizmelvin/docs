@@ -1,0 +1,23 @@
+---
+title: "TIN Lookup"
+description: "Verify Tax Identification Number (TIN) for individuals and businesses."
+---
+
+TIN Lookup returns information associated with a Tax Identification Number. You can verify both **individuals** (channel `tin`) and **businesses** (channel `tin` or `cac`). For businesses using the `cac` channel, pass the RC number in the `number` field; the response can include `nrs_tin` and `address`.
+
+## Request
+
+`POST https://api.withmono.com/v3/lookup/tin`
+
+**Headers:** `mono-sec-key` (required)
+
+**Body:**
+
+- `number` (required) – TIN or CAC RC number
+- `channel` (required) – `"tin"` or `"cac"`
+
+## Response
+
+Response includes `tin_type` (`individual` or `corporate`), taxpayer name, and channel-specific fields (e.g. for CAC: `nrs_tin`, `address`, tax_office, phone, email).
+
+For full request/response and samples, see [Lookup APIs](/lookup/lookup-apis) and [API reference](/api-reference/lookup).

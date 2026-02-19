@@ -3,4 +3,23 @@ title: "User Consent"
 description: "Why Mono Connect is built on explicit user authorization."
 ---
 
-### User consent
+Mono products (Connect, Prove, Direct Debit, one-time payments) are built so that **the user explicitly authorises** linking an account, sharing data, or approving a payment. This page explains how consent is captured and how you can present it clearly to users.
+
+## How consent works
+
+- **Connect:** The user is sent to Mono's hosted Connect flow. They choose their bank and log in. By completing the flow, they authorise Mono to access the account data you requested. No data is shared until the user completes this step.
+- **Prove:** The user is presented with a Prove session to verify identity (e.g. BVN/NIN or document). Completion of the session constitutes consent for that verification.
+- **Payments:** For Direct Debit, the user signs a mandate. For one-time payments, they authorise the specific payment. In each case, the action is explicit.
+
+## Why it matters
+
+- **Compliance:** NDPR, GDPR, and similar frameworks require a lawful basis (e.g. consent) and transparency. Mono's flows are designed to support that.
+- **Trust:** Users should understand that they are linking their bank or sharing identity data. Clear consent reduces confusion and support tickets.
+
+## What you should do
+
+- **Before initiating a flow:** Tell the user what you will do (e.g. "We will open a secure page where you can link your bank. We will use this to show your balance and transactions.").
+- **In your privacy notice:** Explain that you use Mono to access bank or identity data, and link to Mono's terms or this documentation where appropriate.
+- **After linking:** Do not use the data for purposes you did not disclose.
+
+For **data we store and why**, see [Data Privacy](/trust/data-privacy). For **regulatory alignment**, see [Regulatory Compliance](/trust/regulatory-compliance).

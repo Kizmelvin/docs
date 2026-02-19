@@ -1,0 +1,142 @@
+---
+title: "Migration Guide"
+description: "Move from legacy v1 / v2 Mono endpoints and docs to the new v3 and Mono Docs 2.0."
+icon: "arrow-path"
+---
+
+Mono Docs 2.0 introduces a new, intent‑based information architecture and updated examples for
+our latest APIs. This guide helps you move from **legacy v1 / v2 endpoints and guides** to the
+new **v3** surface area without breaking existing integrations.
+
+> If you are maintaining an existing integration, start here before you deprecate any endpoints.
+
+## Why this migration is happening
+
+- **Cleaner, more consistent APIs**: v3 endpoints are grouped by capability (financial data,
+  payments, identity, money operations) with clearer request / response contracts.
+- **Better documentation**: Guides now follow a standard `<Steps>` pattern, include
+  **Testing for Failure** sections, and link directly to API reference and Postman
+  collections.
+- **Stronger guarantees**: Trust & Safety docs have been centralized, and new webhooks make
+  monitoring and recovery easier.
+
+## Mapping legacy endpoints to v3
+
+Use this high‑level map when planning your migration. Always confirm details in the API
+reference and your account’s changelog.
+
+### Financial Data
+
+- **Legacy**: `/accounts/{id}/statement`, `/accounts/{id}/transactions`
+- **v3**: `GET /v3/accounts/{id}/statements`, `GET /v3/accounts/{id}/transactions`
+- **Docs**:
+  - Old: see **Legacy Docs Archive** section below.
+  - New: [`Product Capabilities → Financial Data`](/product-abilities/financial-data),
+    [`Lending blueprint`](/use-cases/lending).
+
+Key changes:
+
+- More structured pagination metadata.
+- Normalized transaction categories and clearer currency handling.
+
+### Payments (Direct Debit)
+
+- **Legacy**: `/payments/initiate`, `/payments/mandates`
+- **v3**: `POST /v3/payments/initiate`, `GET /v3/payments/mandates/{id}`, and richer
+  webhook events for debit status.
+- **Docs**:
+  - Old: Direct Debit overview and mandate setup guides in **Legacy Docs Archive**.
+  - New: [`Quickstart → Payment`](/quickstart/payment) and
+    [`DirectPay integration`](/essentials/mono/direct-pay-integration).
+
+Key changes:
+
+- Clearer separation between **customer**, **mandate**, and **debit**.
+- Micro‑debit verification and retry configuration is documented and strongly typed.
+
+### Identity & Lookup
+
+- **Legacy**: `/lookup/bvn`, `/lookup/nin`, `/lookup/address`
+- **v3**: `POST /v3/lookup/bvn`, `/v3/lookup/nin`, `/v3/lookup/address`
+- **Docs**:
+  - Old: Lookup integration guides in **Legacy Docs Archive**.
+  - New: [`Identity Onboarding`](/use-cases/identity-onboarding) and
+    [`Lookup governance`](/trust/lookup).
+
+Key changes:
+
+- Expanded error codes for invalid or stale identity data.
+- Stronger audit trail requirements covered in Trust & Safety.
+
+## Migration playbook
+
+<Steps>
+  <Step title="Inventory your current usage">
+    - List all Mono endpoints used across your services and jobs.
+    - Group them by capability: financial data, payments, identity, money operations, etc.
+    - Note which ones are v1 / v2, and where they appear (backend services, cron jobs,
+    internal tools).
+  </Step>
+  <Step title="Find the v3 equivalents and differences">
+    - For each endpoint, locate the v3 equivalent in the
+      <a href="/api-reference/introduction">API reference</a>.
+    - Compare:
+      - Request parameters and authentication headers.
+      - Response shape, including pagination and nested objects.
+      - New or changed error codes.
+    - Capture these differences in your internal runbooks.
+  </Step>
+  <Step title="Create a dual‑run environment">
+    - Introduce feature flags or configuration to toggle between legacy and v3 endpoints.
+    - For read‑only operations (e.g. statements, transactions), run both legacy and v3
+      calls in parallel in a non‑critical environment and compare:
+      - Record counts and aggregate balances.
+      - Key derived metrics (DSR, income, utilization, etc).
+  </Step>
+  <Step title="Update webhooks and failure handling">
+    - Confirm the full list of webhook events you rely on today.
+    - Update your webhook consumer to handle any new v3 events (for example,
+      <code>mono.events.account_credit_worthiness</code> or new
+      <code>events.mandates.*</code> events in payments).
+    - Implement the <strong>Testing for Failure</strong> scenarios recommended in the
+      relevant Quickstarts before promoting to production.
+  </Step>
+  <Step title="Cut over traffic and monitor">
+    - Roll out v3 gradually behind a flag.
+    - Monitor:
+      - Error rates per endpoint.
+      - Time‑to‑first‑call for new customers.
+      - Any anomalies flagged by your risk or finance teams.
+    - Once stable, remove legacy endpoints from your codebase.
+  </Step>
+</Steps>
+
+## Legacy Docs Archive
+
+We have preserved the full content of the previous Mono documentation so you can reference older
+guides, screenshots, and request / response examples during migration.
+
+- **Local archive**: The original pages are stored in this repository under
+  `content/docs.mono.co`. You can browse them directly from your editor or repository viewer.
+- **Live docs**: For many endpoints, the legacy public docs are still available at
+  <a href="https://docs.mono.co" target="_blank" rel="noreferrer">docs.mono.co</a>.
+
+Typical sections you might want to reference:
+
+- Financial Data → Statements, Transactions, Earnings, Credit‑worthiness
+- Payments → Direct Debit overview, Mandate setup, Failure scenarios
+- Lookup → BVN / NIN / Address guides
+- Webhooks → Legacy webhook events and payloads
+
+> When in doubt, build against the v3 API reference and use the legacy docs only as a
+> behavioral reference for existing integrations.
+
+## Where to get help
+
+- Technical questions: reach out via your Mono account team or the developer community.
+- Compliance / security: share the <a href="/trust/regulatory-compliance">Regulatory
+  Compliance</a> and <a href="/trust/data-encryption">Data Encryption</a> pages with your
+  legal and risk teams.
+- Migration feedback: if a v3 surface is missing something you rely on from v1 / v2, contact
+  support so we can review gaps before any deprecation date.
+

@@ -1,0 +1,47 @@
+---
+title: "WhatsApp Payment API"
+description: "User, beneficiary, fund request, payments."
+---
+
+WhatsApp Payment endpoints let you initiate fund requests and manage beneficiaries via WhatsApp. Base URL: **`https://api.withmono.com`**. Authenticate with **`mono-sec-key`**.
+
+## Create fund request
+
+**POST** `api.withmono.com/v1/whatsapp/fund-requests`
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X POST 'https://api.withmono.com/v1/whatsapp/fund-requests' \
+    -H 'Content-Type: application/json' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY' \
+    -d '{"user_id":"user_xxx","amount":5000,"currency":"NGN","narration":"Payment"}'
+  ```
+  ```javascript Node
+  const response = await fetch('https://api.withmono.com/v1/whatsapp/fund-requests', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'mono-sec-key': process.env.MONO_SEC_KEY },
+    body: JSON.stringify({ user_id: 'user_xxx', amount: 5000, currency: 'NGN', narration: 'Payment' })
+  });
+  const data = await response.json();
+  ```
+</CodeGroup>
+
+**Response (200)**
+
+```json
+{
+  "id": "fund_request_xxxxxxxx",
+  "status": "pending",
+  "link": "https://..."
+}
+```
+
+---
+
+## Other endpoints
+
+**User** – Create/get user. **Beneficiary** – Link, get, get all, unlink. **Fund request payments** – List payments for fund requests.
+
+For full request/response and webhooks see [WhatsApp Payment](/more-products/whatsapp-payment).

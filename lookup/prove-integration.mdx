@@ -1,0 +1,8 @@
+---
+title: "Prove Integration Guide"
+description: "Integrate Prove for identity verification with document and face capture."
+---
+
+Prove is Mono's identity verification product: users complete a flow that can include document capture and Face-ID (selfie and liveness). You initiate a session via the API and send the user to the returned link. Required: **phone** in the customer object. Optional: email, address, identity. After three Face-ID failures, the session can be escalated for manual validation via the Mono Dashboard.
+
+For endpoints (Initiate, fetch customer details, blacklist/whitelist, revoke) and request/response details, see [API reference](/api-reference/prove) and [Identity onboarding](/use-cases/identity-onboarding).

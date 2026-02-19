@@ -1,5 +1,18 @@
 ---
 title: "Postman Collections"
+description: "Explore and test Mono APIs with ready-made Postman collections."
 ---
 
-### Mono Customer
+You can use Postman to call Mono APIs without writing code. The collections below include pre-configured requests for Customer, Connect, DirectPay, Lookup, and other endpoints. Use your **secret key** from the [Mono dashboard](https://app.mono.co/apps) as the `mono-sec-key` header in each request.
+
+## Available collections
+
+| Collection       | Description | Link |
+|------------------|-------------|------|
+| **Mono Customer** | Customer and account management | [Open in Postman](https://documenter.getpostman.com/view/32220737/2sAYQZGBkT) |
+| **Mono Connect**  | Account linking, transactions, statements, identity, income | [Open in Postman](https://documenter.getpostman.com/view/32066755/2s9YynjNr9) |
+| **Mono DirectPay**| One-time and recurring payments | [Open in Postman](https://documenter.getpostman.com/view/32066755/2s9YynjNrA) |
+| **Mono Lookup**   | Identity verification (BVN, NIN, etc.) and Prove | [Open in Postman](https://documenter.getpostman.com/view/32066755/2s9YynjNrB) |
+| **Miscellaneous** | Other Mono API endpoints | [Open in Postman](https://documenter.getpostman.com/view/32066755/2s9YynjNrC) |
+
+Import a collection into Postman from the links above, then set your **mono-sec-key** in the collection or request headers. For sandbox testing, use your sandbox secret key from your app in the [dashboard](https://app.mono.co/apps). For authentication details, see [Authentication](/essentials/mono/authentication).

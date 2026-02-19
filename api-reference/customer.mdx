@@ -1,0 +1,386 @@
+---
+title: "Customer API"
+description: "Create, retrieve, update, and manage customers. All Customer endpoints on one page."
+---
+
+Customer endpoints let you create and manage customer entities used with Connect and DirectPay. Base URL: **`https://api.withmono.com`**. Authenticate with the **`mono-sec-key`** header on every request.
+
+---
+
+## Create a customer (individual)
+
+**POST** `api.withmono.com/v2/customers`
+
+Creates a unique individual customer.
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X POST 'https://api.withmono.com/v2/customers' \
+    -H 'accept: application/json' \
+    -H 'content-type: application/json' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY' \
+    -d '{
+    "first_name": "string",
+    "last_name": "string",
+    "email": "string",
+    "phone": "string",
+    "address": "string",
+    "type": "string",
+    "identity": { "type": "string", "number": "string" }
+  }'
+  ```
+  ```javascript Node
+  const response = await fetch('https://api.withmono.com/v2/customers', {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+      'content-type': 'application/json',
+      'mono-sec-key': process.env.MONO_SEC_KEY
+    },
+    body: JSON.stringify({
+      first_name: 'string',
+      last_name: 'string',
+      email: 'string',
+      phone: 'string',
+      address: 'string',
+      type: 'string',
+      identity: { type: 'string', number: 'string' }
+    })
+  });
+  const data = await response.json();
+  ```
+</CodeGroup>
+
+**Response (201)**
+
+```json
+{
+  "id": "customer_xxxxxxxx",
+  "first_name": "string",
+  "last_name": "string",
+  "email": "string",
+  "type": "individual",
+  "created_at": "2025-01-15T10:00:00Z"
+}
+```
+
+---
+
+## Create a customer (business)
+
+**POST** `api.withmono.com/v2/customers`
+
+Creates a unique business customer.
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X POST 'https://api.withmono.com/v2/customers' \
+    -H 'accept: application/json' \
+    -H 'content-type: application/json' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY' \
+    -d '{
+    "type": "business",
+    "business_name": "string",
+    "email": "string",
+    "phone": "string",
+    "address": "string",
+    "identity": { "type": "string", "number": "string" }
+  }'
+  ```
+  ```javascript Node
+  const response = await fetch('https://api.withmono.com/v2/customers', {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+      'content-type': 'application/json',
+      'mono-sec-key': process.env.MONO_SEC_KEY
+    },
+    body: JSON.stringify({
+      type: 'business',
+      business_name: 'string',
+      email: 'string',
+      phone: 'string',
+      address: 'string',
+      identity: { type: 'string', number: 'string' }
+    })
+  });
+  const data = await response.json();
+  ```
+</CodeGroup>
+
+**Response (201)**
+
+```json
+{
+  "id": "customer_xxxxxxxx",
+  "business_name": "string",
+  "type": "business",
+  "created_at": "2025-01-15T10:00:00Z"
+}
+```
+
+---
+
+## Retrieve a customer
+
+**GET** `api.withmono.com/v2/customers/{id}`
+
+Retrieves information about a single customer.
+
+**Path params:** `id` (string, required) – Your customer's ID.
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X GET 'https://api.withmono.com/v2/customers/{id}' \
+    -H 'accept: application/json' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY'
+  ```
+  ```javascript Node
+  const customerId = 'customer_xxxxxxxx';
+  const response = await fetch(`https://api.withmono.com/v2/customers/${customerId}`, {
+    method: 'GET',
+    headers: {
+      'accept': 'application/json',
+      'mono-sec-key': process.env.MONO_SEC_KEY
+    }
+  });
+  const data = await response.json();
+  ```
+</CodeGroup>
+
+**Response (200)**
+
+```json
+{
+  "id": "customer_xxxxxxxx",
+  "first_name": "string",
+  "last_name": "string",
+  "email": "string",
+  "type": "individual",
+  "created_at": "2025-01-15T10:00:00Z"
+}
+```
+
+---
+
+## List all customers
+
+**GET** `api.withmono.com/v2/customers`
+
+Retrieves information about all customers (paginated).
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X GET 'https://api.withmono.com/v2/customers' \
+    -H 'accept: application/json' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY'
+  ```
+  ```javascript Node
+  const response = await fetch('https://api.withmono.com/v2/customers', {
+    method: 'GET',
+    headers: {
+      'accept': 'application/json',
+      'mono-sec-key': process.env.MONO_SEC_KEY
+    }
+  });
+  const data = await response.json();
+  ```
+</CodeGroup>
+
+**Response (200)**
+
+```json
+{
+  "data": [],
+  "meta": { "page": 1, "total": 0 }
+}
+```
+
+---
+
+## Get all customer transactions
+
+**GET** `api.withmono.com/v2/customers/{id}/transactions`
+
+Retrieves all transactions performed by a customer via Mono payments products.
+
+**Path params:** `id` (string, required) – Your customer's ID.
+
+**Query params:** `period` (e.g. `last12months`), `page`, `account` (accountId) – optional.
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X GET 'https://api.withmono.com/v2/customers/{id}/transactions?period=last12months&page=1' \
+    -H 'accept: application/json' \
+    -H 'content-type: application/json' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY'
+  ```
+  ```javascript Node
+  const customerId = 'customer_xxxxxxxx';
+  const params = new URLSearchParams({ period: 'last12months', page: '1' });
+  const response = await fetch(`https://api.withmono.com/v2/customers/${customerId}/transactions?${params}`, {
+    method: 'GET',
+    headers: {
+      'accept': 'application/json',
+      'content-type': 'application/json',
+      'mono-sec-key': process.env.MONO_SEC_KEY
+    }
+  });
+  const data = await response.json();
+  ```
+</CodeGroup>
+
+**Response (200)**
+
+```json
+{
+  "data": [],
+  "meta": { "page": 1, "total": 0 }
+}
+```
+
+---
+
+## Fetch all linked accounts
+
+**GET** `api.withmono.com/v2/accounts`
+
+Retrieves all accounts linked to a customer (or business).
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X GET 'https://api.withmono.com/v2/accounts' \
+    -H 'accept: application/json' \
+    -H 'content-type: application/json' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY'
+  ```
+  ```javascript Node
+  const response = await fetch('https://api.withmono.com/v2/accounts', {
+    method: 'GET',
+    headers: {
+      'accept': 'application/json',
+      'content-type': 'application/json',
+      'mono-sec-key': process.env.MONO_SEC_KEY
+    }
+  });
+  const data = await response.json();
+  ```
+</CodeGroup>
+
+**Response (200)**
+
+```json
+{
+  "data": []
+}
+```
+
+---
+
+## Update a customer
+
+**PATCH** `api.withmono.com/v2/customers/{id}`
+
+Updates information about a single customer.
+
+**Path params:** `id` (string, required) – Your customer's ID.
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X PATCH 'https://api.withmono.com/v2/customers/{id}' \
+    -H 'accept: application/json' \
+    -H 'content-type: application/json' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY' \
+    -d '{
+    "first_name": "string",
+    "last_name": "string",
+    "address": "string",
+    "phone": "string",
+    "identity": { "type": "bvn", "number": "string" }
+  }'
+  ```
+  ```javascript Node
+  const customerId = 'customer_xxxxxxxx';
+  const response = await fetch(`https://api.withmono.com/v2/customers/${customerId}`, {
+    method: 'PATCH',
+    headers: {
+      'accept': 'application/json',
+      'content-type': 'application/json',
+      'mono-sec-key': process.env.MONO_SEC_KEY
+    },
+    body: JSON.stringify({
+      first_name: 'string',
+      last_name: 'string',
+      address: 'string',
+      phone: 'string',
+      identity: { type: 'bvn', number: 'string' }
+    })
+  });
+  const data = await response.json();
+  ```
+</CodeGroup>
+
+**Response (200)**
+
+```json
+{
+  "id": "customer_xxxxxxxx",
+  "first_name": "string",
+  "last_name": "string",
+  "updated_at": "2025-01-15T10:00:00Z"
+}
+```
+
+---
+
+## Delete a customer
+
+**DELETE** `api.withmono.com/v2/customers/{id}`
+
+Deletes a single customer.
+
+**Path params:** `id` (string, required) – Your customer's ID.
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X DELETE 'https://api.withmono.com/v2/customers/{id}' \
+    -H 'accept: application/json' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY'
+  ```
+  ```javascript Node
+  const customerId = 'customer_xxxxxxxx';
+  const response = await fetch(`https://api.withmono.com/v2/customers/${customerId}`, {
+    method: 'DELETE',
+    headers: {
+      'accept': 'application/json',
+      'mono-sec-key': process.env.MONO_SEC_KEY
+    }
+  });
+  ```
+</CodeGroup>
+
+**Response (200)**
+
+```json
+{}
+```
+
+---
+
+For usage guidance, see [Customers](/getting-started/customers).

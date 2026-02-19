@@ -1,7 +1,43 @@
 ---
-title:"Error Reference"
+title: "Error Reference"
+description: "HTTP status codes and Mono-specific error codes for API and Direct Debit."
 ---
 
-### Error Reference ...
+Mono uses standard HTTP status codes and, for some products, numeric or string error codes in the response body. This page summarizes the main codes you will encounter when integrating.
 
-A dictionary of HTTP status codes and Mono-specific error messages.
+## Error types
+
+- **2xx** – Success.
+- **4xx** – Client error (invalid request, missing parameters, invalid API key, etc.).
+- **5xx** – Server error (rare; retry with backoff if appropriate).
+
+Always log the full response body and status code when an error occurs so you can correlate with API Logs in the Mono Dashboard (Audit Logs → API Logs).
+
+## API error codes
+
+| Code | Type | Meaning |
+|------|------|---------|
+| 200 | OK | Request succeeded. |
+| 400 | Bad Request | Request invalid, often due to a missing or invalid parameter. |
+| 401 | Unauthorized | No valid API key or invalid mono-sec-key header. |
+| 402 | Request Failed | Request unacceptable (e.g. missing required parameter). |
+| 403 | Forbidden | API key does not have permission for this operation. |
+| 404 | Not Found | Resource does not exist. |
+| 409 | Conflict | Conflict with another request (e.g. duplicate idempotency key). |
+| 429 | Too Many Requests | Rate limited; use exponential backoff. |
+| 500, 502, 503, 504 | Server Error | Error on Mono's side; retry with backoff. |
+
+## Direct Debit error codes
+
+When a direct debit fails, the payload may include a numeric or string code. Common codes: **01** (status unknown), **05** (do not honor), **06** (dormant account), **07** (invalid account), **08** (account name mismatch), **13** (invalid amount), **26** (duplicate record), **51** (insufficient funds), **91** (beneficiary bank not available), **94** (duplicate transaction), **97** (timeout), **m01** (NIBSS timeout/downtime).
+
+For the full list, see [Error reference](/utilities/error-reference) and [Webhooks](/utilities/webhooks).
+
+## Error handling best practices
+
+1. **Log requests and responses** – Store API signature, URL params, and request body (strip secrets) and the response status and body.
+2. **Handle 4xx explicitly** – Map status and optional code/message in the body to user-friendly messages or internal alerts.
+3. **Retry 5xx and 429** – Use exponential backoff; avoid retrying 4xx except where documented.
+4. **Empty body** – For 401 or 404, the response body may be empty; the status code is sufficient.
+
+In the Dashboard you can filter API Logs by App, Scope, Status (failed/successful), and Environment (live/test).

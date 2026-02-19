@@ -3,4 +3,162 @@ title: "Asset Management"
 description: "Using Assets & Earnings to build investment trackers."
 ---
 
-### Asset Management ...
+Mono’s **Assets** and **Earnings** endpoints let you build portfolio and investment features
+on top of your users’ existing investment accounts.
+
+From the original docs:
+
+- **Assets** – returns what the customer currently holds (name, type, cost, returns, currency).
+- **Earnings** – returns realized earnings events with narration, date, and asset details.
+
+## Typical product flows
+
+With these endpoints you can:
+
+- Show a user’s **current holdings** across investment platforms.
+- Compute **portfolio performance** over time.
+- Highlight **earnings history** and distributions (e.g. dividends or plan payouts).
+
+## Assets endpoint
+
+The Assets endpoint returns the user’s current investment positions.
+
+From the legacy **Assets** page:
+
+<CodeGroup>
+```bash Curl
+curl --request GET \
+  --url https://api.withmono.com/v2/accounts/{accountId}/assets \
+  --header 'accept: application/json' \
+  --header 'mono-sec-key: <YOUR_SECRET_KEY>'
+```
+```javascript JavaScript
+const accountId = 'YOUR_ACCOUNT_ID';
+const response = await fetch(`https://api.withmono.com/v2/accounts/${accountId}/assets`, {
+  method: 'GET',
+  headers: {
+    'accept': 'application/json',
+    'mono-sec-key': process.env.MONO_SEC_KEY,
+  },
+});
+const data = await response.json();
+```
+</CodeGroup>
+
+Sample response:
+
+```json
+{
+  "status": "successful",
+  "message": "Request was successfully completed",
+  "timestamp": "2024-03-15T15:10:57.842Z",
+  "data": {
+    "id": "65d76676c4977cf",
+    "balances": {
+      "_u_s_d": 0
+    },
+    "assets": [
+      {
+        "name": "Mrchemicalmusic",
+        "type": "Mixed",
+        "cost": 1071,
+        "return": 1071,
+        "quantity": null,
+        "currency": "USD",
+        "details": {
+          "symbol": null,
+          "price": null,
+          "current_balance": 0
+        }
+      }
+    ]
+  }
+}
+```
+
+Key fields (from the docs):
+
+- `assets.name` – asset name.
+- `assets.type` – asset type (e.g. Stocks, Mixed).
+- `assets.cost` – total cost of acquiring the asset.
+- `assets.return` – unrealized gains.
+- `assets.currency` – currency of the asset’s market.
+- `assets.details.current_balance` – current balance for this asset.
+
+## Earnings endpoint
+
+The Earnings endpoint returns realized earnings events such as interest, dividends or plan
+distributions.
+
+<CodeGroup>
+```bash Curl
+curl --request GET \
+  --url https://api.withmono.com/v2/accounts/{accountId}/earnings \
+  --header 'accept: application/json' \
+  --header 'mono-sec-key: <YOUR_SECRET_KEY>'
+```
+```javascript JavaScript
+const accountId = 'YOUR_ACCOUNT_ID';
+const response = await fetch(`https://api.withmono.com/v2/accounts/${accountId}/earnings`, {
+  method: 'GET',
+  headers: {
+    'accept': 'application/json',
+    'mono-sec-key': process.env.MONO_SEC_KEY,
+  },
+});
+const data = await response.json();
+```
+</CodeGroup>
+
+Sample response (from the legacy **Earnings** doc):
+
+```json
+{
+  "status": "successful",
+  "message": "Request was successfully completed",
+  "timestamp": "2024-03-15T15:09:13.581Z",
+  "data": [
+    {
+      "id": "65d766c4977d0",
+      "amount": 1071,
+      "narration": "Transfer to Wallet from Mrchemicalmusic plan",
+      "date": "2024-02-13T17:24:30.000Z",
+      "asset": {
+        "symbol": null,
+        "name": "Mrchemicalmusic",
+        "sale_price": null,
+        "quantity_sold": null
+      }
+    }
+  ]
+}
+```
+
+Useful fields:
+
+- `amount` – earning amount.
+- `narration` – describes how the earning was generated.
+- `date` – date the earning was received.
+- `asset.name` – asset that produced the earning.
+
+## Example: powering an investment dashboard
+
+Combine the endpoints to:
+
+1. Fetch **Assets** for each linked investment account and compute:
+   - Current portfolio value per asset and per currency.
+   - Unrealized gains / losses.
+2. Fetch **Earnings** to show:
+   - A timeline of payouts.
+   - Total earnings over a period.
+3. Use **Transactions** (see Financial Data) to reconcile movements between bank and
+   investment accounts.
+
+## Next steps
+
+- Legacy details:
+  - `content/docs.mono.co/docs/financial-data/assets.md`
+  - `content/docs.mono.co/docs/financial-data/earnings.md`
+- See <a href="/product-abilities/financial-data">Financial Data</a> for related endpoints
+  like Transactions and Statements.
+

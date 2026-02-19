@@ -1,0 +1,41 @@
+---
+title: "Customers"
+description: "Customer management and KYC with Mono's API."
+---
+
+Mono’s **customer** endpoints let you onboard users in your application and run KYC (Know Your Customer) checks. The **customer ID** you create is then used across Connect and Payment flows so you can link bank accounts and create mandates for the right user.
+
+![Key features](https://docs.mono.co/images/callout/success.png)
+
+## Why use the Customer API
+
+- **Onboarding** – Capture user details and create a customer record before or alongside Connect or Payments.
+- **KYC** – Perform identity checks in line with regulatory requirements and reduce fraud.
+- **Integration** – The customer object or ID is used in [Connect](/quickstart/connect) and [Payment](/quickstart/payment) V2 endpoints so everything ties to the same user.
+
+## Prerequisites
+
+- [Sign up](https://app.mono.co/signup) on the Mono Dashboard.
+- [Create an app](/quickstart/create-an-app) and use the generated **secret key** for API calls.
+
+## Creating a customer
+
+You can create a customer for an **individual** or a **business**. Use the same customer ID when you later initiate Connect or create a Direct Debit mandate.
+
+**Endpoint:** `POST https://api.withmono.com/v2/customers`
+
+**Headers:**  
+- `mono-sec-key` (required): Your app secret key.
+
+**Request body:** Include the required fields for an individual (e.g. first name, last name, email) or business (e.g. business name, registration number). See the [Customer API reference](/api-reference/customer) for full parameters and examples.
+
+After creation, use the returned **customer ID** when calling [Initiate account linking](/api-reference/bank-data) or [Create a customer](/api-reference/customer) in the Payments flow.
+
+## More endpoints
+
+- [Retrieve a customer](/api-reference/customer)
+- [Update a customer](/api-reference/customer)
+- [List all customers](/api-reference/customer)
+- [Create a business customer](/api-reference/customer)
+
+For Connect flows that use the customer object, see [Connect integration](/essentials/mono/connect-integration). For Payments, see [Payment quickstart](/quickstart/payment).

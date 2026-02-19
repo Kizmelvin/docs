@@ -1,0 +1,53 @@
+---
+title: "Real-time Data"
+description: "Manually refresh balance and transactions from a linked account."
+---
+
+Real-time data lets you fetch the **latest** balance and transactions from a customer's linked account. Mono will sync with the bank when possible; if the connection requires re-authorization, the API and webhooks tell you so you can prompt the user to [re-auth](/quickstart/authentication).
+
+## How it works
+
+1. **Request with real-time header** – Call the [balance](/api-reference/bank-data) or [transactions](/api-reference/bank-data) endpoint with `x-realtime: true` in the request headers (and your `mono-sec-key`).
+2. **Response headers** – The response includes:
+   - **x-has-new-data** – `true` or `false` (whether new data was fetched).
+   - **x-job-id** – Unique job identifier for this sync.
+   - **x-job-status** – `finished`, `processing`, or `failed`.
+3. **Webhooks** – When the job completes, Mono sends:
+   - **mono.accounts.jobs.update** – Job status (processing / finished / failed).
+   - **mono.events.account_updated** – Updated account and sync status; use `sync_status` to see if data is available or re-authorisation is required.
+4. **Re-auth when needed** – If the account requires re-authorisation, use the [re-auth endpoint](/api-reference/bank-data) so the user can re-authenticate.
+
+## Authentication
+
+Include in your request headers:
+
+- **mono-sec-key** – Your Mono secret key (e.g. `live_sk_...` or sandbox key).
+- **x-realtime** – `true` to trigger a real-time sync.
+
+## Response headers
+
+| Header | Description |
+|--------|-------------|
+| **x-has-new-data** | `true` if new data was fetched; `false` if no update. When `false`, you are not charged for the call. |
+| **x-job-id** | Unique identifier for the async sync job. |
+| **x-job-status** | `finished`, `processing`, or `failed`. |
+
+When **x-job-status** is `failed`, check the [mono.accounts.jobs.update](/utilities/webhooks) webhook payload; if re-authorisation is required, trigger the [re-auth flow](/quickstart/authentication).
+
+## Rate limit
+
+Real-time sync for a given account is limited to **one session every 5 minutes**. If you call again within that window while a job is still in queue, the response returns the same job id and status.
+
+## Endpoints
+
+- [Balance API](/api-reference/bank-data) – `GET /v2/accounts/{id}/balance` with `x-realtime: true`
+- [Transactions API](/api-reference/bank-data) – with `x-realtime: true`
+
+After a successful sync, you can call the same endpoints **without** `x-realtime` (or with `x-realtime: false`) to read the updated data without starting another sync.
+
+## Webhooks
+
+- **mono.accounts.jobs.update** – Job progress (processing / finished / failed).
+- **mono.events.account_updated** – Account and `sync_status` (e.g. successful, reauthorisation_required). When `sync_status` is successful, call the balance or transactions endpoint to get the updated data.
+
+For full payloads and verification, see [Webhooks](/utilities/webhooks). For re-authorisation, see [Authentication (Reauth)](/quickstart/authentication) and the [Reauth](/quickstart/authentication).

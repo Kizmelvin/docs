@@ -3,4 +3,225 @@ title: "Lending"
 description: "Using Income API + Creditworthiness API + Statements to automate loan approvals"
 ---
 
-### Lending ...
+Lending products fail when underwriting is based on guesses instead of data. With Mono, you can
+combine **Income**, **Creditworthiness**, and **Statements** endpoints to automate loan
+decisions, reduce defaults, and keep your operations team out of spreadsheets.
+
+This blueprint walks through a complete lending flow: from connecting a bank account to deciding
+whether a loan can be safely approved.
+
+## Architecture overview
+
+At a high level, your lending engine will:
+
+1. Onboard the customer and link a bank account via **Mono Connect**.
+2. Pull historical **transactions and statements** for affordability analysis.
+3. Compute the customer’s **income profile**.
+4. Evaluate **creditworthiness** and debt obligations.
+5. Make an automated decision (approve / decline / send to manual review).
+
+```mermaid
+flowchart LR
+    User[User] -->|links bank via Connect| MonoConnect[Mono Connect Widget]
+    MonoConnect -->|mono.events.account_connected| Backend[(Your Backend)]
+    Backend -->|GET /v2/accounts/{id}/transactions| TransactionsAPI[Transactions API]
+    Backend -->|GET /v2/accounts/{id}/statement| StatementsAPI[Statements API]
+    Backend -->|GET /v2/accounts/{id}/income| IncomeAPI[Income API]
+    Backend -->|POST /v2/accounts/{id}/creditworthiness| CreditworthinessAPI[Creditworthiness API]
+    TransactionsAPI --> Backend
+    StatementsAPI --> Backend
+    IncomeAPI --> Backend
+    CreditworthinessAPI --> Backend
+    Backend -->|Decision & limits| CoreLending[Core Lending System]
+    CoreLending -->|Approve / Decline / Manual Review| User
+```
+
+> You can adapt this blueprint whether you are doing consumer lending, BNPL, or working capital
+> loans. The key is to make the decision engine fully data‑driven.
+
+## Step‑by‑step implementation
+
+<Steps>
+  <Step title="Link a bank account with Mono Connect">
+    Use the <a href="/quickstart/connect">Connect Quickstart</a> or your preferred client
+    SDK to let users link their primary bank account.
+
+    Once the account is linked, you will receive a
+    <code>mono.events.account_connected</code> webhook with an <code>account.id</code>:
+
+    ```bash Curl
+    {
+      "event": "mono.events.account_connected",
+      "data": {
+        "id": "67c6e1565a6d75703e0a94c9",
+        "customer": "67abe55f729135f8af8002cc",
+        "meta": {}
+      }
+    }
+    ```
+
+    Persist both the <code>account.id</code> and the <code>customer</code> identifier in
+    your lending system. They will be used for all downstream data calls.
+  </Step>
+
+  <Step title="Retrieve transactions and statements">
+    Next, pull recent transactions and statements to understand cash‑flow, obligations, and
+    spending patterns.
+
+    <CodeGroup>
+    ```bash Curl
+    curl --request GET \
+      --url https://api.withmono.com/v2/accounts/{accountId}/transactions \
+      --header 'accept: application/json' \
+      --header 'mono-sec-key: <YOUR_SECRET_KEY>'
+    ```
+    ```javascript JavaScript
+    const accountId = 'YOUR_ACCOUNT_ID';
+    const response = await fetch(`https://api.withmono.com/v2/accounts/${accountId}/transactions`, {
+      method: 'GET',
+      headers: {
+        'accept': 'application/json',
+        'mono-sec-key': process.env.MONO_SEC_KEY,
+      },
+    });
+    const data = await response.json();
+    ```
+    </CodeGroup>
+
+    Use this data to:
+
+    - Compute average monthly inflows and outflows.
+    - Identify existing loan repayments or large recurring expenses.
+    - Flag suspicious activity or unusual spikes for manual review.
+  </Step>
+
+  <Step title="Compute income using the Income endpoint">
+    Call the Income endpoint to get a structured view of the customer’s earnings:
+
+    <CodeGroup>
+    ```bash Curl
+    curl --request GET \
+      --url https://api.withmono.com/v2/accounts/{accountId}/income \
+      --header 'Content-Type: application/json' \
+      --header 'accept: application/json' \
+      --header 'mono-sec-key: <YOUR_SECRET_KEY>'
+    ```
+    ```javascript JavaScript
+    const accountId = 'YOUR_ACCOUNT_ID';
+    const response = await fetch(`https://api.withmono.com/v2/accounts/${accountId}/income`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'application/json',
+        'mono-sec-key': process.env.MONO_SEC_KEY,
+      },
+    });
+    const data = await response.json();
+    ```
+    </CodeGroup>
+
+    You will receive a webhook event (for example,
+    <code>mono.events.account_income</code>) summarizing total income and salary streams:
+
+    ```bash Curl
+    {
+      "data": {
+        "income_summary": {
+          "total_income": 500000,
+          "employeer": "Nomo Technologies"
+        },
+        "income_streams": [
+          {
+            "income_type": "SALARY",
+            "frequency": "MONTHLY",
+            "monthly_average": 2500,
+            "last_income_description": "Mono salary GTBPADE2938493"
+          }
+        ]
+      }
+    }
+    ```
+
+    Use this to verify declared income and build a view of earnings stability.
+  </Step>
+
+  <Step title="Evaluate creditworthiness & calculate limits">
+    Finally, use the Creditworthiness endpoint to assess whether the requested loan is
+    affordable based on income and existing debts:
+
+    <CodeGroup>
+    ```bash Curl
+    curl --request POST \
+      --url https://api.withmono.com/v2/accounts/{accountId}/creditworthiness \
+      --header 'accept: application/json' \
+      --header 'content-type: application/json' \
+      --header 'mono-sec-key: <YOUR_SECRET_KEY>' \
+      --data '{
+        "bvn": "12345678901",
+        "principal": 30000000,
+        "interest_rate": 5,
+        "term": 12,
+        "run_credit_check": true
+      }'
+    ```
+    ```javascript JavaScript
+    const accountId = 'YOUR_ACCOUNT_ID';
+    const response = await fetch(`https://api.withmono.com/v2/accounts/${accountId}/creditworthiness`, {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'content-type': 'application/json',
+        'mono-sec-key': process.env.MONO_SEC_KEY,
+      },
+      body: JSON.stringify({
+        bvn: '12345678901',
+        principal: 30000000,
+        interest_rate: 5,
+        term: 12,
+        run_credit_check: true,
+      }),
+    });
+    const data = await response.json();
+    ```
+    </CodeGroup>
+
+    The resulting webhook (for example,
+    <code>mono.events.account_credit_worthiness</code>) will indicate whether the user can
+    afford the requested facility and recommend a safe monthly repayment.
+  </Step>
+</Steps>
+
+## Testing for Failure
+
+Every lending integration should include a clear test plan for negative scenarios, not only
+the happy path.
+
+- **Insufficient history**: Simulate accounts with too few transactions. Verify that your
+  engine:
+  - Surfaces a clear “not enough data” decision.
+  - Does not approve loans on incomplete information.
+- **High existing debt**: Use accounts with heavy existing obligations and confirm that:
+  - The Creditworthiness endpoint returns higher debt ratios.
+  - Your decision logic caps or declines loans above your risk thresholds.
+- **Webhook delays or failures**:
+  - Intentionally delay webhook processing or disable receivers.
+  - Make sure your system falls back to polling where appropriate and clearly surfaces
+    “decision pending” states in your UI.
+- **Bank downtime**:
+  - Use the <a href="/trust/sla-status">SLA & Status</a> page to understand how to handle
+    upstream outages.
+  - Ensure your UI can gracefully handle cases where data refresh is temporarily
+    unavailable.
+
+Document these scenarios in your internal runbooks so underwriting and support teams always
+know what to expect.
+
+## Next steps
+
+- Deep‑dive into the <a href="/product-abilities/financial-data">Financial Data</a> capability
+  for the full list of enrichment endpoints.
+- Share the <a href="/trust/regulatory-compliance">Regulatory Compliance</a> and
+  <a href="/trust/data-encryption">Data Encryption</a> pages with your compliance team.
+- Use the <a href="/postman-collection/index">Postman collection</a> to experiment with new
+  lending scenarios before rolling them into your production risk engine.
+

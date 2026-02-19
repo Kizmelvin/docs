@@ -1,0 +1,120 @@
+---
+title: "Full API Index"
+description: "Links to all Mono API reference sections."
+---
+
+The Mono API is organised by product. Base URL for all endpoints: **`https://api.withmono.com`**. Authenticate with the **`mono-sec-key`** header.
+
+## Quick example
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X POST 'https://api.withmono.com/v2/accounts/initiate' \
+    -H 'Content-Type: application/json' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY' \
+    -d '{"customer":{"name":"Customer","email":"customer@example.com"},"scope":"auth","redirect_url":"https://yourapp.com/callback"}'
+  ```
+  ```javascript Node
+  const response = await fetch('https://api.withmono.com/v2/accounts/initiate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'mono-sec-key': process.env.MONO_SEC_KEY
+    },
+    body: JSON.stringify({
+      customer: { name: 'Customer', email: 'customer@example.com' },
+      scope: 'auth',
+      redirect_url: 'https://yourapp.com/callback'
+    })
+  });
+  const data = await response.json();
+  ```
+</CodeGroup>
+
+**Response (200)**
+
+```json
+{
+  "id": "account_xxx",
+  "code": "auth_code_xxx",
+  "link": "https://connect.withmono.com/..."
+}
+```
+
+## Bank Data (Connect / Financial Data)
+
+Account linking, transactions, balance, identity, income, statements, assets, earnings, creditworthiness, enrichment, reauth, partners API.
+
+[Bank Data API reference](/api-reference/bank-data)
+
+## Customer
+
+Create, retrieve, update, list customers; create business customer; fetch linked accounts; delete customer.
+
+[Customer API reference](/api-reference/customer)
+
+## Direct Debit
+
+Mandates (create, initiate, pause, reinstate, cancel), balance inquiry, debit account, retrieve debits.
+
+[Direct Debit API reference](/api-reference/direct-debit)
+
+## DirectPay (one-time payments)
+
+Initiate payment, verify, fetch payments, redirect URLs.
+
+[DirectPay API reference](/api-reference/directpay)
+
+## Disburse
+
+Source accounts, instant and scheduled disbursements, batches, distributions, webhooks.
+
+[Disburse API reference](/api-reference/disburse)
+
+## Prove
+
+Initiate, fetch customer details, blacklist/whitelist, revoke data access.
+
+[Prove API reference](/api-reference/prove)
+
+## Lookup
+
+BVN, NIN, CAC, TIN, account number, address, passport, drivers license, credit history, mashup, 360 view.
+
+[Lookup API reference](/api-reference/lookup)
+
+## Money operations
+
+Subaccounts, payout, payout transactions, refund.
+
+[Money operations API reference](/api-reference/money-operations)
+
+## WhatsApp Payment
+
+User, beneficiary, fund request, fund request payments.
+
+[WhatsApp Payment API reference](/api-reference/whatsapp-payment)
+
+## Telco Data
+
+Login, token exchange, identity, balances, transactions, details, OTP verification.
+
+[Telco Data API reference](/api-reference/telco-data)
+
+## CAC
+
+Business, directors, shareholders, PSC, profile, status report.
+
+[CAC API reference](/api-reference/cac)
+
+## Miscellaneous
+
+Bank coverage and other endpoints.
+
+[Miscellaneous](/api-reference/miscellaneous)
+
+---
+
+For authentication and keys see [Authentication](/essentials/mono/authentication). For Postman collections see [Postman](/postman-collection/index).

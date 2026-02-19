@@ -1,0 +1,28 @@
+---
+title: "Connect Webhooks"
+description: "Webhook events for account connection, updates, and disconnection."
+---
+
+Mono sends **Connect** webhooks to your configured URL when a user connects an account, when account data is updated, or when they disconnect. Configure your webhook in the [Mono Dashboard](https://app.mono.co/apps) and verify signatures as described in [Webhooks](/utilities/webhooks).
+
+## Auth (connection) – account_connected
+
+Fired when a user has **successfully connected** their financial account. Use it to store the account ID and tell the user their account is verified and ready.
+
+**Event:** `mono.events.account_connected`
+
+**Payload fields:** `data.id` is the account ID (store and use for API calls). `data.customer` is the customer ID. After receiving this event, exchange any temporary code for a permanent account ID if you use the widget flow, then persist the account ID in your database.
+
+## Account update (balance / data)
+
+Fired when account or balance data is updated (e.g. after a real-time sync). Use it to refresh your copy of balance or transaction data. Payload includes account details and metadata (e.g. data_status, sync_status). When sync_status indicates new data is available, call the Balance or Transactions endpoint. When it indicates reauthorisation_required, prompt the user to [re-auth](/quickstart/authentication). See [Real-time data](/product-abilities/realtime-data).
+
+## Unlink (disconnection)
+
+Fired when a user **disconnects** their account. Event: `mono.events.account_disconnected`. Remove or mark the account as inactive and stop making API calls for that account ID.
+
+## Security and verification
+
+Always verify webhook signatures using your webhook secret. See [Webhooks](/utilities/webhooks) for the verification algorithm and example code.
+
+For general webhook setup and retries see [Webhooks](/utilities/webhooks).

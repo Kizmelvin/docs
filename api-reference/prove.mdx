@@ -1,0 +1,272 @@
+---
+title: "Prove API"
+description: "Identity verification with document and face capture. All Prove endpoints on one page."
+---
+
+Prove endpoints support the full identity verification journey (document capture, Face-ID, liveness). Base URL: **`https://api.withmono.com`**. Authenticate with **`mono-sec-key`** on every request.
+
+---
+
+## Initiate Prove session
+
+**POST** `api.withmono.com/v1/prove/initiate`
+
+Starts a Prove session and returns a link for the user to complete verification (document and face capture). Optional: `customer.email`, `customer.address`, `customer.identity`; required: `customer.name`, `customer.phone`, `redirect_url`.
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X POST 'https://api.withmono.com/v1/prove/initiate' \
+    -H 'accept: application/json' \
+    -H 'content-type: application/json' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY' \
+    -d '{
+    "customer": {
+      "name": "Customer",
+      "phone": "+234...",
+      "email": "customer@example.com",
+      "address": "Lagos",
+      "identity": { "type": "bvn", "number": "12345678901" }
+    },
+    "reference": "ref_001",
+    "redirect_url": "https://yourapp.com/verify-done",
+    "kyc_level": "tier_1",
+    "bank_accounts": false
+  }'
+  ```
+  ```javascript Node
+  const response = await fetch('https://api.withmono.com/v1/prove/initiate', {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+      'content-type': 'application/json',
+      'mono-sec-key': process.env.MONO_SEC_KEY
+    },
+    body: JSON.stringify({
+      customer: {
+        name: 'Customer',
+        phone: '+234...',
+        email: 'customer@example.com',
+        address: 'Lagos',
+        identity: { type: 'bvn', number: '12345678901' }
+      },
+      reference: 'ref_001',
+      redirect_url: 'https://yourapp.com/verify-done',
+      kyc_level: 'tier_1',
+      bank_accounts: false
+    })
+  });
+  const data = await response.json();
+  ```
+</CodeGroup>
+
+**Response (200)**
+
+```json
+{
+  "id": "session_xxxxxxxx",
+  "link": "https://prove.withmono.com/..."
+}
+```
+
+---
+
+## Fetch customer details
+
+**GET** `api.withmono.com/v1/prove/customers/{id}`
+
+Returns the verification result for a single customer.
+
+**Path params:** `id` (string, required) – Prove session or customer ID.
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X GET 'https://api.withmono.com/v1/prove/customers/{id}' \
+    -H 'accept: application/json' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY'
+  ```
+  ```javascript Node
+  const customerId = 'session_xxxxxxxx';
+  const response = await fetch(`https://api.withmono.com/v1/prove/customers/${customerId}`, {
+    method: 'GET',
+    headers: {
+      'accept': 'application/json',
+      'mono-sec-key': process.env.MONO_SEC_KEY
+    }
+  });
+  const data = await response.json();
+  ```
+</CodeGroup>
+
+**Response (200)**
+
+```json
+{
+  "id": "session_xxxxxxxx",
+  "status": "verified",
+  "customer": {}
+}
+```
+
+---
+
+## Fetch all customer details
+
+**GET** `api.withmono.com/v1/prove/customers`
+
+Returns verification results for all customers (paginated).
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X GET 'https://api.withmono.com/v1/prove/customers' \
+    -H 'accept: application/json' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY'
+  ```
+  ```javascript Node
+  const response = await fetch('https://api.withmono.com/v1/prove/customers', {
+    method: 'GET',
+    headers: {
+      'accept': 'application/json',
+      'mono-sec-key': process.env.MONO_SEC_KEY
+    }
+  });
+  const data = await response.json();
+  ```
+</CodeGroup>
+
+**Response (200)**
+
+```json
+{
+  "data": [],
+  "meta": { "page": 1, "total": 0 }
+}
+```
+
+---
+
+## Blacklist customer
+
+**POST** `api.withmono.com/v1/prove/blacklist`
+
+Adds a customer to the blacklist.
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X POST 'https://api.withmono.com/v1/prove/blacklist' \
+    -H 'accept: application/json' \
+    -H 'content-type: application/json' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY' \
+    -d '{"customer_id": "session_xxxxxxxx"}'
+  ```
+  ```javascript Node
+  const response = await fetch('https://api.withmono.com/v1/prove/blacklist', {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+      'content-type': 'application/json',
+      'mono-sec-key': process.env.MONO_SEC_KEY
+    },
+    body: JSON.stringify({ customer_id: 'session_xxxxxxxx' })
+  });
+  const data = await response.json();
+  ```
+</CodeGroup>
+
+**Response (200)**
+
+```json
+{
+  "status": "success"
+}
+```
+
+---
+
+## Whitelist customer
+
+**POST** `api.withmono.com/v1/prove/whitelist`
+
+Removes a customer from the blacklist (whitelist).
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X POST 'https://api.withmono.com/v1/prove/whitelist' \
+    -H 'accept: application/json' \
+    -H 'content-type: application/json' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY' \
+    -d '{"customer_id": "session_xxxxxxxx"}'
+  ```
+  ```javascript Node
+  const response = await fetch('https://api.withmono.com/v1/prove/whitelist', {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+      'content-type': 'application/json',
+      'mono-sec-key': process.env.MONO_SEC_KEY
+    },
+    body: JSON.stringify({ customer_id: 'session_xxxxxxxx' })
+  });
+  const data = await response.json();
+  ```
+</CodeGroup>
+
+**Response (200)**
+
+```json
+{
+  "status": "success"
+}
+```
+
+---
+
+## Revoke data access
+
+**DELETE** `api.withmono.com/v1/prove/revoke`
+
+Revokes stored consent and data access for a customer.
+
+**Request**
+
+<CodeGroup>
+  ```bash Curl
+  curl -X DELETE 'https://api.withmono.com/v1/prove/revoke' \
+    -H 'accept: application/json' \
+    -H 'content-type: application/json' \
+    -H 'mono-sec-key: YOUR_SECRET_KEY' \
+    -d '{"customer_id": "session_xxxxxxxx"}'
+  ```
+  ```javascript Node
+  const response = await fetch('https://api.withmono.com/v1/prove/revoke', {
+    method: 'DELETE',
+    headers: {
+      'accept': 'application/json',
+      'content-type': 'application/json',
+      'mono-sec-key': process.env.MONO_SEC_KEY
+    },
+    body: JSON.stringify({ customer_id: 'session_xxxxxxxx' })
+  });
+  ```
+</CodeGroup>
+
+**Response (200)**
+
+```json
+{
+  "status": "success"
+}
+```
+
+---
+
+For product overview and integration steps, see [Prove integration](/lookup/prove-integration) and [Identity onboarding](/use-cases/identity-onboarding).

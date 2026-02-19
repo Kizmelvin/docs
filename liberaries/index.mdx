@@ -1,8 +1,30 @@
 ---
 title: "Libraries"
-description: "Mono proudly features a suite of official and community-built libraries across various programming languages to help you seamlessly integrate our APIs."
+description: "Official and community libraries to integrate Mono APIs in your backend."
 ---
 
-### Official Libraries
+Mono provides and supports **server-side libraries** in several languages so you can call Mono APIs (Connect, Payments, Lookup, etc.) without writing raw HTTP requests. Use your **secret key** from the [Mono dashboard](https://app.mono.co/apps) when initialising a library.
 
-These libraries are developed and maintained by the Mono team, ensuring a high level of integration, consistency, and dedicated support.
+## Official libraries
+
+Maintained by the Mono team for reliability and support.
+
+| Language   | Repository | Description |
+|------------|------------|-------------|
+| **Node.js** | [withmono/mono-node](https://github.com/withmono/mono-node) | Official Node.js client for Mono APIs |
+| **Ruby**   | [withmono/mono-ruby](https://github.com/withmono/mono-ruby) | Official Ruby client for Mono APIs |
+
+Install via your package manager (e.g. `npm`, `gem`) and use the repo’s README for authentication and examples.
+
+## Community libraries
+
+Built by the community for additional languages and use cases.
+
+| Language | Repository | Maintainer |
+|----------|------------|------------|
+| **Python** | [hamzzy/Mono-Python](https://github.com/hamzzy/Mono-Python) | Hamza Ahmed |
+| **Go**     | [jcobhams/gomono](https://github.com/jcobhams/gomono) | Jason Cobhams |
+| **PHP**    | [digikraaft/mono-php](https://github.com/digikraaft/mono-php) | Digikraaft |
+| **.NET**   | [eskye/mono-dotnet](https://github.com/eskye/mono-dotnet) | Sunkanmi Ijatuyi |
+
+For widget integration (Connect, DirectPay, Prove) on the front end, use the [SDKs](/sdks/index). For API reference and request/response formats, see the [API reference](/api-reference/introduction) and the [Full API index](/api-reference/full-api-index).

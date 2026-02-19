@@ -1,5 +1,606 @@
 ---
 title: "Changelog"
+description: "New features, API updates, and breaking changes from the Mono platform."
 ---
 
-### Stay updated on new features and API versions. ...
+The Mono Changelog records **new features**, **API updates**, **deprecations**, and **webhook changes** so you can plan upgrades and keep integrations stable.
+
+## What we document
+
+- **New endpoints or fields** – Added request/response parameters and new APIs
+- **Breaking changes** – Deprecations, removed fields, or behaviour changes that may require code updates
+- **SDK and library releases** – New versions of official SDKs and any breaking changes
+- **Webhook changes** – New or modified webhook events and payloads
+
+Subscribe to release notifications from your [Mono Dashboard](https://app.mono.co/apps) or contact your account manager. For version migration, see the [Migration Guide](/essentials/migration-guide).
+
+---
+
+## January 2026
+
+### Identity Verification
+
+**TIN Lookup: CAC channel** (31 January)  
+The `cac` channel for TIN Lookup is back up and is the most reliable method to verify TIN via NRS. Two new response fields when using the `cac` channel:
+
+- `nrs_tin` – The NRS Tax Identification Number
+- `address` – The registered address of the taxpayer
+
+See the [TIN Lookup guide](/lookup/tin-lookup) and [API reference](/api-reference/lookup).
+
+**CAC Lookup: New Status Report Endpoint** (31 January)  
+New [CAC Status Report](/api-reference/cac) endpoint returns a company's CAC status report as a PDF.
+
+**CAC Lookup: Exact Search Parameter** (31 January)  
+Optional `exact` parameter on [CAC Business Lookup](/api-reference/cac). When `true`, only businesses whose names start with the exact search term are returned. Defaults to `false`.
+
+**Billing notice: BVN Lookup** (22 January)  
+All [BVN Lookup API](/lookup/bvn-igree) requests are billable, including failed lookups. Validate BVNs (11-digit numeric) before calling; avoid bulk or blind verification; implement throttling. Contact [support@mono.co](mailto:support@mono.co) if you need BVN Lookup temporarily disabled.
+
+### Financial Data
+
+**New webhook and Account Details fields** (28 January)  
+New fields across core webhook events and the Account Details endpoint:
+
+- **app** and **business** added to: `mono.events.account_connected`, `mono.events.account_updated`, `mono.events.account_reauthorized`
+- **meta.ref** supported in `mono.events.account_connected` and Account Details API response
+- **event_id** (unique) added to: `mono.events.account_connected`, `mono.events.account_reauthorized`, `mono.events.account_updated`
+
+---
+
+## December 2025
+
+### Identity Verification
+
+**Address Verification: required `disco_code`** (18 December)  
+New required parameter `disco_code` on the [Address Verification](/api-reference/lookup) endpoint.
+
+**NIN Lookup: PDF generation** (10 December)  
+NIN Lookup API supports PDF generation. Use the `output=pdf` query parameter; response includes a `pdf` object with `jobid` and `status`. Use the [Poll NIN Job API](/api-reference/lookup) to check status and retrieve the PDF URL when ready. See [NIN Lookup guide](/lookup/nin-lookup).
+
+**Prove: manual validation for Face-ID failures** (3 December)  
+You can manually validate users who hit issues with Prove Face-ID (e.g. poor lighting). After three failures, the session is escalated for your review via the Mono Dashboard. See the [Prove integration guide](/lookup/prove-integration).
+
+---
+
+## November 2025
+
+### Payments
+
+**Mandate Biometrics verification** (26 November)  
+[Mandate Biometrics verification](/payments/mandate-biometrics) lets users authorise Direct Debit mandates via facial recognition (selfie and liveness), without micro-transfer. The [Create a Mandate API](/api-reference/direct-debit) accepts optional `verification_method` (default `transfer_verification`); use `selfie_verification` for the new flow.
+
+### Identity Verification
+
+**BVN iGree: identity scope** (26 November)  
+When the **identity** scope is used, the iGree BVN endpoint now includes `nationality` and `address`. See the [API reference](/api-reference/lookup).
+
+---
+
+## October 2025
+
+### Financial Data
+
+**Income and Credit Worthiness webhooks** (17 October)  
+`app` and `business` fields added to credit worthiness and income webhook events. The `sandbox_` prefix is removed from Account Income and Credit Worthiness events. Live event names `mono.events.account_income` and `mono.events.account_credit_worthiness` are now used in Sandbox as well. See [Credit worthiness](/product-abilities/credit-worthiness) and [Income](/product-abilities/income).
+
+### Payments
+
+**Direct Debit and DirectPay webhooks: event_id and timestamp** (7 October)  
+All Direct Debit and Directpay webhook events now include:
+
+- `event_id` – Unique identifier for tracking and deduplication
+- `timestamp` – ISO 8601 when the event was triggered
+
+See [Direct Debit webhooks](/payments/direct-debit-webhooks) and [DirectPay webhooks](/payments/directpay-webhooks).
+
+---
+
+## September 2025
+
+### Financial Data
+
+**data_status and webhook metadata** (16 September)  
+Updated Connect behaviour:
+
+- **PARTIAL** (new) – Only one of balance or transactions was retrieved
+- **UNAVAILABLE** (new) – Neither retrieved due to bank-related issues or no data
+- **FAILED** (updated) – Neither retrieved due to Mono-side issues only
+
+New/updated in API and webhooks: `retrieved_data` (what was fetched), `has_new_data` (boolean in account updated event). `X-HAS-NEW-DATA` header is only sent when new data is available. Update your logic for PARTIAL and UNAVAILABLE; use `retrieved_data` and `has_new_data`. See [Integration guide](/essentials/mono/connect-integration) and [Real-time data](/product-abilities/realtime-data).
+
+### Payments
+
+**Account Debit API: meta and session_id** (22 September)  
+[Account Debit API](/api-reference/direct-debit) now supports a `meta` object for custom payment info (returned in response) and `session_id` in API and webhook payloads for tracking.
+
+**Mono Disburse API** (12 September)  
+[Mono Disburse](/more-products/disburse) is available: send money to multiple recipients via instant or scheduled transfers from your linked mandate accounts (e.g. payroll, loan disbursements, vendor settlements, cashback).
+
+**Pay with WhatsApp (PWW)** (9 September)  
+DirectPay one-time payments support Pay With WhatsApp: customers can complete payment authorisation in the Directpay widget via WhatsApp. No changes required to your Directpay integration.
+
+---
+
+## August 2025
+
+### Identity Verification
+
+**CAC Lookup: new endpoints and fields** (29 August)  
+New CAC Lookup API endpoints: Persons with Significant Control (PSC) and Company Profile (combines search, shareholders, directors). Shareholders and Directors endpoints now include `business_email` and `business_address`. Deprecated: Change of Name and Previous Address endpoints.
+
+**Prove: required `phone` in customer object** (25 August)  
+New required field `phone` in the customer object when initiating the Prove widget (API or dashboard).
+
+### WhatsApp Payment
+
+**Owo Direct Charge** (15 August)  
+WhatsApp payment API to initiate one-time or recurring debit requests from a customer’s linked bank account via WhatsApp. Supports idempotency keys, recurring fund requests, and webhook notifications. Funds settle into a virtual account on your platform.
+
+### Financial Data
+
+**Upcoming: data_status and webhook metadata** (15 August)  
+Announcement that updated `data_status` logic and webhook metadata (PARTIAL, UNAVAILABLE, FAILED, `retrieved_data`, `has_new_data`) would go live 15 September 2025. See September 2025 entry for the live changes.
+
+---
+
+## July 2025
+
+### Financial Data
+
+**Inflow/outflow endpoints upgraded to v2** (23 July)  
+Credit and Debit endpoint URLs upgraded to v2: `/v2/accounts/{id}/credits` and `/v2/accounts/{id}/debits`. Response format updated.
+
+### Payments
+
+**Direct Debit: optional `fee_bearer`** (7 July)  
+New optional field `fee_bearer` on Create a Mandate and Debit Account APIs. Values: `business` (default) or `customer`. Included in API responses and all Direct Debit webhook events. Not applicable to signed mandates. Available only upon approval; contact Sales for access.
+
+---
+
+## June 2025
+
+### Identity Verification
+
+**Prove: sandbox support** (30 June)  
+Prove product now has sandbox support for improved testing.
+
+---
+
+## May 2025
+
+### Identity Verification
+
+**Initiate Prove API: optional fields** (23 May)  
+On the Initiate Prove API, `email`, `address`, and `identity` are now optional so you can generate a link without providing these fields.
+
+---
+
+## April 2025
+
+### Payments
+
+**Direct Debit pricing updates** (30 April)  
+Transactions between NGN 200 and NGN 20,000 charged a minimum fee of NGN 55; above NGN 20,000 at 1% capped at NGN 1,000 (from 1 May 2025). Balance Inquiry API (without balance) now NGN 10 per call.
+
+**Webhook: use `debit.successful`** (25 April)  
+`events.mandates.debit.success` deprecated. Use `events.mandates.debit.successful` for successful mandate debits.
+
+---
+
+## March 2025
+
+### Identity Verification
+
+**Mono Prove release** (24 March)  
+Mono Prove launched: customer onboarding solution with MDN and facial recognition for identity verification and KYC, with fraud detection and biometric authentication.
+
+### Payments
+
+**Webhook deprecation: `debit.success`** (21 March)  
+`events.mandates.debit.success` deprecated in favour of `events.mandates.debit.successful`. Old event remains until 21 April 2025. Update integrations before that date.
+
+### All Products
+
+**New code samples: Python, C#, Java, Go** (10 March)  
+Python, C#, Java, and Go code samples added across Connect, Payment, and Lookup API references alongside existing cURL, Node.js, PHP, etc.
+
+---
+
+## January 2025
+
+### Financial Data
+
+**Data Enrichment APIs: job tracker and v2 routes** (31 January)  
+New Job Tracker API to monitor Transaction Categorisation, Transaction Metadata, and Statement Insights. New Enrichment Record endpoint to retrieve enriched data by job ID. Deprecated: Transaction Categorisation Records, Transaction Metadata Records, Statement Insights Records. Transaction Categorisation: method changed GET→POST; route to `/v2/accounts/{id}/transactions/categorise`; response includes jobID and jobStatus. CSV Transaction Categorisation: response includes jobID/jobStatus; webhook indicates when categorised data is available (call Enrichment Records for data); data retained 1 hour. Transaction Metadata: GET→POST; route to `/v2/accounts/{id}/transactions/metadata`; same job pattern. CSV Transaction Metadata: same pattern; 1-hour retention. Statement Insights: route to `/v2/accounts/{id}/statement/insights`; webhook indicates when ready (call Enrichment Records); 1-hour retention.
+
+### Payments
+
+**Direct Debit sandbox support** (22 January)  
+Direct Debit and Create a Mandate API enhanced with sandbox support for testing.
+
+---
+
+## December 2024
+
+### Payments
+
+**Split Payments** (10 December)  
+Optional `split` object on Initiate Payment and Debit Account APIs. Distribute by percentage or fixed values via `distribution` array; set fee bearer (business or sub-accounts). Create sub-accounts first; settlement webhook `direct_debit.split_settlement_successful` when processed.
+
+### Financial Data
+
+**Income webhook: new summary fields** (6 December)  
+Income webhook (`mono.events.account_income`) summary payload now includes `total_income`, `annual_income`, and `monthly_income`.
+
+---
+
+## November 2024
+
+### Payments
+
+**Ready-to-debit webhook timing** (26 November)  
+Ready-to-debit webhook for Direct Debit now sent 3 hours after mandate approval (previously 1 hour).
+
+---
+
+## September 2024
+
+### Financial Data
+
+**Real-Time Data enhancements** (18 September)  
+Response headers: `x-job-id`, `x-job-status` (FINISHED, PROCESSING, FAILED). New webhook `mono.accounts.jobs.update` with status SUCCESSFUL, FAILED, REAUTHORISATION_REQUIRED. New real-time job status endpoint to check job status.
+
+---
+
+## August 2024
+
+### Payments
+
+**DirectPay webhook: flagged and held settlement** (19 August)  
+DirectPay successful webhook now includes `flagged`, `flag_reasons`, and `held_settlement` for suspicious transactions and withheld settlements.
+
+**Custom debit frequency and processing status** (9 August)  
+Mandate creation supports custom debit frequency (`days`, `weeks`, `months`) with `interval` (whole number). New `processing` status for Direct Debit transactions; webhook `events.mandates.debit.processing` for pending state before success/failure webhooks.
+
+### Financial Data
+
+**Creditworthiness API** (7 August)  
+Creditworthiness API provides affordability status against loan amount (principal, interest, tenor, credit history). Response includes account ID, months assessed, affordability summary, expected monthly payment, total outstanding debt from credit bureau.
+
+---
+
+## July 2024
+
+### Payments
+
+**Retrieve Mandate: `balance` field** (24 July)  
+`balance` added to Retrieve a Mandate response (outstanding amount that can be debited).
+
+**Mandate OTP verification** (16 July)  
+For users with an existing approved mandate in the Mono Network, new mandates require OTP verification. Response includes `otp_destinations` (e.g. phone, email). New Verify Mandate OTP API to complete verification.
+
+### Identity Verification
+
+**NIN Lookup: phone validation** (16 July)  
+NIN Lookup endpoint updated to validate using registered phone number.
+
+**Int’l Passport: date of birth layer** (9 July)  
+Additional international passport layer with date of birth field and validation; for use when initial passport verification fails.
+
+### Financial Data
+
+**Business customer endpoint** (9 July)  
+New customer creation endpoint for business customers: pass `business_name`, `type`, and other details.
+
+### Payments
+
+**E-mandate ready-to-debit time** (5 July)  
+E-mandate ready-to-debit reduced from 8–10 hours to under 1 hour. Ready-to-debit webhook confirms when account is ready for debit.
+
+---
+
+## June 2024
+
+### Financial Data
+
+**Data Enrichment APIs** (7 June)  
+Transaction Categorisation (initiate, upload batch, retrieve records), Transaction Metadata (initiate, upload batch, retrieve records), Statement Insights (initiate, retrieve records) released for deeper financial insights.
+
+**Income API** (7 June)  
+Income API launched: Initiate Income Request and Retrieve Income Details for income streams, summary, and historical data.
+
+---
+
+## May 2024
+
+### Identity Verification
+
+**TIN Lookup: individuals and businesses** (16 May)  
+TIN Lookup endpoint updated to verify both individuals and businesses.
+
+### Payments
+
+**Business Accounts E-mandates** (13 May)  
+E-mandate authorisation type supported for business accounts when creating or initiating mandate authorisation.
+
+---
+
+## April 2024
+
+### Payments
+
+**Fixed Recurring Mandate** (24 April)  
+Fixed amount supported for both signed and e-mandates when creating or initiating mandate authorisation.
+
+### Identity Verification
+
+**BVN Lookup: snake_case and sandbox** (24 April)  
+BVN Lookup response fields changed from camelCase to snake_case. Sandbox available when scope is `bank_accounts`.
+
+**Create a Mandate: sandbox support** (20 April)  
+Create a Mandate API sandbox support for testing.
+
+### Financial Data
+
+**Institution object on Connect and DirectPay** (15 April)  
+Optional `institution` object (`id`, `auth_method`, `account_number`) on Initiate Account Linking and Payment Initiation APIs to direct users to a specific institution’s login page.
+
+### Identity Verification
+
+**Mashup Lookup API** (4 April)  
+Single API call to verify NIN, BVN, and date of birth together. Request requires `bvn`, `nin`, and `date_of_birth`.
+
+---
+
+## March 2024
+
+### Payments
+
+**Retrieve mandate via Reference** (28 March)  
+New API to retrieve signed and e-mandate details using the unique reference from mandate creation.
+
+### Financial Data
+
+**Connect and DirectPay v2; Customers APIs** (15 March)  
+Mono Connect and DirectPay upgraded to v2; base URL `https://api.withmono.com/v2`. New Customers APIs: Create, Retrieve, List all, Get Customer Transactions, Fetch Linked Accounts, Update, Delete. Initiate Account Linking/Reauth (URL for linking without SDK). Account Balance endpoint. Data format and structure changes; responses include `timestamp`. Connect endpoints impacted: Exchange Token, Account Information, Transactions, Identity, Unlink, Statements, Poll PDF Status, Assets, Earnings. DirectPay: Initiate Payments Link, Verify Payment, Fetch all Payments. New: Payout, Payout Transactions, Refund Payment. Initiate Payment now requires `customer` (Customer ID or name + email). v1 APIs remained until end of May 2024.
+
+---
+
+## February 2024
+
+### Financial Data
+
+**Account number lookup URL** (28 February)  
+Account number Lookup endpoint URL changed from `/v3/lookup/account_number` to `/v3/lookup/account-number`.
+
+**Mono Connect.js SDK patch** (23 February)  
+Fixes for OPay facial recognition and copy virtual account number in widget. Versions: 0.2.5 (backward compatible with v1), 2.0.2 (permanent v2 widget). Update via npm.
+
+**Widget v2 live** (21 February)  
+Mono Connect and DirectPay widget v2 live: consent updates, faster linking and payment, sandbox testing without sandbox credentials, improved institution search. `customer` object required for each connection (name, email). v1 available until May 2024.
+
+**Partners API deprecated** (16 February)  
+Partners API (custom/white-labeled Connect and Directpay) deprecated.
+
+### Identity Verification
+
+**CAC Lookup enhancements** (15 February)  
+CAC Lookup added: Previous Address, Change of Name, Lookup a Secretary, Lookup a Director. Lookup a business and Shareholder details upgraded to V3 with richer data.
+
+---
+
+## January 2024
+
+### Identity Verification
+
+**360 API deprecated; BVN Lookup with consent** (26 January)  
+360 API (all bank accounts linked to BVN/phone) deprecated. BVN Lookup now returns all available bank accounts connected to a BVN with user consent.
+
+**Credit History Lookup** (23 January)  
+Credit History Lookup API released for credit history information.
+
+**Account Number Lookup and NIP Bank Listing** (10 January)  
+Account Number Lookup upgraded. NIP Bank Listing API released (bank name, code, nip code per bank).
+
+### Payments
+
+**Delete a Customer API** (9 January)  
+Delete a Customer API released for recurring payments (Directpay).
+
+---
+
+## December 2023
+
+### Payments
+
+**Mono Direct Debit (MDD)** (15 December)  
+Mono Direct Debit APIs released: collect variable payments from customers on an ongoing basis from major Nigerian banks via a unified API.
+
+---
+
+## October 2023
+
+### Financial Data
+
+**Real-time data headers** (19 October)  
+Bank account details, transactions, and statements APIs upgraded to /v1 with real-time support. Request header `x-realtime` (truthy); response headers `x-reauth-required`, `x-has-new-data`. Previous versions remain backward compatible.
+
+### Identity Verification
+
+**Drivers licence lookup** (19 October)  
+Lookup Drivers Licence API released to verify driver’s licence and identity.
+
+---
+
+## August 2023
+
+### Identity Verification
+
+**Passport, address, NIN, TIN APIs** (29 August)  
+Released Lookup Passport, Lookup House Address, Lookup NIN, and Lookup TIN APIs for international passport, address verification, NIN, and tax identification verification.
+
+---
+
+## July 2023
+
+### Identity Verification
+
+**Verify BVN OTP: alternate phone** (14 July)  
+Verify BVN OTP API supports alternative phone number not on BVN record via `alternate_phone` in `method` and new `phone_number` field.
+
+---
+
+## June 2023
+
+### Financial Data
+
+**Transaction Metadata V2** (19 June)  
+Transaction Metadata V2 released: expanded categories and improved accuracy for transaction classification.
+
+### Identity Verification
+
+**360view upgrade** (2 June)  
+360view endpoint upgraded: returns all user bank accounts, supports phone or BVN mode, includes bank meta (e.g. logos).
+
+---
+
+## February 2023
+
+### Identity Verification
+
+**BVN Lookup Legacy deprecated** (6 February)  
+Legacy BVN lookup API (verification and access of BVN identity) deprecated.
+
+**BVN Lookup (Consent)** (6 February)  
+Released Initiate BVN Consent, Verify BVN OTP, and Fetch BVN Details APIs for BVN information with explicit user consent.
+
+---
+
+## November 2022
+
+### Issuing
+
+**Virtual card meta; liquidation webhooks** (9 November)  
+Optional `meta` object on Create a virtual card request. New webhooks: `issuing.virtual_account_liquidated`, `issuing.virtual_account_liquidation_failed`, `issuing.virtual_card_liquidation_failed`.
+
+---
+
+## October 2022
+
+### Issuing
+
+**Liquidate card balance: processing status** (22 October)  
+Liquidate card balance API response status set to `processing` until successful; use webhooks or transaction_id with Fetch a transaction to confirm.
+
+**Credit virtual account deprecated** (19 October)  
+/credit a virtual account API (transfer from issuing wallet to virtual account) deprecated.
+
+**transaction_id on transfer, fund, liquidate** (18 October)  
+`transaction_id` added to Transfer to issuing wallet, Fund a virtual card, and Liquidate card balance responses for status queries.
+
+**Card liquidation webhook: transaction field** (7 October)  
+`transaction` field added to `issuing.virtual_card_liquidated` payload for transaction id.
+
+**Fetch interchange payouts** (7 October)  
+New API to fetch interchange revenue (pending or settled) for USD cards.
+
+**interchange_revenue on transaction APIs** (4 October)  
+`interchange_revenue` added to Fetch a transaction, Fetch all transactions, and Fetch card transactions responses for USD card transactions.
+
+---
+
+## September 2022
+
+### Issuing
+
+**Card transaction failed webhook** (27 September)  
+`issuing.card_transaction_failed` webhook when USD or NGN card charge or card funding fails.
+
+**Fee field on transaction APIs** (23 September)  
+`fee` field added to Fetch all transactions, Fetch a transaction, and Fetch card transactions.
+
+**Create account holder: country** (16 September)  
+`country` field added to Create account holder for international account holders (Ghana, Kenya, South Africa, Uganda, Rwanda).
+
+**Transfer to issuing wallet** (2 September)  
+New API to move balance entirely or partially from virtual accounts to Issuing wallet.
+
+**USD exchange rate: liquidation rate** (2 September)  
+Fetch USD exchange rate API response now returns liquidation rate.
+
+---
+
+## August 2022
+
+### Financial Data
+
+**Telco Data API** (30 August)  
+Telco Data API released to retrieve data from active Nigerian phone numbers.
+
+### Issuing
+
+**NGN virtual cards: freeze, unfreeze, delete, liquidate** (30 August)  
+Freeze, unfreeze, delete, and liquidate card balance APIs released for NGN virtual cards.
+
+**Narration and billing address** (30 August)  
+Card transaction webhook `narration` now includes merchant name for NGN cards. Fetch card details response `billing address` now includes `city`.
+
+**USD virtual cards: liquidate** (26 August)  
+Liquidate card balance API released for USD virtual cards (full or partial).
+
+**Wallet threshold and transactions** (22 August)  
+Set wallet threshold API for issuing wallets (USD/NGN) for low-balance and zero-balance email notifications. Fetch wallet transactions API for wallet-related transactions.
+
+**Account Holder: business details** (13 August)  
+Create/Update Account Holder body: optional `director_first_name`, `director_last_name`, `rc_number`; `cac_id` now optional (rc_number and cac_id supported).
+
+**Issuing bank account endpoints** (8 August)  
+New endpoints: Create a Bank account, Fetch a Bank Account, Fetch Account Balance, Fetch Transactions, Fetch Bank Accounts, Transfer between Accounts, Transfer to other Accounts, Mock Transaction.
+
+**Sub Account for deposit virtual accounts** (4 August)  
+Sub Account API released for deposit virtual accounts.
+
+---
+
+## July 2022
+
+### Financial Data
+
+**Credits and Debits: transaction count** (18 July)  
+Credits and Debits APIs now return a transaction count per month for filtering and as a simpler alternative to the inflow endpoint.
+
+---
+
+## May 2022
+
+### Financial Data
+
+**Manual sync: INCOMPLETE_STATEMENT_ERROR** (17 May)  
+Sync API now returns `INCOMPLETE_STATEMENT_ERROR` when the institution returns fewer transactions than usual.
+
+---
+
+## April 2022
+
+### Financial Data
+
+**Statement API: meta object** (26 April)  
+Statement API response now includes `meta` with `requested_length` (days) and `available_length` (days).
+
+### Payments
+
+**Payment initiation widget: payment id** (5 April)  
+Payment initiation via widget now receives payment id from the payment initiation API in the data object callback.
+
+---
+
+## March 2022
+
+### Payments
+
+**Fetch payments API** (16 March)  
+New `/v1/payments/transactions` API to fetch all initiated payments with query params: page, start, end, status, account, customer.
+
+**Payment authorised webhook** (8 March)  
+New `direct_debit.payment_authorised` webhook when payment is completed or standing order set up.

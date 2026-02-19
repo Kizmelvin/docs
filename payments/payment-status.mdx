@@ -1,0 +1,20 @@
+---
+title: "Payment Status"
+description: "How to check and handle status for one-time (DirectPay) payments."
+---
+
+For **one-time payments** (DirectPay), you initiate a payment via the [Initiate API](/api-reference/directpay) and the user authorises in the payment widget. After that, you can confirm status in two ways:
+
+## 1. Webhooks
+
+Mono sends webhooks when the payment state changes (e.g. successful, failed). Configure your [webhook URL](/utilities/webhooks) in the dashboard and handle events such as `direct_debit.payment_successful` (or the equivalent for DirectPay) so your system and UI stay in sync without polling.
+
+## 2. Verify API
+
+Call the **[Verify](/api-reference/directpay)** endpoint with the **reference** you passed when initiating the payment. The response indicates whether the payment succeeded or failed and any reason code. Use this for one-off checks or after the user returns from the widget (e.g. with the reference in the redirect URL).
+
+## Redirect URL
+
+When you initiate a payment, you can set a `redirect_url`. After the user completes or closes the widget, they are sent to that URL with query parameters such as `reference`, `status`, and (on failure) `reason`. Use the reference to call the Verify API or to look up the payment in your database.
+
+For full parameter and response shapes, see [DirectPay Verify](/api-reference/directpay) and [Direct Pay integration](/essentials/mono/direct-pay-integration). For the full flow, see [DirectPay integration](/essentials/mono/direct-pay-integration) and [Payment quickstart](/quickstart/payment).

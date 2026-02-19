@@ -1,0 +1,12 @@
+---
+title: "Direct Debit Webhook Events"
+description: "Mandate and debit webhook events for Direct Debit."
+---
+
+Mono sends webhooks for mandate and debit events. All events include event_id and timestamp (ISO 8601).
+
+Mandate events: created, initiated, approved, cancelled, paused, reinstated, ready-to-debit.
+
+Debit events: processing, successful, failed. Use events.mandates.debit.successful (events.mandates.debit.success is deprecated). Split settlement: direct_debit.split_settlement_successful.
+
+See [Webhooks](/utilities/webhooks) and [Direct Debit guide](/payments/direct-debit-guide).

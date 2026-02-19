@@ -1,4 +1,23 @@
 ---
-title: 'New Plant'
-openapi: 'WEBHOOK /plant/webhook'
+title: 'Connect Webhook'
+description: 'Webhook payload when account linking or data sync completes.'
 ---
+
+Mono sends webhooks to your URL when linking completes or data is updated. Verify using the shared secret.
+
+**Example payload (POST to your URL)**
+
+```json
+{
+  "event": "account.linked",
+  "data": {
+    "id": "account_xxxxxxxx",
+    "code": "auth_code_xxxxxxxx",
+    "status": "success"
+  }
+}
+```
+
+**Response** – Respond with `200 OK` so Mono stops retrying.
+
+For event types and verification see [Webhooks](/utilities/webhooks) and [Connect webhooks](/product-abilities/connect-webhooks).

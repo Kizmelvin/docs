@@ -1,5 +1,38 @@
 ---
-title: "User experience best practices "
+title: "User experience best practices"
+description: "How to place and use the Mono widget for maximum conversion and trust."
 ---
 
-### How to place the Mono widget for maximum conversion.
+Where and how you show the Mono Connect (or DirectPay / Prove) widget has a big impact on completion rates. The original Mono docs describe widget setup in the [Connect integration](/essentials/mono/connect-integration) and [Connect quickstart](/quickstart/connect). This page summarises **best practices for placement and flow** so you get maximum conversion without hurting trust.
+
+## When to show the Connect widget
+
+- **Onboarding** – After the user has signed up and understood why you need their bank (e.g. "Link your account to see your balance and transactions"). Avoid asking for a bank link before they see value or trust the app.
+- **Just-in-time** – When the user hits a feature that needs linked data (e.g. "View spending" or "Apply for a loan"). One clear moment is better than a generic "Link your bank" in the nav with no context.
+- **Settings / profile** – For "Add another account" or "Reconnect bank" so returning users can manage connections without cluttering the main flow.
+
+Do not bury the primary "Link bank" action under multiple clicks or hide it in a long list of options. One clear call-to-action per screen works best.
+
+## Placement and layout
+
+- **Above the fold** – Place the main Connect trigger where the user sees it without scrolling when they land on the page where linking is required.
+- **Single primary action** – Use one prominent button or link (e.g. "Link your bank account") and avoid competing CTAs (e.g. "Sign up" and "Link bank" with equal weight on the same screen).
+- **Context copy** – Short text that explains what happens next (e.g. "You'll choose your bank and sign in securely. We never see your password.") reduces drop-off. The [Connect integration](/essentials/mono/connect-integration) expects a **customer object** (name, email, optional identity) so the widget can personalise the experience; pass that from a step where you already have the user's details.
+
+## Technical setup that affects UX
+
+- **Public key** – Use the correct [public key](/quickstart/create-an-app) for your app so the widget loads and identifies your brand.
+- **Customer object** – Provide `name`, `email`, and optionally `identity` (e.g. BVN) so the Connect flow is pre-filled where possible. If the user has already linked before, you can pass their **customer id** so name/email/identity are optional.
+- **Callback / webhook** – After the user completes the flow, your backend must [exchange the token for an account ID](/api-reference/bank-data) and persist it. Show a clear success state (e.g. "Account linked") and then take the user to the next step (e.g. dashboard or loan form).
+
+## DirectPay and Prove widgets
+
+- **DirectPay** – Show the payment widget only after you have a **payment ID** from the [Initiate API](/api-reference/directpay). Pass that ID into the widget so the user authorises the right payment. One payment per widget instance keeps the flow clear.
+- **Prove** – After you get a **request ID** (or `mono_url`) from the [Prove initiate API](/api-reference/prove), show the Prove widget or redirect to the URL so the user completes verification in one focused step.
+
+## After the widget completes
+
+- **Connect** – Listen for `mono.events.account_connected` on your [webhook](/utilities/webhooks) and update your UI when the account is linked. Avoid polling; use the webhook so the user sees "Account linked" as soon as Mono confirms.
+- **Errors** – If the user closes the widget or the bank returns an error, show a friendly message (e.g. "Link cancelled. You can try again when you're ready.") and keep the same CTA available so they can retry without starting over.
+
+For implementation details, see the [Connect Quickstart](/quickstart/connect), [Connect integration](/essentials/mono/connect-integration), and [Connect integration](/essentials/mono/connect-integration) and [SDKs](/sdks/index).
