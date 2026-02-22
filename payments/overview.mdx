@@ -1,0 +1,28 @@
+---
+title: "Overview"
+---
+
+Mono **DirectPay** is the umbrella for Mono’s payment products: **one-time payments** (pay with a link or widget) and **Direct Debit** (recurring collections from a customer’s bank account). Use DirectPay to accept payments, collect subscriptions, or automate payouts.
+
+## What DirectPay includes
+
+| Product                           | What it does                                                                                               | When to use it                                    |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| **One-time payments (DirectPay)** | Customer pays once via link or embedded flow. You get instant notification and can confirm status via API. | Single purchases, one-off donations, pay-per-use. |
+| **Direct Debit**                  | Customer authorises a mandate; you debit their account on a schedule (variable or fixed amount).           | Subscriptions, instalments, recurring bills.      |
+| **Payouts**                       | Send money to bank accounts (disbursements).                                                               | Refunds, earnings payouts, supplier payments.     |
+
+## Why use DirectPay
+
+- **Bank-to-bank** – No reliance on cards; fewer failures from expiry or insufficient funds.
+- **Lower cost** – Often lower fees than card-based flows.
+- **Recurring** – Direct Debit gives predictable, automated collections with mandate-based consent.
+- **One integration** – Use one API surface and dashboard for one-time and recurring flows.
+
+## Getting started
+
+1. [Create an app](/quickstart/create-an-app) and enable Payments to get your **secret key**.
+2. For **one-time payments**: follow the [Payment quickstart](/quickstart/payment) and use the [DirectPay API](/api-reference/directpay) (initiate, verify status).
+3. For **Direct Debit**: follow the [Payment quickstart](/quickstart/payment) (customers, mandates, debit) and the [Direct Debit guide](/payments/direct-debit-guide); reference the [Direct Debit API](/api-reference/direct-debit).
+
+Configure a [webhook](/utilities/webhooks) to receive payment and mandate events. For full request/response details, see the [API reference](/api-reference/full-api-index).

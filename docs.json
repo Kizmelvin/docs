@@ -1,48 +1,108 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "willow",
   "name": "Mono",
   "colors": {
     "primary": "#0155BA",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "light": "#2563eb",
+    "dark": "#1e40af"
   },
   "favicon": "https://docs.mono.co/_next/image?url=%2Fimages%2Fmono.png&w=256&q=75",
   "navigation": {
     "tabs": [
       {
-        "tab": "Build & Integrate",
+        "tab": "Home",
         "groups": [
           {
-            "group": "Getting started",
-
+            "group": "Home",
             "pages": [
-              {
-                "group": "Quickstart",
-                "expanded": false,
-                "pages": [
-                  "quickstart/create-an-app",
-                  "quickstart/connect",
-                  "quickstart/payment"
-                ]
-              },
+              "index",
               "getting-started/definitions",
+              "quickstart/create-an-app",
               "getting-started/environments-and-sandbox",
               "getting-started/go-live",
-              "getting-started/faqs",
               "getting-started/customers",
+              "getting-started/faqs"
+            ]
+          },
+          {
+            "group": "Network & Resources",
+            "pages": [
+              "resources/banks",
+              "resources/mobile-network-providers",
+              "resources/coverage",
+              "resources/partner-api",
+              "resources/brand-assets",
+              "resources/trust-content"
+            ]
+          },
+          {
+            "group": "Trust & Safety",
+            "pages": [
+              "trust/data-encryption",
+              "trust/regulatory-compliance",
+              "trust/user-consent",
+              "trust/data-privacy",
+              "trust/sla-status"
+            ]
+          },
+          {
+            "group": "Other products",
+            "pages": [
+              "more-products/disburse",
+              "more-products/whatsapp-payment",
+              "more-products/telco-data",
+              "more-products/money-operations",
+              "more-products/cac-company-search",
+              "more-products/owo"
+            ]
+          },
+          {
+            "group": "Growth",
+            "pages": ["growth-res/changelog", "growth-res/ux-best-practices"]
+          }
+        ]
+      },
+      {
+        "tab": "Connect",
+        "groups": [
+          {
+            "group": "Connect",
+            "pages": [
+              "connect/connect-overview",
+              "quickstart/connect",
+              "essentials/mono/authentication",
+              "essentials/mono/connect-integration"
+            ]
+          },
+
+          {
+            "group": "Data & features",
+            "pages": [
+              "connect/financial-data",
+              "connect/realtime-data",
+              "connect/income",
+              "connect/credit-worthiness",
+              "connect/connect-data-endpoints",
+              "connect/connect-webhooks",
+              "connect/partners-api"
+            ]
+          },
+          {
+            "group": "SDKs & tools",
+            "pages": [
               "sdks/index",
               "liberaries/index",
               "postman-collection/index"
             ]
           },
           {
-            "group": "Core API Implementation",
-            "pages": [
-              "essentials/mono/authentication",
-              "essentials/mono/connect-integration",
-              "essentials/mono/direct-pay-integration"
-            ]
+            "group": "Migration",
+            "pages": ["essentials/migration-guide"]
+          },
+          {
+            "group": "Use cases",
+            "pages": ["use-cases/lending", "use-cases/asset-management"]
           },
           {
             "group": "Utilities",
@@ -55,114 +115,71 @@
         ]
       },
       {
-        "tab": "Solutions",
+        "tab": "DirectPay",
         "groups": [
           {
-            "group": "Use Cases",
+            "group": "DirectPay",
             "pages": [
-              "use-cases/lending",
-              "use-cases/identity-onboarding",
-              "use-cases/asset-management"
+              "payments/overview",
+              "quickstart/payment",
+              "essentials/mono/direct-pay-integration"
             ]
           },
+
           {
-            "group": "Product Capabilities",
-            "pages": [
-              "product-abilities/connect-overview",
-              "product-abilities/realtime-data",
-              "product-abilities/financial-data",
-              "product-abilities/credit-worthiness",
-              "product-abilities/income",
-              "product-abilities/connect-data-endpoints",
-              "product-abilities/connect-webhooks",
-              "product-abilities/partners-api"
-            ]
-          },
-          {
-            "group": "Payments",
+            "group": "Direct Debit",
             "pages": [
               "payments/direct-debit-guide",
               "payments/mandate-biometrics",
               "payments/debit-account",
               "payments/global-standing-mandate",
-              "payments/direct-debit-webhooks",
+              "payments/direct-debit-webhooks"
+            ]
+          },
+          {
+            "group": "Payouts & more",
+            "pages": [
               "payments/directpay-webhooks",
               "payments/payouts",
               "payments/split-payments",
               "payments/payment-status"
             ]
-          },
+          }
+        ]
+      },
+      {
+        "tab": "Lookup",
+        "groups": [
           {
             "group": "Lookup & Identity",
             "pages": [
               "lookup/overview",
               "lookup/lookup-apis",
-              "lookup/tin-lookup",
+              "lookup/prove-integration"
+            ]
+          },
+
+          {
+            "group": "Verify",
+            "pages": [
               "lookup/bvn-igree",
               "lookup/nin-lookup",
-              "lookup/prove-integration",
+              "lookup/tin-lookup",
               "lookup/account-number",
               "lookup/address",
               "lookup/intl-passport",
               "lookup/drivers-license",
               "lookup/credit-history",
-              "lookup/mashup",
-              "use-cases/identity-onboarding"
+              "lookup/mashup"
             ]
           },
           {
-            "group": "More products",
-            "pages": [
-              "more-products/disburse",
-              "more-products/whatsapp-payment",
-              "more-products/telco-data",
-              "more-products/money-operations",
-              "more-products/cac-company-search",
-              "more-products/owo"
-            ]
+            "group": "Governance",
+            "pages": ["trust/lookup"]
           },
           {
-            "group": "Growth Resources",
-            "pages": ["growth-res/changelog", "growth-res/ux-best-practices"]
-          }
-        ]
-      },
-      {
-        "tab": "Trust & Safety",
-        "groups": [
-          {
-            "group": "Security Standards",
-            "pages": ["trust/data-encryption", "trust/regulatory-compliance"]
-          },
-          {
-            "group": "Identity & Trust",
-            "pages": ["trust/lookup", "trust/user-consent"]
-          },
-          {
-            "group": "Reliability & Uptime",
-            "pages": ["trust/sla-status", "trust/data-privacy"]
-          }
-        ]
-      },
-      {
-        "tab": "Network & Resources",
-        "groups": [
-          {
-            "group": "Market Coverage",
-            "pages": [
-              "resources/banks",
-              "resources/mobile-network-providers",
-              "resources/coverage"
-            ]
-          },
-
-          {
-            "group": "Brand & Assets",
-            "pages": ["resources/brand-assets", "resources/trust-content"]
-          },
-          {
-            "group": "Ecosystem & Partnerships",
-            "pages": ["resources/partner-api"]
+            "group": "Use case",
+            "pages": ["use-cases/identity-onboarding"]
           }
         ]
       },

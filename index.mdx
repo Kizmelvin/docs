@@ -1,249 +1,121 @@
 ---
-title: "Mono Docs 2.0"
-description: "Intent-based documentation for building, shipping, and scaling with Mono."
+title: "Mono Documentation"
 ---
 
-import { MyInputCard } from "/snippets/input.jsx";
+# What is Mono?
 
-<div className="relative isolate overflow-hidden rounded-3xl bg-slate-950 px-8 py-10 sm:px-10 sm:py-14 mb-10 shadow-[0_24px_80px_rgba(15,23,42,0.7)] ring-1 ring-slate-800">
-  <img src="/images/hero-light.png" alt="" className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" aria-hidden />
-  <div className="grid gap-10 lg:grid-cols-[minmax(0,1.3fr),minmax(0,1fr)] items-center relative">
-    <div className="space-y-5">
-      <p className="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/60 px-3 py-1 text-xs font-medium uppercase tracking-wide text-sky-300">
-        Mono Docs 2.0 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-        Time‑to‑first‑call in minutes
-      </p>
-      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white">
-        Find the right guide for <span className="text-sky-300">what you want to do</span>.
-      </h1>
-      <p className="text-sm sm:text-base text-slate-300 max-w-xl">
-        Whether you are integrating APIs, validating a compliance checklist, or exploring new
-        financial products, this documentation is organized by intent so you never have to ask
-        “where do I start?” again.
-      </p>
-      <div className="flex flex-wrap gap-3">
-        <a
-          href="/quickstart/connect"
-          className="inline-flex items-center justify-center rounded-full bg-sky-500 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-sky-500/40 hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-2 focus:ring-offset-slate-950"
-        >
-          Get API keys &rarr;
-        </a>
-        <a
-          href="/postman-collection/index"
-          className="inline-flex items-center justify-center rounded-full border border-slate-700 bg-slate-900/60 px-5 py-2.5 text-sm font-medium text-slate-100 hover:bg-slate-800"
-        >
-          One‑click Postman collection
-        </a>
-      </div>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2 text-xs text-slate-400">
-        <div className="flex items-center gap-2">
-          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-sky-300 border border-slate-700">
-            1
-          </span>
-          <span>Sign up, create an app, and get your test keys.</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-sky-300 border border-slate-700">
-            2
-          </span>
-          <span>Use a Quickstart to make your first sandbox call.</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-sky-300 border border-slate-700">
-            3
-          </span>
-          <span>Ship a Solution blueprint into production.</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-sky-300 border border-slate-700">
-            4
-          </span>
-          <span>Share Trust & Safety docs with your compliance team.</span>
-        </div>
-      </div>
-    </div>
+Mono is a B2B platform that gives your product access to bank accounts, payments, and identity verification across Nigeria and beyond. Use our APIs to link accounts, collect one-time or recurring payments, and verify customers and businesses—all with a single integration.
 
-    <div className="relative">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.35),transparent_55%),radial-gradient(circle_at_bottom,_rgba(34,197,94,0.3),transparent_55%)] opacity-80" />
-      <div className="rounded-2xl border border-slate-800/80 bg-slate-900/80 p-4 backdrop-blur-xl shadow-[0_18px_60px_rgba(15,23,42,0.9)]">
-        <img
-          alt="Documentation and guides for building with Mono"
-          src="/images/writing-hand.png"
-          className="mb-4 h-44 w-full rounded-xl object-cover object-top"
-        />
-        <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-sky-300 mb-3">
-          Choose your path
-        </p>
-        <div className="grid gap-3">
-          <a href="/quickstart/create-an-app" className="flex items-start gap-3 rounded-xl bg-slate-900/70 px-3 py-2.5 hover:bg-slate-800/80 border border-slate-800 transition-colors">
-            <span className="mt-0.5 h-6 w-6 rounded-full bg-emerald-500/15 text-emerald-300 text-xs font-semibold flex items-center justify-center border border-emerald-500/40">
-              Dev
-            </span>
-            <div>
-              <p className="text-xs font-semibold text-slate-50">
-                I want to build and debug an integration
-              </p>
-              <p className="mt-1 text-[11px] text-slate-400">
-                Get API keys, follow a Quickstart, and explore the API reference.
-              </p>
-            </div>
-          </a>
-          <a href="/use-cases/lending" className="flex items-start gap-3 rounded-xl bg-slate-900/40 px-3 py-2.5 hover:bg-slate-800/60 border border-slate-800/70 transition-colors">
-            <span className="mt-0.5 h-6 w-6 rounded-full bg-sky-500/15 text-sky-300 text-xs font-semibold flex items-center justify-center border border-sky-500/40">
-              PM
-            </span>
-            <div>
-              <p className="text-xs font-semibold text-slate-50">
-                I want to design a lending or PFM solution
-              </p>
-              <p className="mt-1 text-[11px] text-slate-400">
-                Explore outcome-oriented blueprints built with Mono capabilities.
-              </p>
-            </div>
-          </a>
-          <a href="/trust/data-encryption" className="flex items-start gap-3 rounded-xl bg-slate-900/40 px-3 py-2.5 hover:bg-slate-800/60 border border-slate-800/70 transition-colors">
-            <span className="mt-0.5 h-6 w-6 rounded-full bg-amber-500/15 text-amber-300 text-xs font-semibold flex items-center justify-center border border-amber-500/40">
-              Risk
-            </span>
-            <div>
-              <p className="text-xs font-semibold text-slate-50">
-                I need to review security, privacy, and SLAs
-              </p>
-              <p className="mt-1 text-[11px] text-slate-400">
-                Centralized Trust & Safety docs for audits and vendor assessments.
-              </p>
-            </div>
-          </a>
-          <a href="/resources/banks" className="flex items-start gap-3 rounded-xl bg-slate-900/40 px-3 py-2.5 hover:bg-slate-800/60 border border-slate-800/70 transition-colors">
-            <span className="mt-0.5 h-6 w-6 rounded-full bg-indigo-500/15 text-indigo-300 text-xs font-semibold flex items-center justify-center border border-indigo-500/40">
-              Ops
-            </span>
-            <div>
-              <p className="text-xs font-semibold text-slate-50">
-                I want to understand coverage and go‑to‑market
-              </p>
-              <p className="mt-1 text-[11px] text-slate-400">
-                Explore bank coverage, brand assets, and partner APIs.
-              </p>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
+## Why use Mono?
+
+- Link bank accounts and read balances, transactions, and statements in one flow
+- Collect one-time or recurring payments directly from bank accounts
+- Verify identity (BVN, NIN, documents) and businesses (CAC, TIN) for KYC and compliance
+- One dashboard, one set of keys, and clear docs for each product
+
+<div className="mt-6">
+  <a
+    href="https://app.mono.co/apps"
+    className="inline-flex items-center gap-2 rounded-lg bg-[#0155BA] px-5 py-3 text-sm font-semibold text-white shadow-md transition-all hover:bg-[#014494] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#0155BA] focus:ring-offset-2"
+  >
+    Get API keys →
+  </a>
 </div>
 
-## Choose an intent‑based track
+## How to use Mono
+
+1. **Sign up** at [app.mono.co](https://app.mono.co/signup) and complete verification.
+2. **Create an app** to get your API keys ([Create an app](/quickstart/create-an-app)).
+3. **Pick a product** below and follow its Overview and Get started guides.
+4. **Use the API reference** for endpoints, request/response examples, and webhooks.
+
+For sandbox vs live, go-live steps, and FAQs, see the sidebar under **Introduction** and **Getting started**.
+
+## Products
+
+Choose a product to see everything about it—overview, get started, integration guides, and reference—in one place.
 
 <Columns cols={2}>
   <Card
-    title="Build & Integrate"
-    icon="terminal"
-    href="/quickstart/create-an-app"
+    title="Connect"
+    icon="link"
+    href="/product-abilities/connect-overview"
     horizontal
   >
-    Get API keys, link a test account, and make your first sandbox call in
-    <strong> under 5 minutes.</strong>
+    Link bank accounts and retrieve balances, transactions, statements, income,
+    and more. Start with the overview, then the Connect quickstart.
   </Card>
   <Card
-    title="Solutions"
-    icon="workflow"
-    href="/use-cases/lending"
+    title="DirectPay"
+    icon="credit-card"
+    href="/payments/overview"
     horizontal
   >
-    Use blueprints that combine Income, Statements, Lookup and more to ship
-    <strong> production‑ready lending, PFM, and treasury flows.</strong>
+    One-time payments and Direct Debit for recurring collections. Overview,
+    payment quickstart, and mandate/debit guides in one flow.
   </Card>
   <Card
-    title="Trust & Safety"
-    icon="shield-check"
-    href="/trust/data-encryption"
+    title="Lookup"
+    icon="magnifying-glass"
+    href="/lookup/overview"
     horizontal
   >
-    Review encryption, NDPR / GDPR alignment, user consent and SLAs from a
-    <strong> single credibility hub.</strong>
-  </Card>
-  <Card
-    title="Network & Resources"
-    icon="globe-alt"
-    href="/resources/banks"
-    horizontal
-  >
-    See live coverage, bank reliability, and brand assets to
-    <strong> plan launches and campaigns.</strong>
+    Verify identity (BVN, NIN, documents) and businesses (CAC, TIN). Overview,
+    Lookup APIs, and Prove integration in one place.
   </Card>
 </Columns>
 
-## For developers
+## Use cases
 
 <Columns cols={3}>
+  <Card title="Lending" icon="banknotes" href="/use-cases/lending">
+    Retrieve verified statements to power your credit decisions.
+  </Card>
   <Card
-    title="Quickstarts"
-    href="/quickstart/connect"
-    icon="rocket"
+    title="Banking"
+    icon="building-library"
+    href="/use-cases/identity-onboarding"
   >
-    Step‑by‑step guides for Connect and Direct Debit, including happy‑path and
-    <strong> failure testing</strong> scenarios.
+    Reduce fraudulent sign-ups and onboard your customers faster.
   </Card>
-  <Card title="SDKs & libraries" href="/sdks/index" icon="braces">
-    Official SDKs for Node, Python, and more so you can integrate with
-    <strong> minimal boilerplate.</strong>
+  <Card title="Payments" icon="credit-card" href="/quickstart/payment">
+    Collect secure customer bank transfer payments, within your app.
   </Card>
-  <Card title="API explorer" href="/utilities/api-explorer" icon="cursor-arrow-rays">
-    Try endpoints directly from your browser and inspect real request / response
-    examples.
+  <Card
+    title="Wealth Management"
+    icon="chart-bar"
+    href="/use-cases/asset-management"
+  >
+    Insights into users' financial behaviour for personalized services.
+  </Card>
+  <Card
+    title="Accounting"
+    icon="calculator"
+    href="/product-abilities/financial-data"
+  >
+    Pull users' real-time transactions for invoicing and bookkeeping needs.
   </Card>
 </Columns>
 
-## For product, risk & ops teams
+## Next steps
 
 <Columns cols={3}>
-  <Card title="Lending & credit" href="/use-cases/lending" icon="banknotes">
-    Design loan journeys powered by Income, Statements, and Creditworthiness
-    scores, with clear coverage and risk guardrails.
+  <Card title="Create an app" icon="rocket" href="/quickstart/create-an-app">
+    Get your API keys in minutes. Sign up, create an app, and start with
+    sandbox—then pick a product above to integrate.
   </Card>
-  <Card title="Identity & onboarding" href="/use-cases/identity-onboarding" icon="user-group">
-    Reduce fraud and speed up onboarding with BVN / NIN lookup, address
-    verification, and watchlist checks.
+  <Card
+    title="Talk to support"
+    icon="chat-bubble-left-right"
+    href="https://support.mono.co/en"
+  >
+    Stuck or have questions? Open a ticket, check the help center, or reach out
+    for guidance.
   </Card>
-  <Card title="Compliance & audits" href="/trust/regulatory-compliance" icon="scale">
-    NDPR, data encryption, access controls, and user consent in one place for
-    vendor due‑diligence.
+  <Card title="Go live" icon="check-circle" href="/getting-started/go-live">
+    Ready to ship? Use the go-live checklist for verification, webhooks, and
+    production readiness.
   </Card>
 </Columns>
 
-## Quick links
-
-<Columns cols={3}>
-  <Card
-    title="API reference"
-    icon="document-text"
-    href="/api-reference/introduction"
-  >
-    Auto‑generated reference from Mono’s OpenAPI spec so every endpoint and
-    schema is always up‑to‑date.
-  </Card>
-  <Card
-    title="Live status & uptime"
-    icon="signal"
-    href="/trust/sla-status"
-  >
-    Real‑time status for Mono APIs and bank networks, plus guidance on
-    <strong> building resilient fallbacks.</strong>
-  </Card>
-  <Card
-    title="Migration guide"
-    icon="arrow-path"
-    href="/essentials/migration-guide"
-  >
-    Move from v1 / v2 endpoints to v3 with side‑by‑side examples and deprecation
-    timelines.
-  </Card>
-</Columns>
-
-<Card title="Stay in sync with every change">
-  Subscribe and receive changelog notifications and API updates straight into
-  your inbox.
-
-  <MyInputCard />
-</Card>
+Use the **sidebar** (Introduction, Network & Resources, Trust & Safety) to explore coverage, partners, compliance, and more without leaving the homepage.

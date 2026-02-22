@@ -13,16 +13,24 @@ html.dark nav a[href="/"] img {
   display: none !important;
 }
 
-/* Get API Keys navbar button - blue background */
-#topbar-cta-button {
-  background-color: #0155BA !important;
-  color: #fff !important;
+/* Get API Keys navbar button (top right) - Mono blue, rounded, with shadow */
+#topbar-cta-button,
+a[href="https://app.mono.co/apps"] {
+  background-color: #0155ba !important;
+  color: #ffffff !important;
   border: none !important;
+  border-radius: 0.25rem !important;
+  padding: 0.25rem 0.5rem !important;
+  font-weight: 500 !important;
+  font-size: 0.75rem !important;
+  transition: background-color 0.2s, box-shadow 0.2s !important;
 }
 
-#topbar-cta-button:hover {
-  background-color: #01408a !important;
-  color: #fff !important;
+#topbar-cta-button:hover,
+a[href="https://app.mono.co/apps"]:hover {
+  background-color: #014494 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(1, 85, 186, 0.4) !important;
 }
 
 .tab {

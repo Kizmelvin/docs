@@ -1,9 +1,6 @@
 ---
-title: "Connect"
-description: "Enhancing Lending Decisions with the Financial Data API endpoints"
+title: "Getting started"
 ---
-
-## Overview
 
 As a credit business, making accurate risk assessment decisions is often challenging. This is because finding reliable ways to retrieve customers’ financial data, determine the maximum amount to lend to them, or assess their capacity to repay loans is hard.
 
@@ -47,27 +44,29 @@ Configure a webhook URL and add it to your dashboard. You can use [this site](ht
 
 }
 '
-    ```
-    ```javascript JavaScript
-    const response = await fetch('https://api.withmono.com/v2/accounts/initiate', {
-      method: 'POST',
-      headers: {
-        'accept': 'application/json',
-        'content-type': 'application/json',
-        'mono-sec-key': process.env.MONO_SEC_KEY,
-      },
-      body: JSON.stringify({
-        customer: { name: 'Samuel Olamide', email: 'samuel@neem.com' },
-        meta: { ref: '99008877TEST' },
-        scope: 'auth',
-        redirect_url: 'https://mono.co',
-      }),
-    });
-    const data = await response.json();
-    ```
+`
+    `javascript JavaScript
+const response = await fetch('https://api.withmono.com/v2/accounts/initiate', {
+method: 'POST',
+headers: {
+'accept': 'application/json',
+'content-type': 'application/json',
+'mono-sec-key': process.env.MONO_SEC_KEY,
+},
+body: JSON.stringify({
+customer: { name: 'Samuel Olamide', email: 'samuel@neem.com' },
+meta: { ref: '99008877TEST' },
+scope: 'auth',
+redirect_url: 'https://mono.co',
+}),
+});
+const data = await response.json();
+
+````
+
  </CodeGroup>
 
- <b> Response object</b>
+<b> Response object</b>
 
  <CodeGroup>
 
@@ -464,6 +463,7 @@ Calling financial data endpoints while status is processing or failed won’t re
 }
 
 ````
+
 </CodeGroup>
 
 Insufficient data obtained when the income or creditworthiness endpoint is called
@@ -500,7 +500,7 @@ The income endpoint when successfully called could return a total income of “0
     "income_summary": {
       "total_income": 0,
       "employer": ""
-    } 
+    }
   }
 }
 
@@ -511,6 +511,7 @@ The income endpoint when successfully called could return a total income of “0
 </Steps>
 
 ## Next steps
+
 API documentation:
 To get a broader understanding of how the Mono Direct Debit API works, see the Mono Direct Debit integration guide. This guide provides you with information on all available APIs, webhooks, and commonly asked questions.
 
@@ -530,3 +531,4 @@ For real-time integration assistance, join our Slack community, or contact integ
 
 </CodeGroup>
 ```
+````

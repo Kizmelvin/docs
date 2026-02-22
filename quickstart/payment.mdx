@@ -1,9 +1,6 @@
 ---
 title: "Payment"
-description: "Automating Money Movement using Mono Direct Debit"
 ---
-
-## Overview
 
 Managing recurring payments can be difficult especially if you have to rely on card payments; cards often fail due to insufficient funds or expiry, leading to payment disruptions. These issues create unpredictable cash flow for the business, increase operational costs, and make it harder to maintain a steady revenue stream.
 
@@ -58,27 +55,28 @@ Configure a webhook URL and add it to your dashboard. You can use [this site](ht
 "phone": "09066662020"
 }
 '
-    ```
-    ```javascript JavaScript
-    const response = await fetch('https://api.withmono.com/v2/customers', {
-      method: 'POST',
-      headers: {
-        'accept': 'application/json',
-        'content-type': 'application/json',
-        'mono-sec-key': process.env.MONO_SEC_KEY,
-      },
-      body: JSON.stringify({
-        identity: { type: 'bvn', number: '12345678901' },
-        email: 'samuel.olamide@neem.co',
-        type: 'individual',
-        first_name: 'Samuel',
-        last_name: 'Olamide',
-        address: '19 goodstreet, Ikeja, Lagos',
-        phone: '09066662020',
-      }),
-    });
-    const data = await response.json();
-    ```
+`
+    `javascript JavaScript
+const response = await fetch('https://api.withmono.com/v2/customers', {
+method: 'POST',
+headers: {
+'accept': 'application/json',
+'content-type': 'application/json',
+'mono-sec-key': process.env.MONO_SEC_KEY,
+},
+body: JSON.stringify({
+identity: { type: 'bvn', number: '12345678901' },
+email: 'samuel.olamide@neem.co',
+type: 'individual',
+first_name: 'Samuel',
+last_name: 'Olamide',
+address: '19 goodstreet, Ikeja, Lagos',
+phone: '09066662020',
+}),
+});
+const data = await response.json();
+```
+
 </CodeGroup>
 <b>Response object:</b>
 
@@ -107,7 +105,7 @@ Configure a webhook URL and add it to your dashboard. You can use [this site](ht
 </CodeGroup>
 Now that the customer object has been created, the Customer ID should be saved in your internal database as this will be used to make further actions.
   </Step>
-  <Step title="Create a mandate"> 
+  <Step title="Create a mandate">
   This step involves creating a mandate, which allows the customer to authorise your business to to debit their bank account for scheduled payments. To do this, you’ll use the customer ID returned after you created a customer on Mono. .
 
 There are three different <code>MANDATE </code> methods: E-mandate, Signed mandate, and Global Standing Mandate (GSM). You can read more about them in [this guide](/payments/direct-debit-guide).
