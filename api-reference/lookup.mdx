@@ -17,12 +17,12 @@ Resolves an account number to account name and bank.
 
 <CodeGroup>
   ```bash Curl
-  curl -X POST 'https://api.withmono.com/v1/lookup/account-number/resolve' \
+curl -X POST 'https://api.withmono.com/v1/lookup/account-number/resolve' \
     -H 'accept: application/json' \
     -H 'content-type: application/json' \
-    -H 'mono-sec-key: YOUR_SECRET_KEY' \
-    -d '{"account_number":"0123456789","bank_code":"058"}'
-  ```
+  -H 'mono-sec-key: YOUR_SECRET_KEY' \
+  -d '{"account_number":"0123456789","bank_code":"058"}'
+```
   ```javascript Node
   const response = await fetch('https://api.withmono.com/v1/lookup/account-number/resolve', {
     method: 'POST',

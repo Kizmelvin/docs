@@ -13,9 +13,9 @@ html.dark nav a[href="/"] img {
   display: none !important;
 }
 
-/* Get API Keys navbar button (top right) - Mono blue, rounded, with shadow */
+/* Get API Keys navbar button (top right) only - not in-content dashboard links */
 #topbar-cta-button,
-a[href="https://app.mono.co/apps"] {
+nav a[href="https://app.mono.co/apps"] {
   background-color: #0155ba !important;
   color: #ffffff !important;
   border: none !important;
@@ -27,7 +27,7 @@ a[href="https://app.mono.co/apps"] {
 }
 
 #topbar-cta-button:hover,
-a[href="https://app.mono.co/apps"]:hover {
+nav a[href="https://app.mono.co/apps"]:hover {
   background-color: #014494 !important;
   color: #ffffff !important;
   box-shadow: 0 4px 12px rgba(1, 85, 186, 0.4) !important;
