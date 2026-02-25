@@ -43,9 +43,10 @@ Configure a webhook URL and add it to your dashboard. You can use [this site](ht
     "redirect_url": "https://mono.co"
 
 }
-'
-`
-    `javascript JavaScript
+
+````
+
+```javascript JavaScript
 const response = await fetch('https://api.withmono.com/v2/accounts/initiate', {
 method: 'POST',
 headers: {
@@ -70,7 +71,7 @@ const data = await response.json();
 
  <CodeGroup>
 
-```bash Curl
+```bash JSON
 
 {
     "status": "successful",
@@ -88,14 +89,14 @@ const data = await response.json();
     }
 }
 
-````
+```
 
  </CodeGroup>
 
 Use the mono_url to get redirected to the Mono widget to link an account. After successfully linking your account, you’ll get the webhook response below containing the id of the account that has been linked.
 
 <CodeGroup> 
-```bash Curl Request
+```bash JSON
 {
 "event": "mono.events.account_connected",
 "data": {
@@ -113,7 +114,7 @@ Use the mono_url to get redirected to the Mono widget to link an account. After 
 Shortly after your account has been linked successfully (it usually takes 0.1 seconds to a couple of minutes), you will receive an account-updated webhook event letting you know if data is available for that linked account or not. Getting a data status of available signifies data is available, and you can proceed to call the financial data API endpoints.
 
 <CodeGroup>
-```bash Curl Request
+```bash JSON
     {
   "event": "mono.events.account_updated",
   "data": {
@@ -176,7 +177,7 @@ const data = await response.json();
 <b>Sample endpoint response:</b>
 
 <CodeGroup> 
-```bash Curl
+```bash JSON
     {
     "status": "successful",
     "message": "The income of ${account.name} is currently being  processed, and the data will be sent to you through your webhook",
@@ -191,7 +192,7 @@ This is followed by a webhook that contains the income data needed as shown belo
 <b>Sample webhook response:</b>
 
 <CodeGroup>
-```bash Curl
+```bash JSON
     {
   "data": {
     "income_summary":{
@@ -262,7 +263,7 @@ const data = await response.json();
 <b>Sample response:</b>
 
 <CodeGroup>
-```bash Curl
+```bash JSON
 {
     "status": "successful",
     "message": "The creditworthiness of SAMUEL, OLAMIDE NOMO is currently being processed. Once completed, the data will be sent to your webhook.",
@@ -274,7 +275,7 @@ const data = await response.json();
 This is followed by a webhook event with the information retrieved with the creditworthiness endpoint.
 
 <CodeGroup>
-```bash Curl
+```bash 
 {
     "event": "mono.events.account_credit_worthiness",
     "data": {
@@ -337,7 +338,7 @@ const data = await response.json();
 <b>Sample response: </b>
 
 <CodeGroup>
-```bash Curl
+```bash JSON
 {
     "status": "successful",
     "message": "Transaction retrieved successfully",
@@ -403,7 +404,7 @@ This is a sample of the response you will receive so you can verify all customer
 
 <b>Sample response:</b>
 <CodeGroup>
-```bash Curl
+```bash JSON
 {
     "status": "successful",
     "message": "Data retrieved successfully",
@@ -434,7 +435,7 @@ To debug: After linking an account, the <code>ACCOUNT-UPDATED</code> webhook eve
 Calling financial data endpoints while status is processing or failed won’t return any data. data_status must be available to obtain useful results.
 
 <CodeGroup>
-```bash Curl
+```bash JSON
 {
   "event": "mono.events.account_updated",
   "data": {
@@ -471,7 +472,7 @@ Insufficient data obtained when the income or creditworthiness endpoint is calle
 The creditworthiness endpoint when successfully called returns a webhook event. The response below can be obtained in situations where there aren’t enough transactions in the account that has been linked.
 
 <CodeGroup>
-```bash Curl
+```bash JSON
 {
   "data": {
     "event": "mono.events.account_credit_worthiness",
@@ -488,7 +489,7 @@ The creditworthiness endpoint when successfully called returns a webhook event. 
 The income endpoint when successfully called could return a total income of “0” in situations where there aren't enough transactions or there are not enough repetitive transactions to be recognized as an income.
 
 <CodeGroup>
-```bash Curl
+```bash JSON
 {
   "event": "mono.events.account_income",
   "data": {
@@ -504,31 +505,10 @@ The income endpoint when successfully called could return a total income of “0
   }
 }
 
-````
+```
 
 </CodeGroup>
 </Step>
 </Steps>
 
-## Next steps
-
-API documentation:
-To get a broader understanding of how the Mono Direct Debit API works, see the Mono Direct Debit integration guide. This guide provides you with information on all available APIs, webhooks, and commonly asked questions.
-
-Webhook security:
-Ensure that you are validating the webhooks that you receive from Mono to prevent malicious actors from sending fake webhooks to your server. Here’s a guide to handle this.
-
-Testing in sandbox:
-To ensure a smooth production deployment, thoroughly test your integration in the Mono sandbox environment using test data and your test secret key to stimulate various payment scenarios.
-
-Support channels:
-For real-time integration assistance, join our Slack community, or contact integrations@mono.co to request support for any technical issues you experience.
-
-<CodeGroup>
-```bash Curl
-
-````
-
-</CodeGroup>
-```
 ````

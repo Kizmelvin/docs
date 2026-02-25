@@ -27,6 +27,14 @@
             ]
           },
           {
+            "group": "Use Cases",
+            "pages": [
+              "use-cases/lending",
+              "use-cases/identity-onboarding",
+              "use-cases/asset-management"
+            ]
+          },
+          {
             "group": "Network & Resources",
             "pages": [
               "resources/banks",
