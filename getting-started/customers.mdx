@@ -5,8 +5,6 @@ description: "Customer management and KYC with Mono's API."
 
 Mono’s **customer** endpoints let you onboard users in your application and run KYC (Know Your Customer) checks. The **customer ID** you create is then used across Connect and Payment flows so you can link bank accounts and create mandates for the right user.
 
-![Key features](https://docs.mono.co/images/callout/success.png)
-
 ## Why use the Customer API
 
 - **Onboarding** – Capture user details and create a customer record before or alongside Connect or Payments.
@@ -24,7 +22,8 @@ You can create a customer for an **individual** or a **business**. Use the same 
 
 **Endpoint:** `POST https://api.withmono.com/v2/customers`
 
-**Headers:**  
+**Headers:**
+
 - `mono-sec-key` (required): Your app secret key.
 
 **Request body:** Include the required fields for an individual (e.g. first name, last name, email) or business (e.g. business name, registration number). See the [Customer API reference](/api-reference/customer) for full parameters and examples.

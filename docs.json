@@ -11,19 +11,16 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Home",
+        "tab": "Introduction",
         "groups": [
           {
-            "group": "Home",
+            "group": "Introduction",
             "pages": [
               "index",
-              "getting-started/definitions",
+
               "quickstart/create-an-app",
-              "getting-started/environments-and-sandbox",
-              "getting-started/go-live",
-              "getting-started/customers",
-              "getting-started/faqs",
-              "resources/developer-community"
+              "growth-res/ux-best-practices",
+              "getting-started/customers"
             ]
           },
           {
@@ -39,7 +36,6 @@
             "pages": [
               "resources/banks",
               "resources/mobile-network-providers",
-              "resources/coverage",
               "resources/partner-api",
               "resources/brand-assets",
               "resources/trust-content"
@@ -68,7 +64,13 @@
           },
           {
             "group": "Growth",
-            "pages": ["growth-res/changelog", "growth-res/ux-best-practices"]
+            "pages": [
+              "growth-res/changelog",
+              "essentials/migration-guide",
+              "getting-started/definitions",
+              "resources/developer-community",
+              "getting-started/faqs"
+            ]
           }
         ]
       },
@@ -90,29 +92,12 @@
             "pages": [
               "connect/financial-data",
               "connect/realtime-data",
-              "connect/income",
-              "connect/credit-worthiness",
               "connect/connect-data-endpoints",
               "connect/connect-webhooks",
               "connect/partners-api"
             ]
           },
-          {
-            "group": "SDKs & tools",
-            "pages": [
-              "sdks/index",
-              "liberaries/index",
-              "postman-collection/index"
-            ]
-          },
-          {
-            "group": "Migration",
-            "pages": ["essentials/migration-guide"]
-          },
-          {
-            "group": "Use cases",
-            "pages": ["use-cases/lending", "use-cases/asset-management"]
-          },
+
           {
             "group": "Utilities",
             "pages": [
@@ -185,10 +170,6 @@
           {
             "group": "Governance",
             "pages": ["trust/lookup"]
-          },
-          {
-            "group": "Use case",
-            "pages": ["use-cases/identity-onboarding"]
           }
         ]
       },
@@ -212,6 +193,16 @@
               "api-reference/telco-data",
               "api-reference/cac",
               "api-reference/miscellaneous"
+            ]
+          },
+          {
+            "group": "Developer Tools",
+            "pages": [
+              "sdks/index",
+              "liberaries/index",
+              "getting-started/environments-and-sandbox",
+              "postman-collection/index",
+              "getting-started/go-live"
             ]
           },
           {

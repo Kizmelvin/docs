@@ -35,6 +35,10 @@ The **Income** API returns income-related metrics (e.g. average monthly income, 
 - **Data sync** – Mono can sync data from the bank in the background. When the user's connection requires re-authorisation, you receive events (e.g. reauthorisation_required) so you can prompt the user to [re-auth](/quickstart/authentication). See [Real-time data](/product-abilities/realtime-data) for on-demand refresh.
 - **Manual data sync** – For manual sync behaviour and when it is used, see [Connect integration](/essentials/mono/connect-integration) and [Real-time data](/product-abilities/realtime-data).
 
+## Credit Worthiness
+
+Credit Worthiness API returns affordability status for a loan amount. Webhook mono.events.account_credit_worthiness includes app and business. See [Connect data endpoints](/product-abilities/connect-data-endpoints) and [Bank Data API](/api-reference/bank-data).
+
 ## Unlink (disconnect account)
 
 When a user disconnects their account, Mono sends a **mono.events.account_disconnected** webhook. You should remove or mark the account as inactive in your system. To unlink programmatically, see [Unlink API](/api-reference/bank-data).

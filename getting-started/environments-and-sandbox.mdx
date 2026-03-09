@@ -5,8 +5,6 @@ description: "Sandbox vs production: same API, different keys and data."
 
 Mono uses the **same API base URL** for both testing and production. The only difference is the **keys** you use and whether data is real or test.
 
-![Environments](https://docs.mono.co/images/callout/bulb.png)
-
 ## Base URL
 
 Both environments use:
@@ -17,10 +15,10 @@ Use the correct key for the environment you’re calling.
 
 ## Environments
 
-| Environment | Purpose | Keys | Data |
-|-------------|---------|------|------|
-| **Sandbox** | Testing and development. You can log in via Mono Connect without real bank credentials and pull test data from all endpoints. | Sandbox keys (from your app when it’s in Sandbox mode) | Simulated; not real user or bank data. |
-| **Production** | Live applications. Real connections to financial institutions; users sign in with real credentials. | Live keys (after you [go live](/getting-started/go-live)) | Real account and transaction data. |
+| Environment    | Purpose                                                                                                                       | Keys                                                      | Data                                   |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- | -------------------------------------- |
+| **Sandbox**    | Testing and development. You can log in via Mono Connect without real bank credentials and pull test data from all endpoints. | Sandbox keys (from your app when it’s in Sandbox mode)    | Simulated; not real user or bank data. |
+| **Production** | Live applications. Real connections to financial institutions; users sign in with real credentials.                           | Live keys (after you [go live](/getting-started/go-live)) | Real account and transaction data.     |
 
 Switch your app between Sandbox and Live in the [Mono Dashboard](https://app.mono.co/apps).
 
@@ -31,7 +29,9 @@ Switch your app between Sandbox and Live in the [Mono Dashboard](https://app.mon
 - **Test data** – Responses follow the same structure as production but with sample data. Do not use sandbox values for any production or compliance purpose.
 
 <Warning>
-  Data returned in Sandbox is randomly generated and does not represent real individuals or businesses. Do not use these values for production testing or compliance.
+  Data returned in Sandbox is randomly generated and does not represent real
+  individuals or businesses. Do not use these values for production testing or
+  compliance.
 </Warning>
 
 ## Next steps
