@@ -177,7 +177,17 @@
         "tab": "API reference",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Developer Tools",
+            "pages": [
+              "sdks/index",
+              "liberaries/index",
+              "getting-started/environments-and-sandbox",
+              "postman-collection/index",
+              "getting-started/go-live"
+            ]
+          },
+          {
+            "group": "Endpoints",
             "pages": [
               "api-reference/introduction",
               "api-reference/full-api-index",
@@ -195,18 +205,9 @@
               "api-reference/miscellaneous"
             ]
           },
+
           {
-            "group": "Developer Tools",
-            "pages": [
-              "sdks/index",
-              "liberaries/index",
-              "getting-started/environments-and-sandbox",
-              "postman-collection/index",
-              "getting-started/go-live"
-            ]
-          },
-          {
-            "group": "Endpoint examples",
+            "group": "Examples",
             "pages": [
               "api-reference/endpoint/get",
               "api-reference/endpoint/create",
