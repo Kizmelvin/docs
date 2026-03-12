@@ -180,7 +180,7 @@
             "group": "Developer Tools",
             "pages": [
               "sdks/index",
-              "liberaries/index",
+              "libraries/index",
               "getting-started/environments-and-sandbox",
               "postman-collection/index",
               "getting-started/go-live"
