@@ -8,19 +8,19 @@ Mono Direct Debit solves this by allowing businesses to collect recurring paymen
 
 This quick start guide provides clear steps on how to integrate the Mono Direct Debit API into your product, with detailed instructions and sample API requests to help you set up automated payments efficiently.
 
+<Tip>
+  **Prerequisites**
+
+  - [Sign up](https://app.mono.co/signup) and complete verification.
+  - [Create an app](/quickstart/create-an-app) with **Payments** enabled and use the **secret key** as `mono-sec-key`.
+  - Configure a [webhook URL](/utilities/webhooks) for mandate and debit events.
+</Tip>
+
 ### Why choose Mono Direct Debit over cards?
 
 Mono Direct Debit ensures more secure payments, as the payment mandate has to be authorised by customer and approved by their bank before the direct debit payment can be initiated by the business.
 With lower transaction fees and predictable payment schedules, Mono Direct Debit improves cash flow management and provides a more cost-effective alternative to card payments.
 You can read more about the benefits of Direct Debit over cards [here](https://mono.co/blog/cards-vs-direct-debit).
-
-## Prerequisites
-
-To get started, you'll need your Mono secret key and a webhook URL. To get these, follow the steps below:
-
-[Sign up](https://app.mono.co/signup) on the Mono Dashboard and complete KYC.
-[Create an App](/quickstart/create-an-app) and set the product to "Payments" to generate your Mono secret key. The Mono secret key is used to make API calls to most of Mono's endpoints, and should be passed in your headers as "mono-sec-key". You can check out this [guide](/quickstart/create-an-app) on how to create an app and obtain your secret key.
-Configure a webhook URL and add it to your dashboard. You can use [this site](https://webhook.site/) to quickly generate a webhook URL, and follow this [guide](/utilities/webhooks) to integrate it properly.
 
 ## Step-by-step integration guide
 

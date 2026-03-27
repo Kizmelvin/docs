@@ -6,13 +6,13 @@ Mono Connect lets your users securely link their user bank accounts so they can 
 
 This guide will show you how to integrate the Mono Connect API into your product, with clear steps and sample requests for the entire process.
 
-## Prerequisites
+<Tip>
+  **Prerequisites**
 
-To get started, you'll need your Mono secret key and a webhook URL. To get these, follow the steps below:
-
-[Sign up](https://app.mono.co/signup) on the Mono Dashboard and complete KYC.
-[Create a Connect App](/quickstart/create-an-app) to generate your Mono Secret Key (this will be used for backend integrations or postman tests). Note: When creating your Connect app, you are expected to choose the product scopes for the app. You can check [this article](https://support.mono.co/en/articles/7054553-how-to-create-an-app) to see how to do that correctly.
-Configure a webhook URL and add it to your dashboard. You can use [this site](https://webhook.site/) to quickly generate a webhook URL, and follow [this guide](/utilities/webhooks) to integrate it properly.
+  - [Sign up](https://app.mono.co/signup) on the Mono Dashboard and complete KYC.
+  - [Create a Connect app](/quickstart/create-an-app) with the right **product scopes** and copy your **secret key** (for `mono-sec-key` on the server). See [How to create an app](https://support.mono.co/en/articles/7054553-how-to-create-an-app) if you need help choosing scopes.
+  - Add a **webhook URL** in the dashboard (try [webhook.site](https://webhook.site/) for a quick test URL) and follow [Webhook events](/utilities/webhooks) to verify payloads.
+</Tip>
 
 ## Step-by-step integration guide
 
@@ -144,7 +144,7 @@ Shortly after your account has been linked successfully (it usually takes 0.1 se
 </CodeGroup>
   </Step>
   <Step title="Finding a reliable way to identify customers who can pay back the loan">
-  Using the Mono Income endpoint: The [Mono Income endpoint](/product-abilities/income) helps you determine a user's income pattern.
+  Using the Mono Income endpoint: The [Mono Income endpoint](/connect/income) helps you determine a user's income pattern.
 
 To initiate the income endpoint, send a GET request to the following endpoint:
 
@@ -217,7 +217,7 @@ This is followed by a webhook that contains the income data needed as shown belo
 
   </Step>
   <Step title="Determining the safest loan amount to extend to the customer, with the highest probability of being paid back">
-Using the Mono Creditworthiness endpoint: The [Mono Creditworthiness endpoint](/product-abilities/credit-worthiness) allows you to assess the repayment capacity of a user by evaluating the debt-to-income ratio against their transactions, credit history, and the requested loan amount, interest rate, and tenor.
+Using the Mono Creditworthiness endpoint: The [Mono Creditworthiness endpoint](/connect/credit-worthiness) allows you to assess the repayment capacity of a user by evaluating the debt-to-income ratio against their transactions, credit history, and the requested loan amount, interest rate, and tenor.
 
 To call the creditworthiness endpoint, see sample request below:
 

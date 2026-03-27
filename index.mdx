@@ -1,39 +1,31 @@
 ---
-title: "Overview"
+title: "Mono Developer Documentation"
+description: "Link bank accounts, collect payments, and verify identity with Mono—guides, API reference, and trust resources in one place."
 ---
 
-# What is Mono?
+# Welcome to Mono
 
-Mono is a B2B platform that gives your product access to user bank accounts, payments, and identity verification across Nigeria and beyond. Use our APIs to link accounts, collect one-time or recurring payments, and verify customers and businesses—all with a single integration.
+Mono is a B2B platform that gives your product access to **linked bank accounts**, **payments** (one-time and recurring), and **identity & business verification** across Nigeria and beyond. One dashboard, one set of keys, and documentation organised by product so you can ship faster.
 
 ## Why use Mono?
 
-- Link bank accounts and read balances, transactions, and statements in one flow
-- Collect one-time or recurring payments directly from bank accounts
-- Verify identity (BVN, NIN, documents) and businesses (CAC, TIN) for KYC and compliance
-- One dashboard, one set of keys, and clear docs for each product
+- **Financial data** — Balances, transactions, statements, income, and enrichment after users link via Connect.
+- **Payments** — DirectPay and Direct Debit for collections and payouts.
+- **Identity & lookup** — BVN, NIN, TIN, documents, CAC, and more under Lookup.
+- **Trust** — Encryption, consent, compliance, and SLA pages for your legal and risk teams.
 
-<div className="mt-6">
-  <a
-    href="/connect/connect-overview"
-    className="inline-flex items-center gap-2 rounded-lg bg-[#0155BA] px-5 py-3 text-sm font-semibold text-white shadow-md transition-all hover:bg-[#014494] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#0155BA] focus:ring-offset-2"
-  >
-    Get Started →
-  </a>
-</div>
+<Tip>
+  **To get started**
 
-## How to use Mono
+- [Sign up](https://app.mono.co/signup) on the Mono Dashboard and complete verification.
+- [Create an app](/quickstart/create-an-app) to get your **public** and **secret** keys.
+- Configure a [webhook URL](/utilities/webhooks) for real-time events.
+- Read [Environments and sandbox](/getting-started/environments-and-sandbox) before you call live APIs.
+- Open the [API reference](/api-reference/introduction) when you are ready to integrate endpoints.
 
-1. **Sign up** at [app.mono.co](https://app.mono.co/signup) and complete verification.
-2. [Create an app](/quickstart/create-an-app) to get your API keys.
-3. **Pick a product** below and follow its Overview and Get started guides.
-4. **Use the API reference** for endpoints, request/response examples, and webhooks.
+</Tip>
 
-For sandbox vs live, go-live steps, and FAQs, see the sidebar under **Introduction** and **Getting started**.
-
-## Products
-
-Choose a product to see everything about it—overview, get started, integration guides, and reference—in one place.
+## Choose a product
 
 <Columns cols={2}>
   <Card title="Connect" icon="link" href="/connect/connect-overview" horizontal>
@@ -47,7 +39,7 @@ Choose a product to see everything about it—overview, get started, integration
     horizontal
   >
     One-time payments and Direct Debit for recurring collections. Overview,
-    payment quickstart, and mandate/debit guides in one flow.
+    payment quickstart, and mandate guides in one flow.
   </Card>
   <Card
     title="Lookup"
@@ -56,29 +48,88 @@ Choose a product to see everything about it—overview, get started, integration
     horizontal
   >
     Verify identity (BVN, NIN, documents) and businesses (CAC, TIN). Overview,
-    Lookup APIs, and Prove integration in one place.
+    Lookup APIs, and Prove integration.
+  </Card>
+  <Card
+    title="API reference"
+    icon="code-bracket"
+    href="/api-reference/introduction"
+    horizontal
+  >
+    Endpoints, request/response examples, webhooks, plus SDKs, Postman, and
+    sandbox in the same tab.
+  </Card>
+</Columns>
+
+<div className="mt-6">
+  <a
+    href="/quickstart/create-an-app"
+    className="inline-flex items-center gap-2 rounded-lg bg-[#0155BA] px-5 py-3 text-sm font-semibold text-white shadow-md transition-all hover:bg-[#014494] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#0155BA] focus:ring-offset-2"
+  >
+    Get started — Create an app
+  </a>
+</div>
+
+## Use cases
+
+<Columns cols={3}>
+  <Card title="Lending" icon="banknotes" href="/use-cases/lending">
+    Underwriting with income, creditworthiness, and statements.
+  </Card>
+  <Card
+    title="Identity onboarding"
+    icon="user-circle"
+    href="/use-cases/identity-onboarding"
+  >
+    KYC flows with Lookup and Prove.
+  </Card>
+  <Card
+    title="Asset management"
+    icon="chart-bar"
+    href="/use-cases/asset-management"
+  >
+    Portfolios with Assets and Earnings APIs.
+  </Card>
+</Columns>
+
+## Trust, coverage, and support
+
+<Columns cols={3}>
+  <Card
+    title="Trust & Safety"
+    icon="shield-check"
+    href="/trust/data-encryption"
+  >
+    Encryption, compliance, consent, privacy, and SLAs for evaluators.
+  </Card>
+  <Card title="Supported banks" icon="building-library" href="/resources/banks">
+    Institution coverage and network resources.
+  </Card>
+  <Card title="FAQs" icon="question-mark-circle" href="/getting-started/faqs">
+    Help Centre links by topic, plus in-docs pointers.
   </Card>
 </Columns>
 
 ## Next steps
 
 <Columns cols={3}>
-  <Card title="Create an app" icon="rocket" href="/quickstart/create-an-app">
-    Get your API keys in minutes. Sign up, create an app, and start with
-    sandbox—then pick a product above to integrate.
+  <Card title="Changelog" icon="newspaper" href="/growth-res/changelog">
+    API updates, webhooks, and deprecations.
   </Card>
   <Card
-    title="Explore our endpoints"
-    icon="chat-bubble-left-right"
-    href="api-reference/introduction"
+    title="Migration guide"
+    icon="arrow-path"
+    href="/essentials/migration-guide"
   >
-    Dive into our comprehensive technical documentation and download SDKs to
-    accelerate your development
+    Moving from legacy v1/v2 to current APIs.
   </Card>
-  <Card title="Scale your reach" icon="check-circle" href="/resources/banks">
-    Explore our supported banks and mobile providers and review our trust
-    content to ensure ypur integrations meets global standards.
+  <Card
+    title="Developer community"
+    icon="users"
+    href="/resources/developer-community"
+  >
+    Community and support channels.
   </Card>
 </Columns>
 
-Use the **sidebar** (Introduction, Network & Resources, Trust & Safety) to explore coverage, partners, compliance, and more without leaving the homepage.
+Use the top tabs (**Introduction**, **Connect**, **DirectPay**, **Lookup**, **API reference**) to stay inside the product you are building. Everything under **Introduction**—including this page—is the shared front desk for onboarding, trust, and resources.

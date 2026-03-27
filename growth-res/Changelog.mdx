@@ -82,7 +82,7 @@ When the **identity** scope is used, the iGree BVN endpoint now includes `nation
 ### Financial Data
 
 **Income and Credit Worthiness webhooks** (17 October)  
-`app` and `business` fields added to credit worthiness and income webhook events. The `sandbox_` prefix is removed from Account Income and Credit Worthiness events. Live event names `mono.events.account_income` and `mono.events.account_credit_worthiness` are now used in Sandbox as well. See [Credit worthiness](/product-abilities/credit-worthiness) and [Income](/product-abilities/income).
+`app` and `business` fields added to credit worthiness and income webhook events. The `sandbox_` prefix is removed from Account Income and Credit Worthiness events. Live event names `mono.events.account_income` and `mono.events.account_credit_worthiness` are now used in Sandbox as well. See [Credit worthiness](/connect/credit-worthiness) and [Income](/connect/income).
 
 ### Payments
 
@@ -107,7 +107,7 @@ Updated Connect behaviour:
 - **UNAVAILABLE** (new) – Neither retrieved due to bank-related issues or no data
 - **FAILED** (updated) – Neither retrieved due to Mono-side issues only
 
-New/updated in API and webhooks: `retrieved_data` (what was fetched), `has_new_data` (boolean in account updated event). `X-HAS-NEW-DATA` header is only sent when new data is available. Update your logic for PARTIAL and UNAVAILABLE; use `retrieved_data` and `has_new_data`. See [Integration guide](/essentials/mono/connect-integration) and [Real-time data](/product-abilities/realtime-data).
+New/updated in API and webhooks: `retrieved_data` (what was fetched), `has_new_data` (boolean in account updated event). `X-HAS-NEW-DATA` header is only sent when new data is available. Update your logic for PARTIAL and UNAVAILABLE; use `retrieved_data` and `has_new_data`. See [Integration guide](/essentials/mono/connect-integration) and [Real-time data](/connect/realtime-data).
 
 ### Payments
 
