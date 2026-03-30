@@ -1,20 +1,20 @@
 /* Dark mode logo: fixed dimensions for branding consistency */
-html[data-mintlify-theme="dark"] nav a[href="/"] img,
+/* html[data-mintlify-theme="dark"] nav a[href="/"] img,
 html.dark nav a[href="/"] img {
   width: 256px !important;
   height: 75px !important;
   object-fit: contain;
-}
+} */
 
 /* Hide sticky request/response code panel on the right - API refs use inline CodeGroup + response blocks */
-#panel,
+/* #panel,
 [id="panel"],
 .mt-api-playground-panel {
   display: none !important;
-}
+} */
 
 /* Get API Keys navbar button (top right) only - not in-content dashboard links */
-#topbar-cta-button,
+/* #topbar-cta-button,
 nav a[href="https://app.mono.co/apps"] {
   background-color: #0155ba !important;
   color: #ffffff !important;
@@ -24,16 +24,16 @@ nav a[href="https://app.mono.co/apps"] {
   font-weight: 500 !important;
   font-size: 0.75rem !important;
   transition: background-color 0.2s, box-shadow 0.2s !important;
-}
+} */
 
-#topbar-cta-button:hover,
+/* #topbar-cta-button:hover,
 nav a[href="https://app.mono.co/apps"]:hover {
   background-color: #014494 !important;
   color: #ffffff !important;
   box-shadow: 0 4px 12px rgba(1, 85, 186, 0.4) !important;
-}
+} */
 
-.tab {
+/* .tab {
   padding: 12px 16px;
   border-bottom: 2px solid transparent;
   cursor: pointer;
@@ -42,13 +42,13 @@ nav a[href="https://app.mono.co/apps"]:hover {
   align-items: center;
   justify-content: space-between;
   color: #1422bd;
-}
+} */
 
-.tab:hover {
+/* .tab:hover {
   border-color: var(--color-primary);
-}
-
+} */
+/* 
 .tab.active {
   border-color: orangered;
   font-weight: bold;
-}
+} */
